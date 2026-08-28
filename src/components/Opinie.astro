@@ -1,0 +1,27 @@
+---
+import { opinie } from "../data/firma";
+import NaglowekSekcji from "./NaglowekSekcji.astro";
+---
+
+<section>
+  <div class="strefa">
+    <NaglowekSekcji
+      etykieta="Opinie"
+      tytul="Co mówią po przyjęciu"
+      opis="Najczęściej wracają dwie rzeczy: że tort smakował tak, jak wyglądał, i że nie trzeba było niczego pilnować."
+    />
+    <div class="opinie">
+      {
+        opinie.map((o, i) => (
+          <blockquote class={`opinia pojaw o${i}`}>
+            <p>{o.tresc}</p>
+            <footer>
+              {o.kto}
+              <span>{o.okazja}</span>
+            </footer>
+          </blockquote>
+        ))
+      }
+    </div>
+  </div>
+</section>

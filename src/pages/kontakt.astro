@@ -1,0 +1,148 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Okruszki from "../components/Okruszki.astro";
+import Formularz from "../components/Formularz.astro";
+import NaglowekSekcji from "../components/NaglowekSekcji.astro";
+import Faq from "../components/Faq.astro";
+import { firma, mapaEmbed } from "../data/firma";
+
+const pytania = [
+  {
+    pytanie: "Jak szybko dostanę odpowiedź?",
+    odpowiedz: `Zwykle w ciągu ${firma.czasOdpowiedzi}. Jeśli po tym czasie nie ma odpowiedzi, sprawdź folder ze spamem albo zadzwoń — czasem wiadomości gubią się po drodze.`,
+  },
+  {
+    pytanie: "Co napisać w pierwszej wiadomości?",
+    odpowiedz:
+      "Wystarczy data, miejscowość i przybliżona liczba gości. Reszta — smaki, kolory, wygląd — może poczekać, o to dopytam sama.",
+  },
+  {
+    pytanie: "Czy odpowiadacie też przez Instagram?",
+    odpowiedz:
+      "Tak, ale wolniej. Wiadomości z formularza i maile mam w jednym miejscu, więc nic z nich nie ginie — dlatego przy konkretnym zapytaniu proszę o tę drogę.",
+  },
+  {
+    pytanie: "Czy mogę odebrać zamówienie osobiście?",
+    odpowiedz:
+      "Tak, po wcześniejszym umówieniu godziny. Przy większych przyjęciach polecam jednak dowóz — składanie tortu w bagażniku bywa ryzykowne.",
+  },
+];
+---
+
+<Layout
+  tytul="Kontakt"
+  opis={`Napisz lub zadzwoń: ${firma.telefon}. Zapytanie o wycenę tortu, słodkiego lub wytrawnego stołu — odpowiedź w ciągu ${firma.czasOdpowiedzi}.`}
+>
+  <section class="hero-strony">
+    <div class="strefa">
+      <Okruszki sciezka={[{ tekst: "Kontakt" }]} />
+      <p class="etykieta">Kontakt</p>
+      <h1>Zaplanujmy to razem</h1>
+      <p class="lead">
+        Napisz kilka zdań o swojej uroczystości. Odpowiadam w ciągu {firma.czasOdpowiedzi}
+        — z pomysłem i widełkami cenowymi, nie samym cennikiem.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="strefa kontakt-grid">
+      <div class="dane">
+        <h2 class="pojaw" style="font-size:clamp(1.4rem,2.4vw,1.9rem)">
+          Najszybciej złapiesz mnie tak
+        </h2>
+
+        <div class="dane-lista pojaw">
+          <a class="dane-poz" href={firma.telefonHref}>
+            <span class="ikona" aria-hidden="true">✆</span>
+            <span><small>Telefon</small><b>{firma.telefon}</b></span>
+          </a>
+          <a class="dane-poz" href={`mailto:${firma.email}`}>
+            <span class="ikona" aria-hidden="true">✉</span>
+            <span><small>E-mail</small><b>{firma.email}</b></span>
+          </a>
+          <a class="dane-poz" href="#gdzie">
+            <span class="ikona" aria-hidden="true">◉</span>
+            <span>
+              <small>Pracownia</small>
+              <b>{firma.adres.ulica}, {firma.adres.miasto}</b>
+            </span>
+          </a>
+          <div class="dane-poz">
+            <span class="ikona" aria-hidden="true">◷</span>
+            <span><small>Godziny</small><b>{firma.godziny}</b></span>
+          </div>
+        </div>
+
+        <p class="pojaw" style="margin-top:1.6em;font-size:.88rem;color:var(--tekst-2);max-width:44ch">
+          {firma.godzinyOpis}
+        </p>
+
+        <div class="social pojaw">
+          <a href={firma.instagram} target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+          <a href={firma.facebook} target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+        </div>
+      </div>
+
+      <Formularz />
+    </div>
+  </section>
+
+  <!-- ===== GDZIE ===== -->
+  <section id="gdzie" class="gdzie">
+    <div class="strefa">
+      <NaglowekSekcji
+        etykieta="Gdzie mnie znajdziesz"
+        tytul="Pracownia i zasięg dojazdu"
+        opis="Odbiór osobisty po wcześniejszym umówieniu. Na większe przyjęcia dojeżdżam i ustawiam stół na miejscu."
+      />
+
+      <div class="mapa pojaw">
+        {
+          mapaEmbed ? (
+            <iframe
+              src={mapaEmbed}
+              title="Mapa dojazdu do pracowni"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            />
+          ) : (
+            <div>
+              <div class="mapa-pin" aria-hidden="true">◉</div>
+              <small>Tu wstaw mapę Google — patrz README</small>
+            </div>
+          )
+        }
+      </div>
+
+      <div class="info-siatka">
+        <div class="info pojaw">
+          <h3>Pracownia</h3>
+          <p>
+            {firma.adres.ulica}<br />
+            {firma.adres.kod} {firma.adres.miasto}<br />
+            Odbiór po umówieniu telefonicznym.
+          </p>
+        </div>
+        <div class="info pojaw o1">
+          <h3>Dojazd i dostawa</h3>
+          <p>Dowożę i ustawiam stoły na terenie:</p>
+          <ul class="miasta">
+            {firma.miasta.map((m) => <li>{m}</li>)}
+            <li>okolice do {firma.promien}</li>
+          </ul>
+        </div>
+        <div class="info pojaw o2">
+          <h3>Godziny</h3>
+          <p>
+            {firma.godziny}<br />
+            Sob.–niedz. — realizacje u klientów<br />
+            Wiadomości odbieram codziennie.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Faq pytania={pytania} tytul="Zanim napiszesz" etykieta="Drobne sprawy" />
+</Layout>

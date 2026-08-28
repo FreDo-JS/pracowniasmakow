@@ -1,0 +1,28 @@
+---
+import { oferta } from "../data/oferta";
+
+export type Props = { pomin?: string };
+const { pomin } = Astro.props;
+
+const pozycje = oferta.filter((o) => o.slug !== pomin);
+---
+
+<div class="k-siatka">
+  {
+    pozycje.map((o, i) => (
+      <a class={`karta pojaw o${i}`} href={`/oferta/${o.slug}`}>
+        <div class="foto">
+          <span>{o.warianty[0].nazwa}</span>
+        </div>
+        <div class="karta-tekst">
+          <small>{o.etykieta}</small>
+          <h3>{o.tytul}</h3>
+          <p>{o.lead}</p>
+          <span class="wiecej">
+            Zobacz szczegóły <span class="grot" aria-hidden="true">→</span>
+          </span>
+        </div>
+      </a>
+    ))
+  }
+</div>

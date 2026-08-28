@@ -1,0 +1,115 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Okruszki from "../../components/Okruszki.astro";
+import NaglowekSekcji from "../../components/NaglowekSekcji.astro";
+import Dodatki from "../../components/Dodatki.astro";
+import Faq from "../../components/Faq.astro";
+import KartyOferty from "../../components/KartyOferty.astro";
+import PasekCta from "../../components/PasekCta.astro";
+import Proces from "../../components/Proces.astro";
+import { oferta } from "../../data/oferta";
+import { firma } from "../../data/firma";
+
+export function getStaticPaths() {
+  return oferta.map((o) => ({ params: { slug: o.slug }, props: { pozycja: o } }));
+}
+
+const { pozycja } = Astro.props;
+---
+
+<Layout tytul={pozycja.tytul} opis={pozycja.opisSeo}>
+  <!-- ===== NAGŁÓWEK PODSTRONY ===== -->
+  <section class="hero-strony">
+    <div class="strefa">
+      <Okruszki
+        sciezka={[{ tekst: "Oferta", url: "/oferta" }, { tekst: pozycja.tytul }]}
+      />
+      <p class="etykieta">{pozycja.etykieta}</p>
+      <h1>{pozycja.tytul}</h1>
+      <p class="lead">{pozycja.lead}</p>
+      <a class="btn btn--roz" href="/kontakt#formularz">
+        Zamów wycenę <span class="grot" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== WSTĘP + WSKAZÓWKA ===== -->
+  <section>
+    <div class="strefa o-nas-grid">
+      <div>
+        <p class="etykieta pojaw">Jak pracuję</p>
+        {pozycja.wstep.map((p) => <p class="pojaw" style="max-width:52ch">{p}</p>)}
+        <p class="cennik-nota pojaw">{pozycja.cena}</p>
+      </div>
+      <div class="wskazowka pojaw o1">
+        <h2>{pozycja.wskazowka.tytul}</h2>
+        <p>{pozycja.wskazowka.wstep}</p>
+        <ul>
+          {pozycja.wskazowka.punkty.map((p) => <li>{p}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WARIANTY ===== -->
+  <section class="kategorie">
+    <div class="strefa">
+      <NaglowekSekcji
+        etykieta="Zakres"
+        tytul={`Co mieści się w kategorii „${pozycja.tytul}”`}
+        opis="Nie musisz wybierać teraz — przy wycenie doradzę, co ma sens przy Twojej liczbie gości."
+      />
+      <div class="warianty">
+        {
+          pozycja.warianty.map((w, i) => (
+            <div class={`wariant pojaw o${i % 4}`}>
+              <h3>{w.nazwa}</h3>
+              <p>{w.opis}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      {
+        pozycja.smaki && (
+          <div style="margin-top:clamp(34px,4vw,58px)">
+            <NaglowekSekcji
+              etykieta="Smaki"
+              tytul="Najczęściej wybierane połączenia"
+              opis="Lista otwarta — jeśli macie swój ulubiony smak, spróbuję go odtworzyć."
+              poziom={2}
+            />
+            <ul class="smaki pojaw">
+              {pozycja.smaki.map((s) => <li>{s}</li>)}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- ===== DODATKI (opcje podnoszące wartość zamówienia) ===== -->
+  <Dodatki dodatki={pozycja.dodatki} />
+
+  <!-- ===== PROCES ===== -->
+  <Proces />
+
+  <!-- ===== FAQ ===== -->
+  <Faq pytania={pozycja.faq} tytul={`${pozycja.tytul} — częste pytania`} />
+
+  <!-- ===== POZOSTAŁA OFERTA ===== -->
+  <section class="kategorie">
+    <div class="strefa">
+      <NaglowekSekcji
+        etykieta="Pozostała oferta"
+        tytul="Do tego często dochodzi jeszcze…"
+        opis="Zamówione razem mają wspólną estetykę, jeden dojazd i jedną wycenę."
+      />
+      <KartyOferty pomin={pozycja.slug} />
+      <PasekCta
+        tytul={`Porozmawiajmy o Waszym zamówieniu`}
+        opis={`Napisz, ilu macie gości i kiedy jest przyjęcie. Odpowiadam w ciągu ${firma.czasOdpowiedzi}.`}
+      />
+    </div>
+  </section>
+</Layout>

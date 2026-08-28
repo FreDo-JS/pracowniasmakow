@@ -1,0 +1,28 @@
+---
+import { proces } from "../data/oferta";
+import NaglowekSekcji from "./NaglowekSekcji.astro";
+
+export type Props = { tlo?: boolean };
+const { tlo = false } = Astro.props;
+---
+
+<section class={tlo ? "gdzie" : ""}>
+  <div class="strefa">
+    <NaglowekSekcji
+      etykieta="Jak to wygląda"
+      tytul="Cztery kroki, bez niespodzianek"
+      opis="Wiesz z góry, co się dzieje i kiedy. Żadna decyzja nie zapada bez Twojej akceptacji."
+    />
+    <div class="proces">
+      {
+        proces.map((k, i) => (
+          <div class={`krok pojaw o${i}`}>
+            <b>{k.krok}</b>
+            <h3>{k.tytul}</h3>
+            <p>{k.opis}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,118 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Okruszki from "../components/Okruszki.astro";
+import { firma } from "../data/firma";
+
+/* UWAGA: to jest wzór, nie porada prawna.
+   Uzupełnij dane administratora i sprawdź treść przed publikacją. */
+---
+
+<Layout
+  tytul="Polityka prywatności"
+  opis="Informacja o przetwarzaniu danych osobowych i plikach cookie w serwisie Pracowni Wielu Smaków."
+>
+  <section class="hero-strony">
+    <div class="strefa">
+      <Okruszki sciezka={[{ tekst: "Polityka prywatności" }]} />
+      <h1>Polityka prywatności</h1>
+      <p class="lead">
+        Krótko i po ludzku: jakie dane zbieram, po co i co możesz z nimi zrobić.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="strefa tresc-prawna">
+      <h2>Kto jest administratorem danych</h2>
+      <p>
+        Administratorem danych osobowych jest {firma.nazwa} — {firma.wlascicielka},
+        {firma.adres.ulica}, {firma.adres.kod} {firma.adres.miasto},
+        NIP {firma.nip}. Kontakt: <a href={`mailto:${firma.email}`}>{firma.email}</a>,
+        tel. {firma.telefon}.
+      </p>
+
+      <h2>Jakie dane zbieram</h2>
+      <ul>
+        <li>
+          <strong>Z formularza kontaktowego:</strong> imię i nazwisko, adres
+          e-mail, opcjonalnie telefon, data i miejsce przyjęcia, liczba gości
+          oraz treść wiadomości.
+        </li>
+        <li>
+          <strong>Automatycznie:</strong> dane techniczne przeglądarki i
+          statystyki odwiedzin — wyłącznie jeśli wyrazisz zgodę na ciasteczka
+          analityczne.
+        </li>
+      </ul>
+
+      <h2>W jakim celu i na jakiej podstawie</h2>
+      <ul>
+        <li>
+          Odpowiedź na zapytanie i przygotowanie wyceny — art. 6 ust. 1 lit. b
+          RODO (działania przed zawarciem umowy).
+        </li>
+        <li>
+          Realizacja zamówienia i rozliczenia — art. 6 ust. 1 lit. b i c RODO
+          (umowa i obowiązki księgowe).
+        </li>
+        <li>
+          Statystyki i marketing — art. 6 ust. 1 lit. a RODO (Twoja zgoda,
+          którą możesz wycofać w każdej chwili).
+        </li>
+      </ul>
+
+      <h2>Jak długo przechowuję dane</h2>
+      <p>
+        Zapytania bez zamówienia — do 12 miesięcy. Dane związane ze
+        zrealizowanym zamówieniem — przez okres wymagany przepisami
+        podatkowymi, czyli 5 lat od końca roku rozliczeniowego.
+      </p>
+
+      <h2>Komu przekazuję dane</h2>
+      <p>
+        Wyłącznie podmiotom, które są niezbędne do prowadzenia działalności:
+        dostawcy poczty e-mail, usługi obsługującej formularz kontaktowy,
+        firmie hostingowej oraz biuru rachunkowemu. Nie sprzedaję danych i nie
+        przekazuję ich do celów marketingowych innych firm.
+      </p>
+
+      <h2>Twoje prawa</h2>
+      <ul>
+        <li>dostęp do danych i otrzymanie ich kopii,</li>
+        <li>sprostowanie i usunięcie danych,</li>
+        <li>ograniczenie przetwarzania oraz sprzeciw,</li>
+        <li>przeniesienie danych,</li>
+        <li>wycofanie zgody w dowolnym momencie,</li>
+        <li>skarga do Prezesa Urzędu Ochrony Danych Osobowych.</li>
+      </ul>
+      <p>
+        Żeby skorzystać z któregokolwiek z nich, wystarczy wiadomość na
+        <a href={`mailto:${firma.email}`}>{firma.email}</a>.
+      </p>
+
+      <h2>Pliki cookie</h2>
+      <p>
+        Strona używa ciasteczek niezbędnych do działania (zapamiętanie Twojego
+        wyboru zgód). Ciasteczka analityczne i marketingowe uruchamiają się
+        wyłącznie po Twojej zgodzie.
+      </p>
+      <p>
+        Swój wybór możesz zmienić w każdej chwili:
+        <button type="button" data-cookies class="c-link" style="padding-left:0">
+          otwórz ustawienia cookies
+        </button>
+      </p>
+
+      <h2>Zmiany polityki</h2>
+      <p>
+        W razie zmian aktualizuję ten dokument i publikuję nową wersję na tej
+        stronie.
+      </p>
+
+      <p style="margin-top:2.5em;font-size:.8rem;opacity:.75">
+        Dokument w wersji roboczej — przed publikacją serwisu uzupełnij dane
+        firmy i zweryfikuj treść pod kątem swojej działalności.
+      </p>
+    </div>
+  </section>
+</Layout>

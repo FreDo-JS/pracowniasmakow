@@ -1,0 +1,176 @@
+---
+/* Slider automatyczny — bez strzałek.
+   Zostają kropki (skok do konkretnego slajdu) oraz przycisk pauzy,
+   którego wymaga WCAG 2.2.2 dla treści zmieniającej się samoczynnie. */
+
+const slajdy = [
+  {
+    tlo: "tlo-1",
+    opisFoto: "Zdjęcie 1 — stół weselny w stodole",
+    etykieta: "Wesela i przyjęcia",
+    tytul: "Twoje przyjęcie może mieć wiele smaków",
+    tresc:
+      "Tort, słodki stół i wytrawne przekąski z jednej pracowni. Projektuję, wykonuję i ustawiam wszystko na miejscu.",
+    cta: { tekst: "Zamów wycenę", url: "/kontakt#formularz" },
+  },
+  {
+    tlo: "tlo-2",
+    opisFoto: "Zdjęcie 2 — wytrawny stół, tarty i koreczki",
+    etykieta: "Wytrawny stół",
+    tytul: "Nie tylko na słodko",
+    tresc:
+      "Tarty, koreczki, deski serów i przekąski na powitanie gości — w tej samej estetyce co reszta stołu.",
+    cta: { tekst: "Zobacz ofertę", url: "/oferta" },
+  },
+  {
+    tlo: "tlo-3",
+    opisFoto: "Zdjęcie 3 — tort weselny na drewnianym wozie",
+    etykieta: "Torty",
+    tytul: "Tort projektowany pod jedną datę",
+    tresc:
+      "Weselne, urodzinowe, komunijne. Zawsze od zera, pod dekorację sali i pod smaki, które lubicie.",
+    cta: { tekst: "Zobacz realizacje", url: "/realizacje" },
+  },
+];
+---
+
+<div
+  class="slider"
+  id="slider"
+  aria-roledescription="karuzela"
+  aria-label="Realizacje pracowni"
+>
+  {
+    slajdy.map((s, i) => (
+      <div
+        class={`slajd${i === 0 ? " aktywny" : ""}`}
+        role="group"
+        aria-roledescription="slajd"
+        aria-label={`${i + 1} z ${slajdy.length}`}
+      >
+        <div class={`slajd-tlo ${s.tlo}`} />
+        <span class="slajd-opis">{s.opisFoto}</span>
+        <div class="slajd-tresc">
+          <p class="etykieta anim">{s.etykieta}</p>
+          {i === 0 ? (
+            <h1 class="slajd-tytul anim">{s.tytul}</h1>
+          ) : (
+            /* Tylko pierwszy slajd niesie H1 — reszta to nagłówki wizualne,
+               żeby na stronie nie było trzech konkurujących H1. */
+            <p class="slajd-tytul anim">{s.tytul}</p>
+          )}
+          <p class="anim">{s.tresc}</p>
+          <a class="btn btn--jasny anim" href={s.cta.url}>
+            {s.cta.tekst} <span class="grot" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    ))
+  }
+
+  <div class="sterowanie">
+    <div class="kropki" role="tablist" aria-label="Wybierz slajd">
+      {
+        slajdy.map((s, i) => (
+          <button
+            class="kropka"
+            role="tab"
+            aria-current={i === 0 ? "true" : "false"}
+            aria-label={`Slajd ${i + 1}: ${s.tytul}`}
+          />
+        ))
+      }
+    </div>
+    <button class="pauza" id="pauza" aria-label="Zatrzymaj automatyczne przewijanie">
+      <span aria-hidden="true">❚❚</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  const wolniej = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const slider = document.getElementById("slider");
+
+  if (slider) {
+    const slajdy = [...slider.querySelectorAll<HTMLElement>(".slajd")];
+    const kropki = [...slider.querySelectorAll<HTMLButtonElement>(".kropka")];
+    const przyciskPauzy = document.getElementById("pauza") as HTMLButtonElement;
+
+    let idx = 0;
+    let timer: number | null = null;
+    let zatrzymanyRecznie = wolniej;
+
+    const pokaz = (n: number) => {
+      idx = (n + slajdy.length) % slajdy.length;
+      slajdy.forEach((s, i) => s.classList.toggle("aktywny", i === idx));
+      kropki.forEach((k, i) => k.setAttribute("aria-current", String(i === idx)));
+    };
+
+    const start = () => {
+      if (zatrzymanyRecznie) return;
+      stop();
+      timer = window.setInterval(() => pokaz(idx + 1), 6500);
+    };
+    const stop = () => {
+      if (timer) clearInterval(timer);
+      timer = null;
+    };
+
+    kropki.forEach((k, i) =>
+      k.addEventListener("click", () => {
+        pokaz(i);
+        start();
+      })
+    );
+
+    przyciskPauzy.addEventListener("click", () => {
+      zatrzymanyRecznie = !zatrzymanyRecznie;
+      if (zatrzymanyRecznie) {
+        stop();
+        przyciskPauzy.innerHTML = '<span aria-hidden="true">▶</span>';
+        przyciskPauzy.setAttribute("aria-label", "Wznów automatyczne przewijanie");
+      } else {
+        start();
+        przyciskPauzy.innerHTML = '<span aria-hidden="true">❚❚</span>';
+        przyciskPauzy.setAttribute("aria-label", "Zatrzymaj automatyczne przewijanie");
+      }
+    });
+
+    /* zatrzymanie na czas czytania / interakcji */
+    slider.addEventListener("mouseenter", stop);
+    slider.addEventListener("mouseleave", start);
+    slider.addEventListener("focusin", stop);
+    slider.addEventListener("focusout", start);
+    document.addEventListener("visibilitychange", () =>
+      document.hidden ? stop() : start()
+    );
+
+    /* przesuwanie palcem */
+    let x0: number | null = null;
+    slider.addEventListener(
+      "touchstart",
+      (e) => {
+        x0 = e.touches[0].clientX;
+        stop();
+      },
+      { passive: true }
+    );
+    slider.addEventListener(
+      "touchend",
+      (e) => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 45) pokaz(dx < 0 ? idx + 1 : idx - 1);
+        x0 = null;
+        start();
+      },
+      { passive: true }
+    );
+
+    if (wolniej) {
+      przyciskPauzy.innerHTML = '<span aria-hidden="true">▶</span>';
+      przyciskPauzy.setAttribute("aria-label", "Wznów automatyczne przewijanie");
+    }
+    start();
+  }
+</script>

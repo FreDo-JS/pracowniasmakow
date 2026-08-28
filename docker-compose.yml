@@ -1,0 +1,22 @@
+# =============================================================
+#  Wersja do testów lokalnych i pod własne proxy.
+#  Strona wystawiona na http://localhost:8080
+#
+#  Na serwer produkcyjny z HTTPS użyj docker-compose.prod.yml
+# =============================================================
+
+services:
+  strona:
+    build:
+      context: .
+      args:
+        # Wartości brane z pliku .env (Compose czyta go automatycznie).
+        # Muszą być podane przy budowaniu — patrz komentarz w Dockerfile.
+        PUBLIC_ENDPOINT_FORMULARZA: ${PUBLIC_ENDPOINT_FORMULARZA:-}
+        PUBLIC_WEB3FORMS_KEY: ${PUBLIC_WEB3FORMS_KEY:-}
+        SITE_URL: ${SITE_URL:-http://localhost:8080}
+    image: pracownia-wielu-smakow:latest
+    container_name: pws-strona
+    restart: unless-stopped
+    ports:
+      - "8080:80"

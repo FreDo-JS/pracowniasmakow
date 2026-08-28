@@ -1,0 +1,18 @@
+---
+export type Props = {
+  etykieta: string;
+  tytul: string;
+  opis?: string;
+  srodek?: boolean;
+  poziom?: 2 | 3;
+};
+
+const { etykieta, tytul, opis, srodek = false, poziom = 2 } = Astro.props;
+const Tag = `h${poziom}` as "h2" | "h3";
+---
+
+<div class={`naglowek pojaw${srodek ? " naglowek--srodek" : ""}`}>
+  <p class="etykieta">{etykieta}</p>
+  <Tag>{tytul}</Tag>
+  {opis && <p>{opis}</p>}
+</div>

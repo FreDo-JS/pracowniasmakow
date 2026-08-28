@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  tytul="Nie znaleziono strony"
+  opis="Ta strona nie istnieje. Wróć na stronę główną albo zajrzyj do oferty."
+>
+  <section class="strona-404">
+    <div class="strefa" style="text-align:center">
+      <p class="etykieta" style="justify-content:center">Błąd 404</p>
+      <h1>Tej strony nie ma w menu</h1>
+      <p style="max-width:44ch;margin:1em auto 0;color:var(--tekst-2)">
+        Adres jest nieaktualny albo w linku zgubiła się literka. Zajrzyj do
+        oferty — albo napisz, czego szukasz, a podpowiem.
+      </p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:1.6em">
+        <a class="btn" href="/">Strona główna <span class="grot" aria-hidden="true">→</span></a>
+        <a class="btn btn--linia" href="/oferta">Zobacz ofertę</a>
+      </div>
+    </div>
+  </section>
+</Layout>

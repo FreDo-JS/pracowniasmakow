@@ -1,0 +1,166 @@
+---
+import { firma, nawLewa, nawPrawa, type Link } from "../data/firma";
+
+const sciezka = Astro.url.pathname.replace(/\/$/, "") || "/";
+const aktywna = (url: string) =>
+  sciezka === url || (url !== "/" && sciezka.startsWith(url + "/"));
+
+const grupy: { klasa: string; linki: Link[] }[] = [
+  { klasa: "naw-lewa", linki: nawLewa },
+  { klasa: "naw-prawa", linki: nawPrawa },
+];
+---
+
+<header class="naglowek-strony" id="naglowek">
+  <button
+    class="burger"
+    id="burger"
+    aria-label="Menu"
+    aria-expanded="false"
+    aria-controls="menu"
+  >
+    <i></i><i></i><i></i>
+  </button>
+
+  <nav class="menu" id="menu" aria-label="Nawigacja główna">
+    {
+      grupy.map((grupa) => (
+        <ul class={`naw ${grupa.klasa}`}>
+          {/* TELEFON — WYŁĄCZONY NA CZAS TESTU.
+              Żeby przywrócić, usuń `false &&` z warunku poniżej.
+              Uwaga: bez telefonu logo przestaje wypadać na osi strony
+              (patrz komentarz przy `nawLewa` w src/data/firma.ts). */}
+          {false && grupa.klasa === "naw-lewa" && (
+            <li class="naw-tel">
+              <a href={firma.telefonHref}>
+                <span aria-hidden="true">✆</span> {firma.telefon}
+              </a>
+            </li>
+          )}
+
+          {grupa.linki.map((link) =>
+            link.pod ? (
+              <li class="ma-pod">
+                <a
+                  href={link.url}
+                  aria-current={aktywna(link.url) ? "page" : undefined}
+                >
+                  {link.tekst}
+                </a>
+                <button
+                  class="pod-przelacz"
+                  aria-expanded="false"
+                  aria-controls={`pod-${link.url.replace(/\W/g, "")}`}
+                  aria-label={`Rozwiń podmenu: ${link.tekst}`}
+                >
+                  <span aria-hidden="true">▾</span>
+                </button>
+                <ul class="podmenu" id={`pod-${link.url.replace(/\W/g, "")}`}>
+                  {link.pod.map((p) => (
+                    <li>
+                      <a
+                        href={p.url}
+                        aria-current={sciezka === p.url ? "page" : undefined}
+                      >
+                        {p.tekst}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li>
+                <a
+                  href={link.url}
+                  aria-current={aktywna(link.url) ? "page" : undefined}
+                >
+                  {link.tekst}
+                </a>
+              </li>
+            )
+          )}
+
+          {grupa.klasa === "naw-prawa" && (
+            <li>
+              <a class="btn" href="/kontakt#formularz">
+                Zamów wycenę <span class="grot" aria-hidden="true">→</span>
+              </a>
+            </li>
+          )}
+        </ul>
+      ))
+    }
+  </nav>
+
+  <a class="marka" href="/">
+    <img
+      src="/logo-pws.png"
+      alt={`${firma.nazwa} — ${firma.wlascicielka}, strona główna`}
+      width="760"
+      height="760"
+      fetchpriority="high"
+    />
+  </a>
+
+  <a class="btn btn--maly cta-naglowka" href="/kontakt#formularz">Wycena</a>
+</header>
+
+<script>
+  const naglowek = document.getElementById("naglowek");
+  const burger = document.getElementById("burger");
+  const menu = document.getElementById("menu");
+
+  const zamknijMenu = () => {
+    menu?.classList.remove("otwarte");
+    burger?.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("menu-otwarte");
+  };
+
+  burger?.addEventListener("click", () => {
+    const otwarte = menu?.classList.toggle("otwarte");
+    burger.setAttribute("aria-expanded", String(!!otwarte));
+    /* blokada przewijania strony pod pełnoekranowym menu */
+    document.body.classList.toggle("menu-otwarte", !!otwarte);
+  });
+
+  menu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", zamknijMenu));
+
+  document.addEventListener("click", (e) => {
+    if (!naglowek?.contains(e.target as Node)) {
+      zamknijMenu();
+      zamknijPodmenu();
+    }
+  });
+
+  /* --- podmenu: przełącznik dla klawiatury i ekranów dotykowych.
+         Na dużych ekranach otwiera się dodatkowo najechaniem (CSS). --- */
+  const przelaczniki = [
+    ...document.querySelectorAll<HTMLButtonElement>(".pod-przelacz"),
+  ];
+
+  const zamknijPodmenu = () => {
+    przelaczniki.forEach((p) => {
+      p.setAttribute("aria-expanded", "false");
+      p.parentElement?.querySelector(".podmenu")?.classList.remove("otwarte");
+    });
+  };
+
+  przelaczniki.forEach((p) => {
+    p.addEventListener("click", () => {
+      const pod = p.parentElement?.querySelector(".podmenu");
+      const otwarte = pod?.classList.contains("otwarte");
+      zamknijPodmenu();
+      if (!otwarte) {
+        pod?.classList.add("otwarte");
+        p.setAttribute("aria-expanded", "true");
+      }
+    });
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      zamknijMenu();
+      zamknijPodmenu();
+    }
+  });
+</script>

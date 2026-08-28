@@ -1,0 +1,25 @@
+---
+export type Props = {
+  tytul?: string;
+  opis?: string;
+  przycisk?: string;
+  url?: string;
+};
+
+const {
+  tytul = "Nie wiesz, ile tego potrzeba?",
+  opis = "Napisz, ilu masz gości i jaka to okazja — dobiorę zakres i podam widełki cenowe w dwa dni robocze.",
+  przycisk = "Zamów wycenę",
+  url = "/kontakt#formularz",
+} = Astro.props;
+---
+
+<div class="pasek-cta pojaw">
+  <div>
+    <h2>{tytul}</h2>
+    <p>{opis}</p>
+  </div>
+  <a class="btn btn--jasny" href={url}>
+    {przycisk} <span class="grot" aria-hidden="true">→</span>
+  </a>
+</div>

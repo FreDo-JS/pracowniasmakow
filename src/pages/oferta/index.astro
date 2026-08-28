@@ -1,0 +1,118 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Okruszki from "../../components/Okruszki.astro";
+import KartyOferty from "../../components/KartyOferty.astro";
+import NaglowekSekcji from "../../components/NaglowekSekcji.astro";
+import PasekCta from "../../components/PasekCta.astro";
+import Proces from "../../components/Proces.astro";
+import Faq from "../../components/Faq.astro";
+import { firma } from "../../data/firma";
+
+const pytania = [
+  {
+    pytanie: "Czy muszę zamówić wszystko naraz?",
+    odpowiedz:
+      "Nie. Większość zamówień zaczyna się od samego tortu, a stół dochodzi później. Zakres można rozszerzać do mniej więcej miesiąca przed przyjęciem — im wcześniej, tym większy wybór.",
+  },
+  {
+    pytanie: "Czy taniej jest zamówić kilka rzeczy razem?",
+    odpowiedz:
+      "Tak, bo jest jeden dojazd, jedno ustawianie i wspólna aranżacja. Przy zamówieniu tortu razem ze stołem nie doliczam osobnej opłaty za dostawę.",
+  },
+  {
+    pytanie: "Jak wygląda rezerwacja terminu?",
+    odpowiedz:
+      "Termin blokuje zaliczka. Do tego czasu data jest wolna dla wszystkich — nawet jeśli mamy już ustalony projekt.",
+  },
+  {
+    pytanie: "Czy przygotowujesz wersje dla alergików?",
+    odpowiedz:
+      "Tak — bez glutenu, bez laktozy, wegańskie. Potrzebuję tylko liczby porcji i informacji, o jakie alergie chodzi. Te porcje przygotowuję osobno i osobno oznaczam.",
+  },
+];
+---
+
+<Layout
+  tytul="Oferta"
+  opis="Torty, słodkie kompozycje, wytrawny stół i upominki dla gości. Jedna pracownia, jedna estetyka, jedna rozmowa."
+>
+  <section class="hero-strony">
+    <div class="strefa">
+      <Okruszki sciezka={[{ tekst: "Oferta" }]} />
+      <p class="etykieta">Oferta</p>
+      <h1>Cztery rzeczy, które robię naprawdę dobrze</h1>
+      <p class="lead">
+        Możesz zamówić sam tort albo powierzyć mi całą oprawę kulinarną
+        przyjęcia. Wszystko powstaje w jednej pracowni, więc słodki i wytrawny
+        stół wyglądają jak jedna kompozycja, a nie jak dwa osobne zamówienia.
+      </p>
+      <a class="btn btn--roz" href="/kontakt#formularz">
+        Zamów wycenę <span class="grot" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="strefa">
+      <NaglowekSekcji
+        etykieta="Kategorie"
+        tytul="Wybierz, czego potrzebujesz"
+        opis="Każda kategoria ma osobną stronę z zakresem, wskazówkami co do ilości i listą dodatków."
+      />
+      <KartyOferty />
+    </div>
+  </section>
+
+  <section class="dodatki">
+    <div class="strefa">
+      <NaglowekSekcji
+        etykieta="Dlaczego razem"
+        tytul="Jedno zamówienie zamiast trzech"
+        opis="Najczęstszy powód, dla którego klienci wracają: nie muszą koordynować kilku firm w dniu, w którym mają inne rzeczy na głowie."
+      />
+      <ul class="lista-dodatkow">
+        <li class="dodatek pojaw">
+          <h3>Jedna estetyka</h3>
+          <p>
+            Tort, słodycze i przekąski dobieram do siebie kolorystycznie i pod
+            względem podania. Stół wygląda na zaplanowany, bo jest zaplanowany.
+          </p>
+        </li>
+        <li class="dodatek pojaw o1">
+          <h3>Jeden dojazd</h3>
+          <p>
+            Przyjeżdżam raz, składam wszystko na miejscu i zabieram opakowania.
+            Nie płacisz za trzy osobne dostawy.
+          </p>
+        </li>
+        <li class="dodatek pojaw o2">
+          <h3>Jedna osoba do kontaktu</h3>
+          <p>
+            Nie ma przekazywania ustaleń między działami. To, co ustalimy w
+            marcu, obowiązuje w sierpniu.
+          </p>
+        </li>
+        <li class="dodatek pojaw o3">
+          <h3>Jedna wycena</h3>
+          <p>
+            Dostajesz jeden dokument z całym zakresem i widełkami, a nie trzy
+            oferty do porównywania.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <Proces />
+
+  <Faq pytania={pytania} tytul="Zanim wyślesz zapytanie" />
+
+  <section style="padding-top:0">
+    <div class="strefa">
+      <PasekCta
+        tytul="Powiedz, co planujesz — dobiorę zakres"
+        opis={`Odpowiadam w ciągu ${firma.czasOdpowiedzi}, z propozycją i przedziałem cenowym.`}
+      />
+    </div>
+  </section>
+</Layout>

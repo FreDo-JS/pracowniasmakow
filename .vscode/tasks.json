@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Strona: tryb pracy (dev)",
+      "detail": "Uruchamia serwer na http://localhost:4321 i odświeża po każdej zmianie",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "Strona: zbuduj wersję produkcyjną",
+      "detail": "Generuje gotowe pliki do katalogu dist/",
+      "type": "npm",
+      "script": "build",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Strona: podejrzyj wersję produkcyjną",
+      "detail": "Serwuje to, co powstało po zbudowaniu — dokładnie jak na serwerze",
+      "type": "npm",
+      "script": "preview",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Docker: uruchom lokalnie",
+      "detail": "Buduje obraz i wystawia stronę na http://localhost:8080",
+      "type": "shell",
+      "command": "docker compose up --build",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Docker: zatrzymaj",
+      "type": "shell",
+      "command": "docker compose down",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    }
+  ]
+}

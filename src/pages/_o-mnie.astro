@@ -1,0 +1,150 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Okruszki from "../components/Okruszki.astro";
+import NaglowekSekcji from "../components/NaglowekSekcji.astro";
+import Opinie from "../components/Opinie.astro";
+import Proces from "../components/Proces.astro";
+import PasekCta from "../components/PasekCta.astro";
+import Faq from "../components/Faq.astro";
+import { firma, liczby } from "../data/firma";
+
+const wartosci = [
+  {
+    tytul: "Robię mniej, żeby robić dokładnie",
+    opis: "Przyjmuję ograniczoną liczbę zleceń na weekend. Dzięki temu każdy tort ma czas, którego potrzebuje, a ja nie muszę niczego przyspieszać kosztem jakości.",
+  },
+  {
+    tytul: "Słodkie i słone z jednej kuchni",
+    opis: "Przyjęcie to jeden stół, a nie dwie osobne umowy. Wytrawne przekąski robię sama — to rzadkość u cukierników i najczęstszy powód, dla którego ktoś do mnie wraca.",
+  },
+  {
+    tytul: "Ustalenia się nie gubią",
+    opis: "Nie ma przekazywania zamówienia między działami. Rozmawiasz ze mną w marcu i ze mną odbierasz tort w sierpniu.",
+  },
+  {
+    tytul: "Sezonowość zamiast półproduktów",
+    opis: "Owoce dobieram do pory roku, a nie do katalogu. Latem to znaczy truskawki i morele, jesienią gruszki i śliwki.",
+  },
+  {
+    tytul: "Uczciwa wycena",
+    opis: "Podaję widełki od razu, razem z projektem. Jeśli budżet się nie spina, powiem to wprost i zaproponuję, co uprościć — zamiast po cichu ciąć jakość.",
+  },
+  {
+    tytul: "Przyjeżdżam i ustawiam",
+    opis: "Nie zostawiam pudełka pod salą. Składam tort, ustawiam stół, poprawiam dekorację i dopiero wtedy jadę.",
+  },
+];
+
+const pytania = [
+  {
+    pytanie: "Czy można obejrzeć pracownię?",
+    odpowiedz:
+      "Tak, po wcześniejszym umówieniu. Najczęściej łączymy to z degustacją smaków — wtedy od razu widać, o czym rozmawiamy.",
+  },
+  {
+    pytanie: "Ile zleceń przyjmujesz na jeden weekend?",
+    odpowiedz:
+      "Zwykle dwa, wyjątkowo trzy — i tylko wtedy, gdy sale są blisko siebie. To ograniczenie jest celowe: wolę odmówić niż zrobić coś na skróty.",
+  },
+  {
+    pytanie: "Co, jeśli zachorujesz przed przyjęciem?",
+    odpowiedz:
+      "Mam stałą współpracę z zaprzyjaźnioną pracownią, która przejmuje realizację w sytuacji awaryjnej. Przez te lata zdarzyło się raz i tort dojechał na czas.",
+  },
+];
+---
+
+<Layout
+  tytul="O mnie"
+  opis={`${firma.wlascicielka} — jednoosobowa pracownia cukiernicza. Torty, słodkie kompozycje i wytrawny stół, od projektu po ustawienie na miejscu.`}
+>
+  <section class="hero-strony">
+    <div class="strefa">
+      <Okruszki sciezka={[{ tekst: "O mnie" }]} />
+      <p class="etykieta">O mnie</p>
+      <h1>Jedna pracownia, jedna osoba, jeden pomysł</h1>
+      <p class="lead">
+        Nazywam się {firma.wlascicielka}. Odbieram telefon, projektuję, piekę i
+        przywożę. Wszystko, co zobaczysz na swoim stole, przeszło przez moje ręce.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="strefa o-nas-grid">
+      <div class="foto pojaw" style="aspect-ratio:4/5">
+        <span>Portret Basi — zdjęcie pionowe 4:5</span>
+      </div>
+      <div>
+        <p class="podpis pojaw">{firma.wlascicielka}</p>
+        <p class="pojaw">
+          Zaczęłam od tortów dla rodziny i znajomych, w kuchni, w której nie
+          mieściła się nawet porządna miksarka. Dziś mam własną pracownię, ale
+          zasada się nie zmieniła: biorę tyle zleceń, ile jestem w stanie
+          dopilnować osobiście.
+        </p>
+        <p class="pojaw">
+          To znaczy, że czasem muszę odmówić. I znaczy też, że nikt po drodze nie
+          zgubi ustaleń ani nie zmieni smaku bez pytania — bo po drodze nie ma
+          nikogo poza mną.
+        </p>
+        <p class="pojaw">
+          Robię i słodkie, i słone. Nie dlatego, że tak wypada poszerzyć ofertę,
+          tylko dlatego, że przyjęcie to jeden stół. Kiedy trzeba, przyjeżdżam
+          wcześniej i składam całą kompozycję na miejscu — razem z obrusem,
+          paterami i świecami.
+        </p>
+
+        <div class="liczby pojaw">
+          {
+            liczby.map((l) => (
+              <div class="liczba">
+                <b>{l.wartosc}</b>
+                <span>{l.opis}</span>
+              </div>
+            ))
+          }
+        </div>
+
+        <a class="btn pojaw" href="/kontakt#formularz">
+          Porozmawiajmy o Twoim przyjęciu <span class="grot" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="dodatki">
+    <div class="strefa">
+      <NaglowekSekcji
+        etykieta="Zasady"
+        tytul="Sześć rzeczy, na których mi zależy"
+        opis="Nie są to hasła marketingowe — to reguły, według których układam kalendarz i wyceny."
+      />
+      <ul class="lista-dodatkow">
+        {
+          wartosci.map((w, i) => (
+            <li class={`dodatek pojaw o${i % 4}`}>
+              <h3>{w.tytul}</h3>
+              <p>{w.opis}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Proces />
+
+  <Opinie />
+
+  <Faq pytania={pytania} tytul="Pytania o współpracę" />
+
+  <section style="padding-top:0">
+    <div class="strefa">
+      <PasekCta
+        tytul="Zajmę się całą oprawą kulinarną"
+        opis="Napisz kilka zdań o swoim przyjęciu — resztę pytań zadam już sama."
+      />
+    </div>
+  </section>
+</Layout>

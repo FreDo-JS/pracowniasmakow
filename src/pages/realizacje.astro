@@ -1,0 +1,63 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Okruszki from "../components/Okruszki.astro";
+import Galeria from "../components/Galeria.astro";
+import PasekCta from "../components/PasekCta.astro";
+import NaglowekSekcji from "../components/NaglowekSekcji.astro";
+import { realizacje } from "../data/realizacje";
+---
+
+<Layout
+  tytul="Realizacje"
+  opis="Torty, słodkie stoły i wytrawne przekąski z ostatnich sezonów. Wesela, osiemnastki, komunie i przyjęcia firmowe."
+>
+  <section class="hero-strony">
+    <div class="strefa">
+      <Okruszki sciezka={[{ tekst: "Realizacje" }]} />
+      <p class="etykieta">Portfolio</p>
+      <h1>Stoły, które już stanęły</h1>
+      <p class="lead">
+        {realizacje.length} wybranych realizacji z ostatnich sezonów. Filtruj
+        według rodzaju uroczystości — a jeśli szukasz czegoś, czego tu nie ma,
+        napisz. Większość zamówień to i tak projekty, których wcześniej nie
+        robiłam.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="strefa">
+      <Galeria />
+      <div class="pod-galeria pojaw">
+        <a class="btn" href="/kontakt#formularz">
+          Chcę taki stół u siebie <span class="grot" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="dodatki">
+    <div class="strefa">
+      <NaglowekSekcji
+        etykieta="Jak czytać te zdjęcia"
+        tytul="Żadnej z tych realizacji nie da się powtórzyć jeden do jednego"
+        opis="I nie o to chodzi. Zdjęcia pokazują styl pracy: proporcje, kolory, sposób ustawienia stołu. Twoje przyjęcie dostanie własny projekt, zbudowany na tym samym rzemiośle."
+        srodek={true}
+      />
+      <div class="pod-galeria pojaw">
+        <a class="btn btn--roz" href="/oferta">
+          Zobacz pełną ofertę <span class="grot" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="strefa">
+      <PasekCta
+        tytul="Masz datę i salę — reszta należy do mnie"
+        opis="Napisz, ilu masz gości i jaka to okazja. Odpiszę z propozycją zakresu i widełkami cenowymi."
+      />
+    </div>
+  </section>
+</Layout>

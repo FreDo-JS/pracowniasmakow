@@ -1,0 +1,243 @@
+---
+import { firma } from "../data/firma";
+import { oferta } from "../data/oferta";
+
+/* Adres wysyłki ustawiasz w pliku .env — patrz README.
+   Bez niego formularz nadal działa: pokazuje dane do kontaktu bezpośredniego. */
+const endpoint = import.meta.env.PUBLIC_ENDPOINT_FORMULARZA ?? "";
+/* Web3Forms wymaga dodatkowo klucza dostępu. Przy innych usługach zostaw puste. */
+const kluczWeb3Forms = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? "";
+const dzis = new Date().toISOString().slice(0, 10);
+---
+
+<div class="formularz pojaw o1" id="formularz">
+  <p class="wymagane-info">Pola oznaczone gwiazdką (*) są wymagane.</p>
+
+  <form id="form-wycena" novalidate>
+    {kluczWeb3Forms && <input type="hidden" name="access_key" value={kluczWeb3Forms} />}
+
+    <!-- pułapka na boty: człowiek tego pola nie widzi i nie wypełni -->
+    <div class="pulapka" aria-hidden="true">
+      <label for="strona-www">Nie wypełniaj tego pola</label>
+      <input id="strona-www" name="strona-www" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="pola">
+      <div class="pole">
+        <label for="imie">Imię i nazwisko *</label>
+        <input id="imie" name="imie" type="text" autocomplete="name" required aria-describedby="blad-imie" />
+        <p class="blad-pola" id="blad-imie" hidden></p>
+      </div>
+
+      <div class="pole">
+        <label for="email">E-mail *</label>
+        <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="blad-email" />
+        <p class="blad-pola" id="blad-email" hidden></p>
+      </div>
+
+      <div class="pole">
+        <label for="telefon">Telefon</label>
+        <input id="telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" />
+      </div>
+
+      <div class="pole">
+        <label for="okazja">Rodzaj uroczystości</label>
+        <select id="okazja" name="okazja">
+          <option>Wesele</option>
+          <option>Osiemnastka</option>
+          <option>Urodziny</option>
+          <option>Komunia lub chrzest</option>
+          <option>Przyjęcie firmowe</option>
+          <option>Inne</option>
+        </select>
+      </div>
+
+      <div class="pole">
+        <label for="data">Data przyjęcia</label>
+        <input id="data" name="data" type="date" min={dzis} />
+      </div>
+
+      <div class="pole">
+        <label for="goscie">Liczba gości</label>
+        <input id="goscie" name="goscie" type="number" min="1" max="1000" placeholder="np. 80" />
+      </div>
+
+      <div class="pole pole--full">
+        <label for="miejsce">Miejscowość przyjęcia</label>
+        <input id="miejsce" name="miejsce" type="text" autocomplete="address-level2" />
+      </div>
+
+      <fieldset class="pole pole--full" style="border:0;padding:0;margin:0">
+        <legend style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:#6B554A;padding:0 0 6px">
+          Czego potrzebujesz
+        </legend>
+        <div class="chipy">
+          {
+            oferta.map((o) => (
+              <label>
+                <input type="checkbox" name="zakres" value={o.tytul} />
+                {o.tytulKrotki}
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <div class="pole pole--full">
+        <label for="opis">Inspiracje, kolory, alergie</label>
+        <textarea id="opis" name="opis" placeholder="Napisz, co lubisz i czego na pewno nie chcesz."></textarea>
+      </div>
+
+      <div class="pole pole--full">
+        <label class="rodo">
+          <input type="checkbox" id="zgoda" name="zgoda" required aria-describedby="blad-zgoda" />
+          <span>
+            Zgadzam się na kontakt w sprawie tego zapytania i na przetwarzanie
+            danych zgodnie z <a href="/polityka-prywatnosci">polityką prywatności</a>. *
+          </span>
+        </label>
+        <p class="blad-pola" id="blad-zgoda" hidden></p>
+      </div>
+
+      <div class="pole pole--full">
+        <button class="btn" type="submit" id="wyslij">
+          Wyślij zapytanie <span class="grot" aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Komunikat stoi POZA formularzem — po wysłaniu ukrywam formularz,
+       a potwierdzenie musi zostać na ekranie. -->
+  <p class="status" id="status" role="status" aria-live="polite" tabindex="-1"></p>
+</div>
+
+<script define:vars={{ endpoint, email: firma.email, telefon: firma.telefon, telefonHref: firma.telefonHref }}>
+  const form = document.getElementById("form-wycena");
+  const status = document.getElementById("status");
+  const przycisk = document.getElementById("wyslij");
+
+  const pokazBlad = (idPola, idBledu, tekst) => {
+    const pole = document.getElementById(idPola);
+    const blad = document.getElementById(idBledu);
+    pole?.setAttribute("aria-invalid", "true");
+    if (blad) {
+      blad.textContent = tekst;
+      blad.hidden = false;
+    }
+  };
+
+  const wyczyscBledy = () => {
+    form.querySelectorAll("[aria-invalid]").forEach((p) => p.removeAttribute("aria-invalid"));
+    form.querySelectorAll(".blad-pola").forEach((b) => {
+      b.hidden = true;
+      b.textContent = "";
+    });
+    status.className = "status";
+    status.textContent = "";
+  };
+
+  const sprawdz = () => {
+    const imie = form.imie;
+    const mail = form.email;
+    const zgoda = form.zgoda;
+    let pierwszeBledne = null;
+
+    if (!imie.value.trim()) {
+      pokazBlad("imie", "blad-imie", "Podaj imię, żebym wiedziała, jak się zwracać.");
+      pierwszeBledne ??= imie;
+    }
+    if (!mail.value.trim()) {
+      pokazBlad("email", "blad-email", "Zostaw adres e-mail — na niego wyślę odpowiedź.");
+      pierwszeBledne ??= mail;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail.value.trim())) {
+      pokazBlad("email", "blad-email", "Ten adres wygląda na niepełny — sprawdź, czy nie brakuje znaku.");
+      pierwszeBledne ??= mail;
+    }
+    if (!zgoda.checked) {
+      pokazBlad("zgoda", "blad-zgoda", "Bez tej zgody nie mogę odpisać na zapytanie.");
+      pierwszeBledne ??= zgoda;
+    }
+    return pierwszeBledne;
+  };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    wyczyscBledy();
+
+    const bledne = sprawdz();
+    if (bledne) {
+      status.classList.add("status--blad");
+      status.textContent = "Uzupełnij zaznaczone pola i spróbuj jeszcze raz.";
+      bledne.focus();
+      return;
+    }
+
+    /* bot wypełnił ukryte pole — udajemy sukces i nic nie wysyłamy */
+    if (form["strona-www"].value) {
+      form.hidden = true;
+      status.className = "status status--ok";
+      status.textContent = "Dziękuję za wiadomość.";
+      return;
+    }
+
+    if (!endpoint) {
+      status.className = "status status--blad";
+      status.innerHTML =
+        `Wysyłka formularza nie jest jeszcze skonfigurowana. Napisz proszę na ` +
+        `<a href="mailto:${email}">${email}</a> lub zadzwoń: ` +
+        `<a href="${telefonHref}">${telefon}</a>.`;
+      return;
+    }
+
+    const dane = new FormData(form);
+    dane.delete("strona-www");
+    dane.append("zakres_lista", dane.getAll("zakres").join(", "));
+    const temat = `Zapytanie ze strony: ${dane.get("okazja") || "przyjęcie"} — ${dane.get("imie")}`;
+    dane.append("_subject", temat); /* Formspree, Getform */
+    dane.append("subject", temat); /* Web3Forms */
+
+    przycisk.disabled = true;
+    const trescPrzycisku = przycisk.innerHTML;
+    przycisk.textContent = "Wysyłam…";
+    status.className = "status";
+    status.textContent = "";
+
+    try {
+      const odp = await fetch(endpoint, {
+        method: "POST",
+        body: dane,
+        headers: { Accept: "application/json" },
+      });
+
+      if (!odp.ok) throw new Error(`HTTP ${odp.status}`);
+
+      form.hidden = true;
+      status.className = "status status--ok";
+      status.innerHTML =
+        "<strong>Zapytanie poszło.</strong><br>Odpowiadam w ciągu dwóch dni roboczych — " +
+        "z propozycją zakresu i widełkami cenowymi. Jeśli sprawa jest pilna, zadzwoń: " +
+        `<a href="${telefonHref}">${telefon}</a>.`;
+      status.focus();
+      status.scrollIntoView({ block: "center", behavior: "smooth" });
+    } catch (err) {
+      przycisk.disabled = false;
+      przycisk.innerHTML = trescPrzycisku;
+      status.className = "status status--blad";
+      status.innerHTML =
+        "Nie udało się wysłać wiadomości. Spróbuj ponownie za chwilę albo napisz na " +
+        `<a href="mailto:${email}">${email}</a>.`;
+    }
+  });
+
+  /* kasowanie błędu po poprawieniu pola */
+  form.querySelectorAll("input, textarea").forEach((p) =>
+    p.addEventListener("input", () => {
+      if (p.getAttribute("aria-invalid") === "true") {
+        p.removeAttribute("aria-invalid");
+        const blad = document.getElementById(`blad-${p.id}`);
+        if (blad) blad.hidden = true;
+      }
+    })
+  );
+</script>

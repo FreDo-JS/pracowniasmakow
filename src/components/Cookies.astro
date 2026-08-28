@@ -1,0 +1,206 @@
+---
+/* Baner zgód + okno ustawień.
+   Skrypty wymagające zgody podłącz w funkcji `zastosuj()` na dole pliku. */
+---
+
+<div
+  class="ciasteczka"
+  id="baner"
+  role="dialog"
+  aria-labelledby="baner-tytul"
+  aria-describedby="baner-opis"
+>
+  <h2 id="baner-tytul">Ciasteczka</h2>
+  <p id="baner-opis">
+    Używamy plików cookie niezbędnych do działania strony. Za Twoją zgodą
+    chcemy też korzystać z ciasteczek analitycznych i marketingowych, żeby
+    wiedzieć, które realizacje najbardziej Cię interesują. Szczegóły w
+    <a href="/polityka-prywatnosci">polityce prywatności</a>.
+  </p>
+  <div class="c-akcje">
+    <button class="btn" id="c-wszystkie">Akceptuję wszystkie</button>
+    <button class="btn btn--linia" id="c-niezbedne">Tylko niezbędne</button>
+    <button class="c-link" id="c-ustawienia">Ustawienia</button>
+  </div>
+</div>
+
+<div class="zaslona" id="zaslona" role="dialog" aria-modal="true" aria-labelledby="okno-tytul">
+  <div class="okno">
+    <h2 id="okno-tytul">Ustawienia prywatności</h2>
+    <p>
+      Zdecyduj, z których plików cookie możemy korzystać. Zgodę możesz wycofać
+      w każdej chwili, wracając do tego okna przez link w stopce.
+    </p>
+
+    <div class="zgoda-poz">
+      <div>
+        <h3>Niezbędne</h3>
+        <p>
+          Pozwalają zapamiętać Twój wybór dotyczący ciasteczek i obsłużyć
+          formularz kontaktowy. Bez nich strona nie zadziała poprawnie.
+        </p>
+      </div>
+      <small>Zawsze aktywne</small>
+    </div>
+
+    <div class="zgoda-poz">
+      <div>
+        <h3>Analityczne</h3>
+        <p>
+          Anonimowe statystyki odwiedzin — które podstrony są oglądane i skąd
+          przychodzą odwiedzający.
+        </p>
+      </div>
+      <label class="przelacznik">
+        <input type="checkbox" id="z-analityka" aria-label="Zgoda na ciasteczka analityczne" />
+        <i aria-hidden="true"></i>
+      </label>
+    </div>
+
+    <div class="zgoda-poz">
+      <div>
+        <h3>Marketingowe</h3>
+        <p>
+          Pozwalają mierzyć skuteczność reklam i pokazywać treści dopasowane do
+          Twoich zainteresowań.
+        </p>
+      </div>
+      <label class="przelacznik">
+        <input type="checkbox" id="z-marketing" aria-label="Zgoda na ciasteczka marketingowe" />
+        <i aria-hidden="true"></i>
+      </label>
+    </div>
+
+    <div class="okno-akcje">
+      <button class="btn" id="c-zapisz">Zapisz wybór</button>
+      <button class="btn btn--linia" id="c-zamknij">Anuluj</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const KLUCZ = "pws-zgoda-cookies";
+  const baner = document.getElementById("baner")!;
+  const zaslona = document.getElementById("zaslona")!;
+  const swAnalityka = document.getElementById("z-analityka") as HTMLInputElement;
+  const swMarketing = document.getElementById("z-marketing") as HTMLInputElement;
+  let ostatniFokus: HTMLElement | null = null;
+  let pamiec: any = null; /* awaryjny zapis, gdy localStorage jest zablokowany */
+
+  function odczytaj() {
+    try {
+      const s = localStorage.getItem(KLUCZ);
+      return s ? JSON.parse(s) : pamiec;
+    } catch {
+      return pamiec;
+    }
+  }
+
+  function zapisz(zgoda: { analityka: boolean; marketing: boolean }) {
+    const dane = { ...zgoda, data: new Date().toISOString(), wersja: 1 };
+    pamiec = dane;
+    try {
+      localStorage.setItem(KLUCZ, JSON.stringify(dane));
+    } catch {}
+    zastosuj(dane);
+    schowajBaner();
+    zamknijOkno();
+  }
+
+  function schowajBaner() {
+    baner.classList.remove("widoczny");
+    document.body.classList.remove("baner-widoczny");
+  }
+  function pokazBaner() {
+    baner.classList.add("widoczny");
+    document.body.classList.add("baner-widoczny");
+  }
+
+  /* Tu podłącz skrypty wymagające zgody. Uruchamiaj je WYŁĄCZNIE w tych blokach. */
+  function zastosuj(z: { analityka?: boolean; marketing?: boolean }) {
+    if (z.analityka) {
+      // np. Google Analytics / Plausible
+    }
+    if (z.marketing) {
+      // np. Meta Pixel
+    }
+  }
+
+  /* --- okno modalne z pułapką fokusu (wymóg dostępności) --- */
+  const fokusowalne = () =>
+    [
+      ...zaslona.querySelectorAll<HTMLElement>(
+        'button, input, a[href], [tabindex]:not([tabindex="-1"])'
+      ),
+    ].filter((el) => !el.hasAttribute("disabled"));
+
+  function pulapkaFokusu(e: KeyboardEvent) {
+    if (e.key !== "Tab") return;
+    const el = fokusowalne();
+    if (!el.length) return;
+    const pierwszy = el[0];
+    const ostatni = el[el.length - 1];
+    if (e.shiftKey && document.activeElement === pierwszy) {
+      e.preventDefault();
+      ostatni.focus();
+    } else if (!e.shiftKey && document.activeElement === ostatni) {
+      e.preventDefault();
+      pierwszy.focus();
+    }
+  }
+
+  function otworzOkno() {
+    const z = odczytaj();
+    swAnalityka.checked = !!(z && z.analityka);
+    swMarketing.checked = !!(z && z.marketing);
+    ostatniFokus = document.activeElement as HTMLElement;
+    zaslona.classList.add("widoczny");
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", pulapkaFokusu);
+    setTimeout(() => swAnalityka.focus(), 60);
+  }
+
+  function zamknijOkno() {
+    if (!zaslona.classList.contains("widoczny")) return;
+    zaslona.classList.remove("widoczny");
+    document.body.style.overflow = "";
+    document.removeEventListener("keydown", pulapkaFokusu);
+    ostatniFokus?.focus();
+  }
+
+  document.getElementById("c-wszystkie")?.addEventListener("click", () =>
+    zapisz({ analityka: true, marketing: true })
+  );
+  document.getElementById("c-niezbedne")?.addEventListener("click", () =>
+    zapisz({ analityka: false, marketing: false })
+  );
+  document.getElementById("c-ustawienia")?.addEventListener("click", otworzOkno);
+  document.getElementById("c-zapisz")?.addEventListener("click", () =>
+    zapisz({ analityka: swAnalityka.checked, marketing: swMarketing.checked })
+  );
+  document.getElementById("c-zamknij")?.addEventListener("click", zamknijOkno);
+  zaslona.addEventListener("click", (e) => {
+    if (e.target === zaslona) zamknijOkno();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") zamknijOkno();
+  });
+
+  /* link w stopce — ponowne otwarcie ustawień */
+  document.querySelectorAll("[data-cookies]").forEach((a) =>
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      pokazBaner();
+      otworzOkno();
+    })
+  );
+
+  const zapisana = odczytaj();
+  if (zapisana) zastosuj(zapisana);
+  else setTimeout(pokazBaner, 900);
+
+  if (location.hash === "#ustawienia-cookies") {
+    history.replaceState(null, "", location.pathname);
+    setTimeout(otworzOkno, 300);
+  }
+</script>

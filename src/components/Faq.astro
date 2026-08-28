@@ -1,0 +1,41 @@
+---
+import type { Pytanie } from "../data/oferta";
+import NaglowekSekcji from "./NaglowekSekcji.astro";
+
+export type Props = {
+  pytania: Pytanie[];
+  tytul?: string;
+  etykieta?: string;
+};
+
+const { pytania, tytul = "Częste pytania", etykieta = "FAQ" } = Astro.props;
+
+/* Dane strukturalne FAQ — Google potrafi pokazać te pytania
+   bezpośrednio w wynikach wyszukiwania. */
+const dane = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: pytania.map((p) => ({
+    "@type": "Question",
+    name: p.pytanie,
+    acceptedAnswer: { "@type": "Answer", text: p.odpowiedz },
+  })),
+};
+---
+
+<section>
+  <div class="strefa">
+    <NaglowekSekcji etykieta={etykieta} tytul={tytul} />
+    <div class="faq pojaw">
+      {
+        pytania.map((p) => (
+          <details>
+            <summary>{p.pytanie}</summary>
+            <p>{p.odpowiedz}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(dane)} />
+</section>

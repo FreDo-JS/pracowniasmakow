@@ -1,0 +1,16 @@
+# Caddy sam załatwia certyfikat HTTPS i przekierowanie z http na https.
+# Zmienne pochodzą z pliku .env przez docker-compose.prod.yml
+
+{
+	email {$EMAIL_ADMINA}
+}
+
+{$DOMENA}, www.{$DOMENA} {
+	encode zstd gzip
+
+	# przekierowanie z www na wersję bez www (jeden adres = lepsze SEO)
+	@www host www.{$DOMENA}
+	redir @www https://{$DOMENA}{uri} permanent
+
+	reverse_proxy strona:80
+}

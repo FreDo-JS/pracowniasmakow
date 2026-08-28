@@ -1,0 +1,49 @@
+# =============================================================
+#  Wersja produkcyjna: strona + Caddy jako reverse proxy.
+#  Caddy sam wystawia i odnawia certyfikat Let's Encrypt —
+#  nie trzeba certbota ani crona.
+#
+#  Wymaga w pliku .env:
+#     DOMENA=pracowniawielusmakow.pl
+#     EMAIL_ADMINA=twoj@mail.pl
+#     PUBLIC_ENDPOINT_FORMULARZA=...
+#
+#  Uruchomienie:
+#     docker compose -f docker-compose.prod.yml up -d --build
+# =============================================================
+
+services:
+  strona:
+    build:
+      context: .
+      args:
+        PUBLIC_ENDPOINT_FORMULARZA: ${PUBLIC_ENDPOINT_FORMULARZA:-}
+        PUBLIC_WEB3FORMS_KEY: ${PUBLIC_WEB3FORMS_KEY:-}
+        SITE_URL: https://${DOMENA}
+    image: pracownia-wielu-smakow:latest
+    container_name: pws-strona
+    restart: unless-stopped
+    # Brak `ports` — na zewnątrz wychodzi tylko Caddy.
+    expose:
+      - "80"
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: pws-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMENA: ${DOMENA}
+      EMAIL_ADMINA: ${EMAIL_ADMINA}
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_dane:/data      # certyfikaty — bez tego wolumenu
+      - caddy_konfig:/config  # Let's Encrypt wystawi je od nowa po restarcie
+    depends_on:
+      - strona
+
+volumes:
+  caddy_dane:
+  caddy_konfig:

@@ -1,0 +1,68 @@
+---
+import { realizacje, kategorie } from "../data/realizacje";
+
+export type Props = {
+  limit?: number;
+  filtry?: boolean;
+};
+
+const { limit, filtry = true } = Astro.props;
+const pozycje = limit ? realizacje.slice(0, limit) : realizacje;
+---
+
+{
+  filtry && (
+    <div class="filtry pojaw" role="group" aria-label="Filtruj realizacje">
+      {kategorie.map((k) => (
+        <button class="filtr" data-kat={k.id} aria-pressed={k.id === "wszystko" ? "true" : "false"}>
+          {k.nazwa}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+<div class="kafle" id="kafle">
+  {
+    pozycje.map((r, i) => (
+      <figure class={`foto kafel pojaw o${i % 3}`} data-kat={r.kategoria}>
+        <figcaption>
+          <span>
+            <b>{r.tytul}</b>
+            {r.opis}
+          </span>
+        </figcaption>
+      </figure>
+    ))
+  }
+  <p class="pusto" id="pusto" hidden>
+    Brak realizacji w tej kategorii — wybierz inną albo napisz, czego szukasz.
+  </p>
+</div>
+
+<p class="sr-only" role="status" aria-live="polite" id="licznik-realizacji"></p>
+
+<script>
+  const filtry = [...document.querySelectorAll<HTMLButtonElement>(".filtr")];
+  const kafle = [...document.querySelectorAll<HTMLElement>("#kafle .kafel")];
+  const pusto = document.getElementById("pusto");
+  const licznik = document.getElementById("licznik-realizacji");
+
+  filtry.forEach((b) =>
+    b.addEventListener("click", () => {
+      filtry.forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      const kat = b.dataset.kat;
+      let widoczne = 0;
+      kafle.forEach((k) => {
+        const pokaz = kat === "wszystko" || k.dataset.kat === kat;
+        k.classList.toggle("ukryty", !pokaz);
+        if (pokaz) widoczne++;
+      });
+      if (pusto) pusto.hidden = widoczne > 0;
+      if (licznik)
+        licznik.textContent = `Pokazuję ${widoczne} ${
+          widoczne === 1 ? "realizację" : "realizacji"
+        } w kategorii ${b.textContent?.trim()}.`;
+    })
+  );
+</script>

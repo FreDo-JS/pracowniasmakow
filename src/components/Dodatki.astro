@@ -1,0 +1,32 @@
+---
+import type { Dodatek } from "../data/oferta";
+import NaglowekSekcji from "./NaglowekSekcji.astro";
+
+export type Props = {
+  dodatki: Dodatek[];
+  tytul?: string;
+  opis?: string;
+};
+
+const {
+  dodatki,
+  tytul = "Dodatki, które robią różnicę",
+  opis = "Nic z tego nie jest obowiązkowe. Wypisuję je, bo najczęściej o nie pytacie już po fakcie — a wtedy bywa za późno na dołożenie ich do zamówienia.",
+} = Astro.props;
+---
+
+<section class="dodatki">
+  <div class="strefa">
+    <NaglowekSekcji etykieta="Rozszerz zamówienie" tytul={tytul} opis={opis} />
+    <ul class="lista-dodatkow">
+      {
+        dodatki.map((d, i) => (
+          <li class={`dodatek pojaw o${i % 4}`}>
+            <h3>{d.nazwa}</h3>
+            <p>{d.opis}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

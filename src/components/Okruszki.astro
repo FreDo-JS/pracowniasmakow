@@ -1,0 +1,35 @@
+---
+import { firma } from "../data/firma";
+
+export type Props = {
+  sciezka: { tekst: string; url?: string }[];
+};
+
+const { sciezka } = Astro.props;
+const pelna = [{ tekst: "Start", url: "/" }, ...sciezka];
+
+const dane = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: pelna.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: p.tekst,
+    ...(p.url ? { item: new URL(p.url, Astro.site ?? firma.domena).href } : {}),
+  })),
+};
+---
+
+<nav aria-label="Ścieżka nawigacji">
+  <ol class="okruszki">
+    {
+      pelna.map((p) => (
+        <li>
+          {p.url ? <a href={p.url}>{p.tekst}</a> : <span aria-current="page">{p.tekst}</span>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(dane)} />

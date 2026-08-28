@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pracownia Wielu Smaków — Basia Kot | Torty, słodkie i wytrawne stoły</title>
+<meta name="description" content="Torty weselne i okolicznościowe, słodkie kompozycje i wytrawne przekąski. Pracownia Basi Kot — projekt, wykonanie i aranżacja stołu na miejscu.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --atrament:#2A211C;
+  --len:#EFE8DE;
+  --len-jasny:#F6F2EB;
+  --mokka:#8A6A55;
+  --puder:#E3C9BC;
+  --zloto:#B38B4A;
+  --szalwia:#7C8570;
+
+  --display:"Fraunces",Georgia,serif;
+  --sans:"Jost","Helvetica Neue",Arial,sans-serif;
+
+  --r-duzy:28px;
+  --r-sredni:18px;
+  --cien:0 18px 50px -22px rgba(42,33,28,.35);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:130px}
+body{
+  margin:0;background:var(--len);color:var(--atrament);
+  font-family:var(--sans);font-weight:300;line-height:1.7;
+  font-size:clamp(15px,1.02vw,16.5px);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.08;letter-spacing:-.015em;margin:0}
+h2{font-size:clamp(1.9rem,4.4vw,3.4rem)}
+h3{font-size:clamp(1.15rem,1.7vw,1.45rem);line-height:1.25}
+p{margin:0 0 1.05em}
+:focus-visible{outline:2px solid var(--zloto);outline-offset:3px;border-radius:4px}
+
+.strefa{width:85%;max-width:1400px;margin:0 auto}
+@media(max-width:820px){.strefa{width:92%}}
+section{padding:clamp(56px,8vw,110px) 0}
+
+.skip{position:absolute;left:-9999px;top:0;background:var(--atrament);color:var(--len);padding:12px 20px;z-index:200}
+.skip:focus{left:12px;top:12px}
+
+/* ---------- etykiety ---------- */
+.etykieta{
+  display:flex;align-items:center;gap:.9em;
+  font-size:.66rem;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--mokka);font-weight:400;margin:0 0 1.4em;
+}
+.etykieta::before{content:"";width:clamp(18px,3vw,44px);height:1px;background:var(--zloto)}
+.naglowek{max-width:44ch;margin-bottom:clamp(28px,4vw,52px)}
+.naglowek p{color:#5B4C43;max-width:56ch;margin-top:1em}
+
+/* ---------- przyciski ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:.7em;
+  font-family:var(--sans);font-size:.73rem;font-weight:400;
+  letter-spacing:.2em;text-transform:uppercase;
+  padding:1.05em 2.1em;border-radius:999px;cursor:pointer;
+  text-decoration:none;border:1px solid var(--atrament);
+  background:var(--atrament);color:var(--len-jasny);
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease),background .3s,color .3s;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(42,33,28,.6)}
+.btn .grot{transition:transform .4s var(--ease)}
+.btn:hover .grot{transform:translateX(4px)}
+.btn--linia{background:transparent;color:var(--atrament);border-color:rgba(42,33,28,.3)}
+.btn--linia:hover{border-color:var(--atrament)}
+.btn--jasny{background:var(--len-jasny);color:var(--atrament);border-color:var(--len-jasny)}
+.btn--zloty{background:var(--zloto);border-color:var(--zloto);color:#fff}
+
+/* ---------- HEADER pływający ---------- */
+.naglowek-strony{
+  position:fixed;top:14px;left:50%;transform:translateX(-50%);
+  width:85%;max-width:1400px;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:12px 14px 12px 22px;border-radius:999px;
+  background:rgba(246,242,235,.82);backdrop-filter:blur(14px);
+  border:1px solid rgba(138,106,85,.2);
+  box-shadow:0 10px 30px -20px rgba(42,33,28,.5);
+  transition:padding .4s var(--ease),box-shadow .4s var(--ease),background .4s;
+}
+.naglowek-strony.zwiniety{
+  padding:8px 12px 8px 20px;
+  box-shadow:0 16px 40px -22px rgba(42,33,28,.7);
+  background:rgba(246,242,235,.94);
+}
+@media(max-width:820px){.naglowek-strony{width:92%;border-radius:22px}}
+
+.marka{display:flex;align-items:center;gap:11px;text-decoration:none;flex:none}
+.monogram{
+  width:38px;height:38px;flex:none;border-radius:50%;
+  border:1px solid var(--mokka);display:grid;place-items:center;
+  font-family:var(--display);font-size:.76rem;color:var(--mokka);letter-spacing:.04em;
+  transition:background .35s,color .35s;
+}
+.marka:hover .monogram{background:var(--mokka);color:var(--len-jasny)}
+.marka b{font-family:var(--display);font-weight:400;font-size:.98rem;line-height:1.15;display:block}
+.marka i{font-style:normal;font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;color:var(--mokka)}
+
+.menu{display:flex;align-items:center;gap:clamp(12px,1.8vw,26px)}
+.menu a{
+  text-decoration:none;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  position:relative;padding:6px 2px;
+}
+.menu a::after{
+  content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
+  background:var(--zloto);transform:scaleX(0);transform-origin:right;
+  transition:transform .4s var(--ease);
+}
+.menu a:hover::after,.menu a[aria-current="true"]::after{transform:scaleX(1);transform-origin:left}
+.menu .btn{padding:.85em 1.6em}
+
+.burger{
+  display:none;width:44px;height:44px;border-radius:50%;flex:none;
+  border:1px solid rgba(138,106,85,.35);background:transparent;cursor:pointer;
+  align-items:center;justify-content:center;flex-direction:column;gap:5px;
+}
+.burger i{display:block;width:16px;height:1.5px;background:var(--atrament);transition:transform .35s var(--ease),opacity .25s}
+.burger[aria-expanded="true"] i:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger[aria-expanded="true"] i:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] i:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+@media(max-width:980px){
+  .burger{display:flex}
+  .menu{
+    position:absolute;top:calc(100% + 10px);left:0;right:0;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--len-jasny);border:1px solid rgba(138,106,85,.2);
+    border-radius:22px;padding:10px;box-shadow:var(--cien);
+    opacity:0;visibility:hidden;transform:translateY(-8px);
+    transition:opacity .3s,transform .3s var(--ease),visibility .3s;
+  }
+  .menu.otwarte{opacity:1;visibility:visible;transform:none}
+  .menu a{padding:14px 16px;border-bottom:1px solid rgba(138,106,85,.14)}
+  .menu a::after{display:none}
+  .menu .btn{margin:10px 6px 6px;justify-content:center;border-bottom:0}
+}
+
+/* ---------- SLIDER ---------- */
+.hero{padding-top:calc(14px + 62px + clamp(14px,2vw,22px));padding-bottom:0}
+.slider{
+  position:relative;border-radius:var(--r-duzy);overflow:hidden;
+  aspect-ratio:16/7.4;box-shadow:var(--cien);background:var(--puder);
+}
+@media(max-width:900px){.slider{aspect-ratio:4/4.4;border-radius:22px}}
+
+.slajd{
+  position:absolute;inset:0;opacity:0;visibility:hidden;
+  transition:opacity 1s var(--ease),visibility 1s;
+  display:flex;align-items:flex-end;
+}
+.slajd.aktywny{opacity:1;visibility:visible}
+.slajd-tlo{
+  position:absolute;inset:0;
+  transform:scale(1.06);transition:transform 7s linear;
+}
+.slajd.aktywny .slajd-tlo{transform:scale(1)}
+.slajd-tlo::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(42,33,28,.15) 0%,rgba(42,33,28,.72) 100%);
+}
+.tlo-1{background:repeating-linear-gradient(125deg,rgba(42,33,28,.07) 0 16px,transparent 16px 32px),linear-gradient(140deg,var(--puder),var(--mokka))}
+.tlo-2{background:repeating-linear-gradient(125deg,rgba(42,33,28,.07) 0 16px,transparent 16px 32px),linear-gradient(140deg,var(--szalwia),#4E5A45)}
+.tlo-3{background:repeating-linear-gradient(125deg,rgba(42,33,28,.07) 0 16px,transparent 16px 32px),linear-gradient(140deg,var(--zloto),#6E5334)}
+
+.slajd-tresc{
+  position:relative;z-index:2;color:var(--len-jasny);
+  padding:clamp(24px,4vw,58px);max-width:38rem;
+}
+.slajd-tresc .etykieta{color:var(--puder)}
+.slajd-tresc .etykieta::before{background:var(--puder)}
+.slajd-tresc h1{font-size:clamp(1.9rem,4.6vw,3.7rem);margin-bottom:.35em}
+.slajd-tresc p{font-size:clamp(.9rem,1.2vw,1.05rem);opacity:.9;max-width:44ch;margin-bottom:1.6em}
+.slajd.aktywny .anim{animation:wjedz .9s var(--ease) both}
+.slajd.aktywny .anim:nth-child(2){animation-delay:.1s}
+.slajd.aktywny .anim:nth-child(3){animation-delay:.2s}
+.slajd.aktywny .anim:nth-child(4){animation-delay:.3s}
+@keyframes wjedz{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+.slajd-opis{
+  position:absolute;top:clamp(16px,2.4vw,28px);left:clamp(16px,2.4vw,28px);z-index:2;
+  font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(246,242,235,.7);
+}
+.strzalki{position:absolute;right:clamp(16px,2.4vw,28px);bottom:clamp(16px,2.4vw,28px);z-index:3;display:flex;gap:8px}
+.strzalka{
+  width:46px;height:46px;border-radius:50%;cursor:pointer;
+  border:1px solid rgba(246,242,235,.5);background:rgba(42,33,28,.25);
+  color:var(--len-jasny);font-size:1rem;display:grid;place-items:center;
+  backdrop-filter:blur(6px);transition:background .3s,transform .3s var(--ease);
+}
+.strzalka:hover{background:var(--len-jasny);color:var(--atrament);transform:scale(1.06)}
+.kropki{position:absolute;left:clamp(24px,4vw,58px);bottom:clamp(18px,2.6vw,30px);z-index:3;display:flex;gap:8px}
+.kropka{
+  width:26px;height:3px;border-radius:2px;border:0;cursor:pointer;padding:0;
+  background:rgba(246,242,235,.4);transition:background .3s,width .4s var(--ease);
+}
+.kropka[aria-current="true"]{background:var(--len-jasny);width:44px}
+@media(max-width:900px){
+  .kropki{bottom:auto;top:calc(clamp(16px,2.4vw,28px) + 26px)}
+  .strzalki{display:none}
+}
+
+/* pasek zaufania pod sliderem */
+.pasek-zaufania{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(12px,3vw,40px);
+  padding:22px 0 0;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mokka);
+}
+.pasek-zaufania span{display:flex;align-items:center;gap:clamp(12px,3vw,40px)}
+.pasek-zaufania span::after{content:"◇";font-size:.55rem;color:var(--zloto)}
+.pasek-zaufania span:last-child::after{display:none}
+
+/* ---------- sloty na zdjęcia ---------- */
+.foto{
+  position:relative;overflow:hidden;border-radius:var(--r-sredni);
+  background:repeating-linear-gradient(135deg,rgba(138,106,85,.06) 0 12px,transparent 12px 24px),var(--puder);
+  border:1px solid rgba(138,106,85,.24);
+  display:flex;align-items:flex-end;
+}
+.foto span{
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--mokka);padding:13px 15px;line-height:1.5;
+}
+
+/* ---------- 1. REALIZACJE ---------- */
+.g-gora{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.filtry{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 clamp(24px,3vw,40px)}
+.filtr{
+  font-family:var(--sans);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
+  padding:.8em 1.5em;border-radius:999px;cursor:pointer;
+  background:transparent;border:1px solid rgba(138,106,85,.3);color:var(--mokka);
+  transition:background .3s,color .3s,border-color .3s,transform .3s var(--ease);
+}
+.filtr:hover{border-color:var(--mokka);transform:translateY(-2px)}
+.filtr[aria-pressed="true"]{background:var(--mokka);border-color:var(--mokka);color:var(--len-jasny)}
+.kafle{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.4vw,18px)}
+.kafel{
+  aspect-ratio:4/5;cursor:pointer;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),opacity .4s;
+}
+.kafel:hover{transform:translateY(-6px);box-shadow:var(--cien)}
+.kafel.ukryty{display:none}
+@media(max-width:900px){.kafle{grid-template-columns:repeat(2,1fr)}}
+.pod-galeria{display:flex;justify-content:center;margin-top:clamp(28px,3.5vw,46px)}
+
+/* ---------- 2. KATEGORIE ---------- */
+.kategorie{background:var(--len-jasny);border-block:1px solid rgba(138,106,85,.16)}
+.k-siatka{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,26px)}
+.karta{
+  background:var(--len);border:1px solid rgba(138,106,85,.2);border-radius:var(--r-sredni);
+  padding:14px 14px 22px;text-decoration:none;display:flex;flex-direction:column;gap:16px;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .4s;
+}
+.karta:hover{transform:translateY(-8px);box-shadow:var(--cien);border-color:var(--mokka)}
+.karta .foto{aspect-ratio:4/3;border-radius:12px}
+.karta-tekst{padding:0 6px}
+.karta small{display:block;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--szalwia);margin-bottom:.7em}
+.karta h3{margin-bottom:.4em}
+.karta p{font-size:.87rem;color:#5B4C43;margin:0}
+.karta .wiecej{
+  margin-top:1.1em;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mokka);
+  display:inline-flex;gap:.5em;align-items:center;
+}
+.karta:hover .wiecej{color:var(--atrament)}
+@media(max-width:1000px){.k-siatka{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.k-siatka{grid-template-columns:1fr}}
+
+/* pasek CTA */
+.pasek-cta{
+  background:var(--atrament);color:var(--len-jasny);border-radius:var(--r-duzy);
+  padding:clamp(30px,4vw,58px);margin-top:clamp(34px,4vw,58px);
+  display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap;
+}
+.pasek-cta h3{font-size:clamp(1.4rem,2.8vw,2.2rem);max-width:22ch}
+.pasek-cta p{margin:.6em 0 0;opacity:.75;font-size:.9rem;max-width:46ch}
+
+/* ---------- 3. O NAS ---------- */
+.o-nas-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:center}
+.o-nas .foto{aspect-ratio:4/5;border-radius:var(--r-duzy)}
+.o-nas p{color:#4A3D35;max-width:52ch}
+.liczby{display:flex;gap:clamp(20px,4vw,50px);flex-wrap:wrap;margin:1.8em 0}
+.liczba b{display:block;font-family:var(--display);font-weight:300;font-size:clamp(1.8rem,3.4vw,2.6rem);color:var(--mokka);line-height:1}
+.liczba span{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--szalwia)}
+.podpis{font-family:var(--display);font-style:italic;font-size:1.35rem;color:var(--mokka);margin:.4em 0 1.6em}
+@media(max-width:900px){.o-nas-grid{grid-template-columns:1fr}}
+
+/* ---------- 4. GDZIE NAS ZNAJDZIESZ ---------- */
+.gdzie{background:var(--len-jasny);border-block:1px solid rgba(138,106,85,.16)}
+.mapa{
+  position:relative;height:clamp(280px,42vh,440px);border-radius:var(--r-duzy);overflow:hidden;
+  border:1px solid rgba(138,106,85,.24);
+  background:
+    repeating-linear-gradient(0deg,rgba(138,106,85,.13) 0 1px,transparent 1px 46px),
+    repeating-linear-gradient(90deg,rgba(138,106,85,.13) 0 1px,transparent 1px 46px),
+    var(--puder);
+  display:grid;place-items:center;text-align:center;
+}
+.mapa-pin{
+  width:64px;height:64px;border-radius:50%;background:var(--atrament);color:var(--len-jasny);
+  display:grid;place-items:center;font-size:1.4rem;margin:0 auto 14px;
+  box-shadow:0 0 0 0 rgba(42,33,28,.35);animation:puls 2.6s infinite;
+}
+@keyframes puls{
+  0%{box-shadow:0 0 0 0 rgba(42,33,28,.32)}
+  70%{box-shadow:0 0 0 26px rgba(42,33,28,0)}
+  100%{box-shadow:0 0 0 0 rgba(42,33,28,0)}
+}
+.mapa small{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mokka)}
+.info-siatka{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,34px);margin-top:clamp(24px,3vw,42px)}
+.info{padding-top:20px;border-top:1px solid rgba(138,106,85,.3)}
+.info h3{font-size:1.1rem;margin-bottom:.5em}
+.info p{font-size:.9rem;color:#5B4C43;margin:0}
+.miasta{display:flex;flex-wrap:wrap;gap:8px;margin-top:1em}
+.miasta span{
+  font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mokka);
+  border:1px solid rgba(138,106,85,.3);border-radius:999px;padding:.5em 1.1em;
+}
+@media(max-width:820px){.info-siatka{grid-template-columns:1fr}}
+
+/* ---------- 5. KONTAKT ---------- */
+.kontakt-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px)}
+.dane{display:flex;flex-direction:column}
+.dane-lista{margin:1.4em 0 0;display:flex;flex-direction:column;gap:2px}
+.dane-poz{
+  display:flex;gap:16px;align-items:flex-start;padding:16px 0;
+  border-bottom:1px solid rgba(138,106,85,.2);text-decoration:none;
+  transition:padding-left .35s var(--ease);
+}
+.dane-poz:hover{padding-left:8px}
+.ikona{
+  width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:var(--puder);color:var(--atrament);font-size:.95rem;
+}
+.dane-poz small{display:block;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--szalwia)}
+.dane-poz b{font-weight:400;font-size:1.02rem}
+.social{display:flex;gap:10px;margin-top:1.8em}
+.social a{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid rgba(138,106,85,.3);text-decoration:none;font-size:.72rem;letter-spacing:.06em;
+  transition:background .3s,color .3s,transform .3s var(--ease);
+}
+.social a:hover{background:var(--atrament);color:var(--len-jasny);transform:translateY(-3px)}
+
+.formularz{
+  background:var(--len-jasny);border:1px solid rgba(138,106,85,.2);
+  border-radius:var(--r-duzy);padding:clamp(22px,3vw,40px);
+}
+.pola{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+.pole{display:flex;flex-direction:column;gap:6px}
+.pole--full{grid-column:1/-1}
+label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:#6B554A}
+input,select,textarea{
+  font-family:var(--sans);font-size:.95rem;font-weight:300;color:var(--atrament);
+  background:transparent;border:0;border-bottom:1px solid rgba(42,33,28,.28);
+  padding:.6em 0;border-radius:0;transition:border-color .3s;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-bottom-color:var(--mokka)}
+input[aria-invalid="true"],textarea[aria-invalid="true"]{border-bottom-color:#A33B3B}
+textarea{resize:vertical;min-height:84px}
+.chipy{display:flex;flex-wrap:wrap;gap:8px}
+.chipy label{
+  display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--atrament);
+  border:1px solid rgba(42,33,28,.24);border-radius:999px;padding:.6em 1.1em;letter-spacing:.12em;
+  transition:border-color .3s,background .3s;
+}
+.chipy label:hover{border-color:var(--mokka)}
+.chipy input{width:12px;height:12px;accent-color:var(--mokka)}
+.rodo{font-size:.72rem;letter-spacing:0;text-transform:none;color:#6B554A;display:flex;gap:9px;align-items:flex-start;line-height:1.55}
+.rodo input{margin-top:4px;flex:none;width:14px;height:14px}
+.status{margin:1em 0 0;font-size:.82rem;color:var(--mokka);min-height:1.2em}
+@media(max-width:900px){.kontakt-grid,.pola{grid-template-columns:1fr}}
+
+/* ---------- STOPKA ---------- */
+footer{background:var(--atrament);color:rgba(246,242,235,.72);padding:clamp(48px,6vw,80px) 0 30px;font-size:.86rem}
+.f-siatka{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:clamp(24px,4vw,60px)}
+footer h4{font-family:var(--sans);font-weight:400;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--puder);margin:0 0 1.2em}
+footer a{text-decoration:none;display:block;padding:.26em 0;transition:color .3s,transform .3s var(--ease)}
+footer a:hover{color:var(--puder);transform:translateX(3px)}
+.f-haslo{font-family:var(--display);font-size:1.5rem;color:var(--len-jasny);line-height:1.25;margin-bottom:.6em}
+.f-dol{
+  margin-top:clamp(34px,4vw,56px);padding-top:22px;border-top:1px solid rgba(246,242,235,.14);
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;
+  font-size:.7rem;letter-spacing:.06em;color:rgba(246,242,235,.5);
+}
+@media(max-width:820px){.f-siatka{grid-template-columns:1fr}}
+
+/* ---------- CTA mobilne ---------- */
+.cta-mobile{
+  position:fixed;left:12px;right:12px;bottom:12px;z-index:90;display:none;
+  justify-content:center;transform:translateY(120%);transition:transform .5s var(--ease);
+}
+.cta-mobile.widoczne{transform:none}
+.cta-mobile .btn{width:100%;justify-content:center;box-shadow:0 14px 34px -14px rgba(42,33,28,.8)}
+@media(max-width:760px){.cta-mobile{display:flex}}
+
+/* ---------- animacje wejścia ---------- */
+.pojaw{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.pojaw.jest{opacity:1;transform:none}
+.pojaw.o1{transition-delay:.08s}.pojaw.o2{transition-delay:.16s}
+.pojaw.o3{transition-delay:.24s}.pojaw.o4{transition-delay:.32s}
+
+/* ---------- COOKIES ---------- */
+.ciasteczka{
+  position:fixed;left:16px;bottom:16px;z-index:150;width:min(440px,calc(100vw - 32px));
+  background:var(--len-jasny);border:1px solid rgba(138,106,85,.28);
+  border-radius:var(--r-duzy);padding:clamp(20px,2.4vw,28px);
+  box-shadow:0 24px 60px -24px rgba(42,33,28,.6);
+  transform:translateY(140%);transition:transform .6s var(--ease);
+}
+.ciasteczka.widoczny{transform:none}
+.ciasteczka h3{font-size:1.15rem;margin-bottom:.5em}
+.ciasteczka p{font-size:.85rem;color:#5B4C43;margin-bottom:1.2em}
+.ciasteczka p a{color:var(--mokka)}
+.c-akcje{display:flex;flex-wrap:wrap;gap:8px}
+.c-akcje .btn{padding:.85em 1.5em;font-size:.68rem;flex:1 1 auto;justify-content:center}
+.c-link{
+  background:none;border:0;cursor:pointer;font-family:var(--sans);
+  font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mokka);
+  padding:.85em .6em;text-decoration:underline;text-underline-offset:4px;
+}
+.c-link:hover{color:var(--atrament)}
+@media(max-width:760px){
+  .ciasteczka{left:10px;right:10px;bottom:10px;width:auto;border-radius:22px}
+  .c-akcje .btn{flex:1 1 100%}
+}
+
+.zaslona{
+  position:fixed;inset:0;z-index:160;background:rgba(42,33,28,.55);
+  backdrop-filter:blur(4px);display:grid;place-items:center;padding:16px;
+  opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s;
+}
+.zaslona.widoczny{opacity:1;visibility:visible}
+.okno{
+  background:var(--len-jasny);border-radius:var(--r-duzy);
+  width:min(560px,100%);max-height:88vh;overflow:auto;
+  padding:clamp(22px,3vw,36px);border:1px solid rgba(138,106,85,.24);
+  transform:translateY(16px);transition:transform .4s var(--ease);
+}
+.zaslona.widoczny .okno{transform:none}
+.okno h3{margin-bottom:.4em}
+.okno>p{font-size:.86rem;color:#5B4C43;margin-bottom:1.4em}
+.zgoda-poz{
+  display:flex;gap:16px;align-items:flex-start;justify-content:space-between;
+  padding:18px 0;border-top:1px solid rgba(138,106,85,.2);
+}
+.zgoda-poz h4{margin:0 0 .3em;font-family:var(--sans);font-weight:500;font-size:.98rem}
+.zgoda-poz p{margin:0;font-size:.82rem;color:#5B4C43;max-width:42ch}
+.zgoda-poz small{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--szalwia);flex:none;padding-top:4px}
+.przelacznik{position:relative;flex:none;width:46px;height:26px}
+.przelacznik input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.przelacznik i{
+  position:absolute;inset:0;border-radius:999px;background:rgba(138,106,85,.3);
+  transition:background .3s;pointer-events:none;
+}
+.przelacznik i::after{
+  content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
+  background:var(--len-jasny);transition:transform .3s var(--ease);
+}
+.przelacznik input:checked + i{background:var(--mokka)}
+.przelacznik input:checked + i::after{transform:translateX(20px)}
+.przelacznik input:focus-visible + i{outline:2px solid var(--zloto);outline-offset:3px}
+.okno-akcje{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.okno-akcje .btn{flex:1 1 auto;justify-content:center;padding:.9em 1.5em;font-size:.68rem}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  html{scroll-behavior:auto}
+  .pojaw{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#tresc">Przejdź do treści</a>
+
+<!-- ===== HEADER ===== -->
+<header class="naglowek-strony" id="naglowek">
+  <a class="marka" href="#gora">
+    <span class="monogram" aria-hidden="true">B&nbsp;K</span>
+    <span><b>Pracownia Wielu Smaków</b><i>Basia Kot</i></span>
+  </a>
+
+  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+    <i></i><i></i><i></i>
+  </button>
+
+  <nav class="menu" id="menu" aria-label="Nawigacja główna">
+    <a href="#realizacje">Realizacje</a>
+    <a href="#kategorie">Oferta</a>
+    <a href="#o-nas">O nas</a>
+    <a href="#gdzie">Gdzie nas znajdziesz</a>
+    <a class="btn" href="#kontakt">Zamów wycenę <span class="grot">→</span></a>
+  </nav>
+</header>
+
+<main id="gora">
+
+<!-- ===== SLIDER ===== -->
+<section class="hero" aria-label="Prezentacja">
+  <div class="strefa">
+    <div class="slider" id="slider" aria-roledescription="carousel" aria-label="Realizacje pracowni">
+
+      <div class="slajd aktywny" role="group" aria-roledescription="slajd" aria-label="1 z 3">
+        <div class="slajd-tlo tlo-1"></div>
+        <span class="slajd-opis">Zdjęcie 1 — stół weselny w stodole</span>
+        <div class="slajd-tresc">
+          <p class="etykieta anim">Wesela i przyjęcia</p>
+          <h1 class="anim">Twoje przyjęcie może mieć wiele smaków</h1>
+          <p class="anim">Tort, słodki stół i wytrawne przekąski z jednej pracowni. Projektuję, wykonuję i ustawiam wszystko na miejscu.</p>
+          <a class="btn btn--jasny anim" href="#kontakt">Zamów wycenę <span class="grot">→</span></a>
+        </div>
+      </div>
+
+      <div class="slajd" role="group" aria-roledescription="slajd" aria-label="2 z 3">
+        <div class="slajd-tlo tlo-2"></div>
+        <span class="slajd-opis">Zdjęcie 2 — wytrawny stół, tarty i koreczki</span>
+        <div class="slajd-tresc">
+          <p class="etykieta anim">Wytrawny stół</p>
+          <h1 class="anim">Nie tylko na słodko</h1>
+          <p class="anim">Tarty, koreczki, deski serów i przekąski na powitanie gości — w tej samej estetyce co reszta stołu.</p>
+          <a class="btn btn--jasny anim" href="#kategorie">Zobacz ofertę <span class="grot">→</span></a>
+        </div>
+      </div>
+
+      <div class="slajd" role="group" aria-roledescription="slajd" aria-label="3 z 3">
+        <div class="slajd-tlo tlo-3"></div>
+        <span class="slajd-opis">Zdjęcie 3 — tort weselny na drewnianym wozie</span>
+        <div class="slajd-tresc">
+          <p class="etykieta anim">Torty</p>
+          <h1 class="anim">Tort projektowany pod jedną datę</h1>
+          <p class="anim">Weselne, urodzinowe, komunijne. Zawsze od zera, pod dekorację sali i pod smaki, które lubicie.</p>
+          <a class="btn btn--jasny anim" href="#realizacje">Zobacz realizacje <span class="grot">→</span></a>
+        </div>
+      </div>
+
+      <div class="kropki" role="tablist" aria-label="Wybierz slajd">
+        <button class="kropka" role="tab" aria-current="true" aria-label="Slajd 1"></button>
+        <button class="kropka" role="tab" aria-current="false" aria-label="Slajd 2"></button>
+        <button class="kropka" role="tab" aria-current="false" aria-label="Slajd 3"></button>
+      </div>
+      <div class="strzalki">
+        <button class="strzalka" id="poprzedni" aria-label="Poprzedni slajd">←</button>
+        <button class="strzalka" id="nastepny" aria-label="Następny slajd">→</button>
+      </div>
+    </div>
+
+    <div class="pasek-zaufania">
+      <span>Wesela</span><span>Osiemnastki</span><span>Komunie</span><span>Chrzciny</span><span>Przyjęcia firmowe</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 1. REALIZACJE ===== -->
+<section id="realizacje" tabindex="-1">
+  <div class="strefa" id="tresc">
+    <div class="g-gora">
+      <div class="naglowek pojaw">
+        <p class="etykieta">Realizacje</p>
+        <h2>Stoły, które już stanęły</h2>
+        <p>Każde zamówienie powstaje od nowa. Poniżej wybór z ostatnich sezonów — filtruj według rodzaju uroczystości.</p>
+      </div>
+      <a class="btn btn--linia pojaw o1" href="#kontakt" style="margin-bottom:clamp(28px,4vw,52px)">Zamów wycenę <span class="grot">→</span></a>
+    </div>
+
+    <div class="filtry pojaw" role="group" aria-label="Filtruj realizacje">
+      <button class="filtr" data-kat="wszystko" aria-pressed="true">Wszystko</button>
+      <button class="filtr" data-kat="wesele" aria-pressed="false">Wesela</button>
+      <button class="filtr" data-kat="urodziny" aria-pressed="false">Urodziny i 18-tki</button>
+      <button class="filtr" data-kat="komunia" aria-pressed="false">Komunia i chrzest</button>
+      <button class="filtr" data-kat="wytrawne" aria-pressed="false">Wytrawny stół</button>
+    </div>
+
+    <div class="kafle" id="kafle">
+      <div class="foto kafel pojaw" data-kat="wesele"><span>Stół weselny w stodole</span></div>
+      <div class="foto kafel pojaw o1" data-kat="wytrawne"><span>Tarty cytrynowe i koreczki</span></div>
+      <div class="foto kafel pojaw o2" data-kat="wesele"><span>Wieża z croissantów</span></div>
+      <div class="foto kafel pojaw" data-kat="urodziny"><span>Osiemnastka z neonem</span></div>
+      <div class="foto kafel pojaw o1" data-kat="wesele"><span>Świece i polne kwiaty</span></div>
+      <div class="foto kafel pojaw o2" data-kat="urodziny"><span>Tort z truskawkami</span></div>
+      <div class="foto kafel pojaw" data-kat="komunia"><span>Tort komunijny</span></div>
+      <div class="foto kafel pojaw o1" data-kat="wytrawne"><span>Deska serów i wędlin</span></div>
+      <div class="foto kafel pojaw o2" data-kat="wesele"><span>Tort na drewnianym wozie</span></div>
+    </div>
+
+    <div class="pod-galeria pojaw">
+      <a class="btn" href="#kontakt">Chcę taki stół u siebie <span class="grot">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. KATEGORIE ===== -->
+<section id="kategorie" class="kategorie" tabindex="-1">
+  <div class="strefa">
+    <div class="naglowek pojaw">
+      <p class="etykieta">Kategorie</p>
+      <h2>Wybierz, czego potrzebujesz</h2>
+      <p>Możesz zamówić sam tort albo powierzyć mi całą oprawę kulinarną. Każdą wycenę przygotowuję indywidualnie.</p>
+    </div>
+
+    <div class="k-siatka">
+      <a class="karta pojaw" href="#kontakt">
+        <div class="foto"><span>Tort weselny</span></div>
+        <div class="karta-tekst">
+          <small>Na słodko</small>
+          <h3>Torty</h3>
+          <p>Weselne, urodzinowe, komunijne i tematyczne. Także bezowe i musowe.</p>
+          <span class="wiecej">Zapytaj o wycenę <span class="grot">→</span></span>
+        </div>
+      </a>
+
+      <a class="karta pojaw o1" href="#kontakt">
+        <div class="foto"><span>Słodki stół ze świecami</span></div>
+        <div class="karta-tekst">
+          <small>Na słodko</small>
+          <h3>Słodkie kompozycje</h3>
+          <p>Monoporcje, bezy, tartaletki i wieże z croissantów wraz z aranżacją stołu.</p>
+          <span class="wiecej">Zapytaj o wycenę <span class="grot">→</span></span>
+        </div>
+      </a>
+
+      <a class="karta pojaw o2" href="#kontakt">
+        <div class="foto"><span>Przekąski na paterach</span></div>
+        <div class="karta-tekst">
+          <small>Na słono</small>
+          <h3>Wytrawny stół</h3>
+          <p>Tarty, koreczki, krokiety i deski serów. Rzadkość u cukierników.</p>
+          <span class="wiecej">Zapytaj o wycenę <span class="grot">→</span></span>
+        </div>
+      </a>
+
+      <a class="karta pojaw o3" href="#kontakt">
+        <div class="foto"><span>Upominek ze wstążką</span></div>
+        <div class="karta-tekst">
+          <small>Drobne formy</small>
+          <h3>Upominki dla gości</h3>
+          <p>Tabliczki malowane ręcznie, boxy słodkości, podziękowania dla świadków.</p>
+          <span class="wiecej">Zapytaj o wycenę <span class="grot">→</span></span>
+        </div>
+      </a>
+    </div>
+
+    <div class="pasek-cta pojaw">
+      <div>
+        <h3>Nie wiesz, ile tego potrzeba?</h3>
+        <p>Napisz, ilu masz gości i jaka to okazja — dobiorę zakres i podam widełki cenowe w dwa dni robocze.</p>
+      </div>
+      <a class="btn btn--jasny" href="#kontakt">Zamów wycenę <span class="grot">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. O NAS ===== -->
+<section id="o-nas" class="o-nas" tabindex="-1">
+  <div class="strefa o-nas-grid">
+    <div class="foto pojaw"><span>Portret Basi — zdjęcie pionowe 4:5</span></div>
+    <div>
+      <p class="etykieta pojaw">O nas</p>
+      <h2 class="pojaw">Jedna pracownia,<br>jedna osoba, jeden pomysł</h2>
+      <p class="podpis pojaw">Basia Kot</p>
+      <p class="pojaw">Odbieram telefon, projektuję, piekę i przywożę. To znaczy, że biorę mniej zleceń niż duża cukiernia, ale też że nikt po drodze nie zgubi ustaleń ani nie zmieni smaku bez pytania.</p>
+      <p class="pojaw">Robię i słodkie, i słone, bo przyjęcie to jeden stół, a nie dwie osobne umowy z dwiema firmami. Kiedy trzeba, przyjeżdżam wcześniej i składam całą kompozycję na miejscu.</p>
+
+      <div class="liczby pojaw">
+        <div class="liczba"><b>200+</b><span>zrealizowanych stołów</span></div>
+        <div class="liczba"><b>1 660</b><span>obserwujących</span></div>
+        <div class="liczba"><b>2 dni</b><span>na odpowiedź</span></div>
+      </div>
+
+      <a class="btn pojaw" href="#kontakt">Porozmawiajmy o Twoim przyjęciu <span class="grot">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. GDZIE NAS ZNAJDZIESZ ===== -->
+<section id="gdzie" class="gdzie" tabindex="-1">
+  <div class="strefa">
+    <div class="naglowek pojaw">
+      <p class="etykieta">Gdzie nas znajdziesz</p>
+      <h2>Pracownia i zasięg dojazdu</h2>
+      <p>Odbiór osobisty po wcześniejszym umówieniu. Na większe przyjęcia dojeżdżam i ustawiam stół na miejscu.</p>
+    </div>
+
+    <!-- Podmień na osadzoną mapę Google: <iframe src="..." style="width:100%;height:100%;border:0"></iframe> -->
+    <div class="mapa pojaw">
+      <div>
+        <div class="mapa-pin" aria-hidden="true">◉</div>
+        <small>Tu wstaw mapę Google</small>
+      </div>
+    </div>
+
+    <div class="info-siatka">
+      <div class="info pojaw">
+        <h3>Pracownia</h3>
+        <p>[ulica i numer]<br>[kod pocztowy, miejscowość]<br>Odbiór po umówieniu telefonicznym.</p>
+      </div>
+      <div class="info pojaw o1">
+        <h3>Dojazd i dostawa</h3>
+        <p>Dowożę i ustawiam stoły na terenie:</p>
+        <div class="miasta">
+          <span>[miasto 1]</span><span>[miasto 2]</span><span>[miasto 3]</span><span>okolice do 60 km</span>
+        </div>
+      </div>
+      <div class="info pojaw o2">
+        <h3>Kontakt i godziny</h3>
+        <p>Pon.–pt. 9:00–17:00<br>Sob.–niedz. — realizacje u klientów<br>Wiadomości odbieram codziennie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. KONTAKT ===== -->
+<section id="kontakt" tabindex="-1">
+  <div class="strefa kontakt-grid">
+
+    <div class="dane">
+      <p class="etykieta pojaw">Kontakt</p>
+      <h2 class="pojaw">Zaplanujmy to razem</h2>
+      <p class="pojaw" style="color:#5B4C43;max-width:46ch">Napisz kilka zdań o swojej uroczystości. Odpowiadam w ciągu dwóch dni roboczych — z pomysłem i widełkami cenowymi, nie samym cennikiem.</p>
+
+      <div class="dane-lista pojaw">
+        <a class="dane-poz" href="tel:">
+          <span class="ikona" aria-hidden="true">✆</span>
+          <span><small>Telefon</small><b>[numer telefonu]</b></span>
+        </a>
+        <a class="dane-poz" href="mailto:">
+          <span class="ikona" aria-hidden="true">✉</span>
+          <span><small>E-mail</small><b>[adres e-mail]</b></span>
+        </a>
+        <a class="dane-poz" href="#gdzie">
+          <span class="ikona" aria-hidden="true">◉</span>
+          <span><small>Pracownia</small><b>[ulica, miejscowość]</b></span>
+        </a>
+        <div class="dane-poz" style="cursor:default">
+          <span class="ikona" aria-hidden="true">◷</span>
+          <span><small>Godziny</small><b>Pon.–pt. 9:00–17:00</b></span>
+        </div>
+      </div>
+
+      <div class="social pojaw">
+        <a href="https://www.instagram.com/pracownia_wielu_smakow/" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+        <a href="#" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+      </div>
+    </div>
+
+    <!-- Formularz wymaga podłączenia wysyłki (Formspree / EmailJS / backend). -->
+    <div class="formularz pojaw o1">
+      <form id="formularz" novalidate>
+        <div class="pola">
+          <div class="pole"><label for="imie">Imię i nazwisko *</label><input id="imie" name="imie" type="text" autocomplete="name" required></div>
+          <div class="pole"><label for="kt">Telefon lub e-mail *</label><input id="kt" name="kontakt" type="text" autocomplete="tel" required></div>
+          <div class="pole"><label for="okazja">Rodzaj uroczystości</label>
+            <select id="okazja" name="okazja">
+              <option>Wesele</option><option>Osiemnastka</option><option>Urodziny</option>
+              <option>Komunia lub chrzest</option><option>Przyjęcie firmowe</option><option>Inne</option>
+            </select>
+          </div>
+          <div class="pole"><label for="data">Data przyjęcia</label><input id="data" name="data" type="date"></div>
+          <div class="pole"><label for="goscie">Liczba gości</label><input id="goscie" name="goscie" type="number" min="1" placeholder="np. 80"></div>
+          <div class="pole"><label for="miejsce">Miejscowość</label><input id="miejsce" name="miejsce" type="text"></div>
+
+          <div class="pole pole--full">
+            <label>Czego potrzebujesz</label>
+            <div class="chipy">
+              <label><input type="checkbox" name="zakres" value="tort"> Tort</label>
+              <label><input type="checkbox" name="zakres" value="slodki"> Słodki stół</label>
+              <label><input type="checkbox" name="zakres" value="wytrawny"> Wytrawny stół</label>
+              <label><input type="checkbox" name="zakres" value="upominki"> Upominki</label>
+            </div>
+          </div>
+
+          <div class="pole pole--full"><label for="opis">Inspiracje, kolory, alergie</label>
+            <textarea id="opis" name="opis" placeholder="Napisz, co lubisz i czego na pewno nie chcesz."></textarea></div>
+
+          <div class="pole pole--full">
+            <label class="rodo"><input type="checkbox" id="zgoda" required> Zgadzam się na kontakt w sprawie tego zapytania i na przetwarzanie danych zgodnie z <a href="polityka-prywatnosci.html" style="color:var(--mokka)">polityką prywatności</a>. *</label>
+          </div>
+
+          <div class="pole pole--full">
+            <button class="btn" type="submit">Wyślij zapytanie <span class="grot">→</span></button>
+            <p class="status" id="status" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="strefa">
+    <div class="f-siatka">
+      <div>
+        <p class="f-haslo">Twoje przyjęcie<br>może mieć wiele smaków</p>
+        <p style="max-width:34ch">Pracownia Wielu Smaków — Basia Kot. Torty, słodkie kompozycje i wytrawny stół. [miejscowość] i okolice.</p>
+        <a class="btn btn--jasny" href="#kontakt" style="margin-top:1em">Zamów wycenę <span class="grot">→</span></a>
+      </div>
+      <div>
+        <h4>Strona</h4>
+        <a href="#realizacje">Realizacje</a><a href="#kategorie">Oferta</a>
+        <a href="#o-nas">O nas</a><a href="#gdzie">Gdzie nas znajdziesz</a><a href="#kontakt">Kontakt</a>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <a href="tel:">[telefon]</a><a href="mailto:">[e-mail]</a>
+        <a href="https://www.instagram.com/pracownia_wielu_smakow/" target="_blank" rel="noopener">Instagram</a>
+        <a href="#" target="_blank" rel="noopener">Facebook — Basia Kot</a>
+      </div>
+    </div>
+    <div class="f-dol">
+      <span>© <span id="rok"></span> Pracownia Wielu Smaków · NIP [do uzupełnienia]</span>
+      <span style="display:flex;gap:18px;flex-wrap:wrap">
+        <a href="polityka-prywatnosci.html" style="display:inline">Polityka prywatności</a>
+        <a href="#" data-cookies style="display:inline">Ustawienia cookies</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== BANER COOKIES ===== -->
+<div class="ciasteczka" id="baner" role="dialog" aria-modal="false" aria-labelledby="baner-tytul" aria-describedby="baner-opis">
+  <h3 id="baner-tytul">Ciasteczka</h3>
+  <p id="baner-opis">Używamy plików cookie niezbędnych do działania strony. Za Twoją zgodą chcemy też korzystać z ciasteczek analitycznych i marketingowych, żeby wiedzieć, które realizacje najbardziej Cię interesują. Szczegóły w <a href="polityka-prywatnosci.html">polityce prywatności</a>.</p>
+  <div class="c-akcje">
+    <button class="btn" id="c-wszystkie">Akceptuję wszystkie</button>
+    <button class="btn btn--linia" id="c-niezbedne">Tylko niezbędne</button>
+    <button class="c-link" id="c-ustawienia">Ustawienia</button>
+  </div>
+</div>
+
+<!-- ===== USTAWIENIA COOKIES ===== -->
+<div class="zaslona" id="zaslona" role="dialog" aria-modal="true" aria-labelledby="okno-tytul">
+  <div class="okno">
+    <h3 id="okno-tytul">Ustawienia prywatności</h3>
+    <p>Zdecyduj, z których plików cookie możemy korzystać. Zgodę możesz wycofać w każdej chwili, wracając do tego okna przez link w stopce.</p>
+
+    <div class="zgoda-poz">
+      <div>
+        <h4>Niezbędne</h4>
+        <p>Pozwalają zapamiętać Twój wybór dotyczący ciasteczek i obsłużyć formularz kontaktowy. Bez nich strona nie zadziała poprawnie.</p>
+      </div>
+      <small>Zawsze aktywne</small>
+    </div>
+
+    <div class="zgoda-poz">
+      <div>
+        <h4>Analityczne</h4>
+        <p>Anonimowe statystyki odwiedzin — które podstrony są oglądane i skąd przychodzą odwiedzający.</p>
+      </div>
+      <label class="przelacznik">
+        <input type="checkbox" id="z-analityka" aria-label="Zgoda na ciasteczka analityczne">
+        <i aria-hidden="true"></i>
+      </label>
+    </div>
+
+    <div class="zgoda-poz">
+      <div>
+        <h4>Marketingowe</h4>
+        <p>Pozwalają mierzyć skuteczność reklam i pokazywać treści dopasowane do Twoich zainteresowań.</p>
+      </div>
+      <label class="przelacznik">
+        <input type="checkbox" id="z-marketing" aria-label="Zgoda na ciasteczka marketingowe">
+        <i aria-hidden="true"></i>
+      </label>
+    </div>
+
+    <div class="okno-akcje">
+      <button class="btn" id="c-zapisz">Zapisz wybór</button>
+      <button class="btn btn--linia" id="c-zamknij">Anuluj</button>
+    </div>
+  </div>
+</div>
+
+<div class="cta-mobile" id="ctaMobile">
+  <a class="btn" href="#kontakt">Zamów wycenę <span class="grot">→</span></a>
+</div>
+
+<script>
+const wolniej = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.getElementById('rok').textContent = new Date().getFullYear();
+
+/* ---- header: zwijanie przy scrollu + CTA mobilne ---- */
+const naglowek = document.getElementById('naglowek');
+const ctaM = document.getElementById('ctaMobile');
+const przelacz = () => {
+  const y = window.scrollY;
+  naglowek.classList.toggle('zwiniety', y > 40);
+  ctaM.classList.toggle('widoczne', y > 600);
+};
+przelacz();
+window.addEventListener('scroll', przelacz, {passive:true});
+
+/* ---- menu mobilne ---- */
+const burger = document.getElementById('burger');
+const menu = document.getElementById('menu');
+burger.addEventListener('click', () => {
+  const otwarte = menu.classList.toggle('otwarte');
+  burger.setAttribute('aria-expanded', String(otwarte));
+});
+menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  menu.classList.remove('otwarte');
+  burger.setAttribute('aria-expanded','false');
+}));
+document.addEventListener('click', e => {
+  if (!naglowek.contains(e.target)) { menu.classList.remove('otwarte'); burger.setAttribute('aria-expanded','false'); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { menu.classList.remove('otwarte'); burger.setAttribute('aria-expanded','false'); }
+});
+
+/* ---- podświetlanie aktywnej sekcji w menu ---- */
+const sekcje = [...document.querySelectorAll('section[id]')];
+const linki = new Map([...menu.querySelectorAll('a[href^="#"]')].map(a => [a.getAttribute('href').slice(1), a]));
+new IntersectionObserver(wpisy => {
+  wpisy.forEach(w => {
+    const a = linki.get(w.target.id);
+    if (a) a.setAttribute('aria-current', w.isIntersecting ? 'true' : 'false');
+  });
+}, {rootMargin:'-45% 0px -50% 0px'}).observe && sekcje.forEach(s => {
+  new IntersectionObserver(wpisy => {
+    wpisy.forEach(w => { const a = linki.get(w.target.id); if (a) a.setAttribute('aria-current', w.isIntersecting ? 'true':'false'); });
+  }, {rootMargin:'-45% 0px -50% 0px'}).observe(s);
+});
+
+/* ---- SLIDER ---- */
+const slider = document.getElementById('slider');
+const slajdy = [...slider.querySelectorAll('.slajd')];
+const kropki = [...slider.querySelectorAll('.kropka')];
+let idx = 0, timer = null;
+
+function pokaz(n){
+  idx = (n + slajdy.length) % slajdy.length;
+  slajdy.forEach((s,i) => s.classList.toggle('aktywny', i === idx));
+  kropki.forEach((k,i) => k.setAttribute('aria-current', String(i === idx)));
+}
+function start(){ if (wolniej) return; stop(); timer = setInterval(() => pokaz(idx+1), 6500); }
+function stop(){ if (timer) clearInterval(timer); timer = null; }
+
+document.getElementById('nastepny').addEventListener('click', () => { pokaz(idx+1); start(); });
+document.getElementById('poprzedni').addEventListener('click', () => { pokaz(idx-1); start(); });
+kropki.forEach((k,i) => k.addEventListener('click', () => { pokaz(i); start(); }));
+
+slider.addEventListener('mouseenter', stop);
+slider.addEventListener('mouseleave', start);
+slider.addEventListener('focusin', stop);
+slider.addEventListener('focusout', start);
+slider.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { pokaz(idx+1); start(); }
+  if (e.key === 'ArrowLeft')  { pokaz(idx-1); start(); }
+});
+
+/* przesuwanie palcem */
+let x0 = null;
+slider.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; stop(); }, {passive:true});
+slider.addEventListener('touchend', e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0;
+  if (Math.abs(dx) > 45) pokaz(dx < 0 ? idx+1 : idx-1);
+  x0 = null; start();
+}, {passive:true});
+
+document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+start();
+
+/* ---- filtrowanie realizacji ---- */
+const filtry = [...document.querySelectorAll('.filtr')];
+const kafle = [...document.querySelectorAll('#kafle .kafel')];
+filtry.forEach(b => b.addEventListener('click', () => {
+  filtry.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  const kat = b.dataset.kat;
+  kafle.forEach(k => k.classList.toggle('ukryty', !(kat === 'wszystko' || k.dataset.kat === kat)));
+}));
+
+/* ---- animacje wejścia ---- */
+const obs = new IntersectionObserver((w) => {
+  w.forEach(e => { if (e.isIntersecting) { e.target.classList.add('jest'); obs.unobserve(e.target); } });
+}, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.pojaw').forEach(el => obs.observe(el));
+
+/* ---- formularz ---- */
+const form = document.getElementById('formularz');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const status = document.getElementById('status');
+  const imie = form.imie, kt = form.kt, zgoda = document.getElementById('zgoda');
+  let blad = null;
+
+  [imie, kt].forEach(p => p.setAttribute('aria-invalid', String(!p.value.trim())));
+  if (!imie.value.trim()) blad = 'Podaj imię, żebym wiedziała, jak się zwracać.';
+  else if (!kt.value.trim()) blad = 'Zostaw telefon lub e-mail — inaczej nie odpiszę.';
+  else if (!zgoda.checked) blad = 'Zaznacz zgodę na kontakt.';
+
+  if (blad) {
+    status.textContent = blad;
+    (!imie.value.trim() ? imie : !kt.value.trim() ? kt : zgoda).focus();
+    return;
+  }
+  status.textContent = 'Formularz nie jest jeszcze podłączony do wysyłki — dodaj usługę wysyłki maili przed publikacją.';
+});
+
+/* ================= COOKIES ================= */
+const KLUCZ = 'pws-zgoda-cookies';
+const baner = document.getElementById('baner');
+const zaslona = document.getElementById('zaslona');
+const swAnalityka = document.getElementById('z-analityka');
+const swMarketing = document.getElementById('z-marketing');
+let ostatniFokus = null;
+let pamiec = null; /* awaryjny zapis, gdy localStorage jest zablokowany */
+
+function odczytaj(){
+  try { const s = localStorage.getItem(KLUCZ); return s ? JSON.parse(s) : pamiec; }
+  catch(e){ return pamiec; }
+}
+function zapisz(zgoda){
+  const dane = {...zgoda, data:new Date().toISOString(), wersja:1};
+  pamiec = dane;
+  try { localStorage.setItem(KLUCZ, JSON.stringify(dane)); } catch(e){}
+  zastosuj(dane);
+  schowajBaner();
+  zamknijOkno();
+}
+function schowajBaner(){ baner.classList.remove('widoczny'); }
+function pokazBaner(){ baner.classList.add('widoczny'); }
+
+/* Tu podłącz skrypty, które wymagają zgody. Uruchamiaj je WYŁĄCZNIE w tych blokach. */
+function zastosuj(z){
+  if (z.analityka) {
+    // np. Google Analytics / Plausible — wstaw tutaj
+    // gtag('consent','update',{analytics_storage:'granted'});
+  }
+  if (z.marketing) {
+    // np. Meta Pixel — wstaw tutaj
+  }
+}
+
+function otworzOkno(){
+  const z = odczytaj();
+  swAnalityka.checked = !!(z && z.analityka);
+  swMarketing.checked = !!(z && z.marketing);
+  ostatniFokus = document.activeElement;
+  zaslona.classList.add('widoczny');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => swAnalityka.focus(), 60);
+}
+function zamknijOkno(){
+  zaslona.classList.remove('widoczny');
+  document.body.style.overflow = '';
+  if (ostatniFokus) ostatniFokus.focus();
+}
+
+document.getElementById('c-wszystkie').addEventListener('click', () => zapisz({analityka:true, marketing:true}));
+document.getElementById('c-niezbedne').addEventListener('click', () => zapisz({analityka:false, marketing:false}));
+document.getElementById('c-ustawienia').addEventListener('click', otworzOkno);
+document.getElementById('c-zapisz').addEventListener('click', () => zapisz({analityka:swAnalityka.checked, marketing:swMarketing.checked}));
+document.getElementById('c-zamknij').addEventListener('click', zamknijOkno);
+zaslona.addEventListener('click', e => { if (e.target === zaslona) zamknijOkno(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && zaslona.classList.contains('widoczny')) zamknijOkno(); });
+
+/* link w stopce — ponowne otwarcie ustawień */
+document.querySelectorAll('[data-cookies]').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault(); pokazBaner(); otworzOkno();
+}));
+
+/* start */
+const zapisana = odczytaj();
+if (zapisana) zastosuj(zapisana);
+else setTimeout(pokazBaner, 900);
+
+/* powrót z polityki prywatności z prośbą o otwarcie ustawień */
+if (location.hash === '#ustawienia-cookies') {
+  history.replaceState(null, '', location.pathname);
+  setTimeout(otworzOkno, 300);
+}
+</script>
+</body>
+</html>

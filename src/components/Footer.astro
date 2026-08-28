@@ -1,0 +1,61 @@
+---
+import { firma, nawLewa, nawPrawa } from "../data/firma";
+import { oferta } from "../data/oferta";
+
+const rok = new Date().getFullYear();
+const linkiStrony = [...nawLewa, ...nawPrawa];
+---
+
+<footer>
+  <div class="strefa">
+    <div class="f-siatka">
+      <div>
+        <img
+          class="f-logo"
+          src="/logo-pws.png"
+          alt=""
+          width="760"
+          height="760"
+          loading="lazy"
+        />
+        <p class="f-haslo">Twoje przyjęcie<br />może mieć wiele smaków</p>
+        <p style="max-width:36ch">
+          {firma.nazwa} — {firma.wlascicielka}. Torty, słodkie kompozycje i
+          wytrawny stół. {firma.adres.miasto} i okolice.
+        </p>
+        <a class="btn btn--jasny" href="/kontakt#formularz" style="margin-top:1em">
+          Zamów wycenę <span class="grot" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <nav aria-labelledby="stopka-strona">
+        <h2 id="stopka-strona">Strona</h2>
+        {linkiStrony.map((l) => <a href={l.url}>{l.tekst}</a>)}
+        {oferta.map((o) => <a href={`/oferta/${o.slug}`}>{o.tytul}</a>)}
+      </nav>
+
+      <div class="f-kontakt">
+        <h2>Kontakt</h2>
+        <a href={firma.telefonHref}>{firma.telefon}</a>
+        <a href={`mailto:${firma.email}`}>{firma.email}</a>
+        <a href={firma.instagram} target="_blank" rel="noopener">
+          Instagram {firma.instagramNazwa}
+        </a>
+        <a href={firma.facebook} target="_blank" rel="noopener">
+          Facebook — {firma.wlascicielka}
+        </a>
+        <p style="margin-top:1.2em;opacity:.7">
+          {firma.godziny}
+        </p>
+      </div>
+    </div>
+
+    <div class="f-dol">
+      <span>© {rok} {firma.nazwa} · NIP {firma.nip}</span>
+      <span style="display:flex;gap:18px;flex-wrap:wrap">
+        <a href="/polityka-prywatnosci">Polityka prywatności</a>
+        <button type="button" data-cookies>Ustawienia cookies</button>
+      </span>
+    </div>
+  </div>
+</footer>

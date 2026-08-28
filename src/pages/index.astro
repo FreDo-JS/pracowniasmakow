@@ -1,0 +1,132 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Slider from "../components/Slider.astro";
+import Galeria from "../components/Galeria.astro";
+import KartyOferty from "../components/KartyOferty.astro";
+import NaglowekSekcji from "../components/NaglowekSekcji.astro";
+import PasekCta from "../components/PasekCta.astro";
+import Opinie from "../components/Opinie.astro";
+import Proces from "../components/Proces.astro";
+import { firma, liczby, okazje } from "../data/firma";
+---
+
+<Layout
+  tytul={`${firma.nazwa} — ${firma.wlascicielka} | Torty, słodkie i wytrawne stoły`}
+  tytulPelny={true}
+  opis={firma.opis}
+>
+  <!-- ===== SLIDER ===== -->
+  <section class="hero" aria-label="Prezentacja pracowni">
+    <div class="strefa">
+      <Slider />
+      <ul class="pasek-zaufania">
+        {okazje.map((o) => <li>{o}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== REALIZACJE ===== -->
+  <section>
+    <div class="strefa">
+      <div class="g-gora">
+        <NaglowekSekcji
+          etykieta="Realizacje"
+          tytul="Stoły, które już stanęły"
+          opis="Każde zamówienie powstaje od nowa — poniżej wybór z ostatnich sezonów."
+        />
+        <a class="btn btn--linia pojaw o1" href="/realizacje" style="margin-bottom:clamp(28px,4vw,52px)">
+          Wszystkie realizacje <span class="grot" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <Galeria limit={6} filtry={false} />
+
+      <div class="pod-galeria pojaw">
+        <a class="btn" href="/kontakt#formularz">
+          Chcę taki stół u siebie <span class="grot" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OFERTA ===== -->
+  <section class="kategorie">
+    <div class="strefa">
+      <NaglowekSekcji
+        etykieta="Oferta"
+        tytul="Wybierz, czego potrzebujesz"
+        opis="Możesz zamówić sam tort albo powierzyć mi całą oprawę kulinarną. Każdą wycenę przygotowuję indywidualnie."
+      />
+      <KartyOferty />
+      <PasekCta />
+    </div>
+  </section>
+
+  {/* ===== O MNIE — WYŁĄCZONE NA CZAS TESTU =====
+       Żeby przywrócić: zmień `false` poniżej na `true`
+       (albo usuń `{false && (` oraz `)}` domykające sekcję). */}
+  {false && (
+  <section class="o-nas">
+    <div class="strefa o-nas-grid">
+      <div class="foto pojaw" style="aspect-ratio:4/5">
+        <span>Portret Basi — zdjęcie pionowe 4:5</span>
+      </div>
+      <div>
+        <p class="etykieta pojaw">O mnie</p>
+        <h2 class="pojaw">Jedna pracownia,<br />jedna osoba, jeden pomysł</h2>
+        <p class="podpis pojaw">{firma.wlascicielka}</p>
+        <p class="pojaw">
+          Odbieram telefon, projektuję, piekę i przywożę. To znaczy, że biorę
+          mniej zleceń niż duża cukiernia, ale też że nikt po drodze nie zgubi
+          ustaleń ani nie zmieni smaku bez pytania.
+        </p>
+        <p class="pojaw">
+          Robię i słodkie, i słone, bo przyjęcie to jeden stół, a nie dwie osobne
+          umowy z dwiema firmami. Kiedy trzeba, przyjeżdżam wcześniej i składam
+          całą kompozycję na miejscu.
+        </p>
+
+        <div class="liczby pojaw">
+          {
+            liczby.map((l) => (
+              <div class="liczba">
+                <b>{l.wartosc}</b>
+                <span>{l.opis}</span>
+              </div>
+            ))
+          }
+        </div>
+
+        <a class="btn pojaw" href="/o-mnie">
+          Poznaj pracownię <span class="grot" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  )}
+  {/* ===== KONIEC WYŁĄCZONEJ SEKCJI „O MNIE” ===== */}
+
+  <!-- ===== PROCES ===== -->
+  <Proces tlo={true} />
+
+  <!-- ===== OPINIE ===== -->
+  <Opinie />
+
+  <!-- ===== KONTAKT (skrót) ===== -->
+  <section class="kategorie">
+    <div class="strefa">
+      <NaglowekSekcji
+        etykieta="Kontakt"
+        tytul="Zaplanujmy to razem"
+        opis={`Napisz kilka zdań o swojej uroczystości. Odpowiadam w ciągu ${firma.czasOdpowiedzi} — z pomysłem i widełkami cenowymi, nie samym cennikiem.`}
+        srodek={true}
+      />
+      <div class="pod-galeria pojaw" style="gap:12px;flex-wrap:wrap">
+        <a class="btn btn--roz" href="/kontakt#formularz">
+          Zamów wycenę <span class="grot" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--linia" href={firma.telefonHref}>Zadzwoń: {firma.telefon}</a>
+      </div>
+    </div>
+  </section>
+</Layout>

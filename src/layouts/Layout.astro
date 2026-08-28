@@ -1,0 +1,133 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Cookies from "../components/Cookies.astro";
+import { firma } from "../data/firma";
+
+export type Props = {
+  tytul: string;
+  opis: string;
+  /** Nie dodawaj sufiksu z nazwą firmy — robi to layout. */
+  tytulPelny?: boolean;
+  obraz?: string;
+};
+
+const { tytul, opis, tytulPelny = false, obraz = "/og.jpg" } = Astro.props;
+
+const tytulStrony = tytulPelny ? tytul : `${tytul} | ${firma.nazwa}`;
+const kanoniczny = new URL(Astro.url.pathname, Astro.site ?? firma.domena).href;
+const obrazOg = new URL(obraz, Astro.site ?? firma.domena).href;
+
+/* Dane strukturalne dla Google — dzięki nim firma może pokazać się
+   w wynikach lokalnych z adresem, telefonem i godzinami. */
+const daneStrukturalne = {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  name: firma.nazwa,
+  description: firma.opis,
+  image: obrazOg,
+  logo: new URL("/logo-pws.png", Astro.site ?? firma.domena).href,
+  url: firma.domena,
+  telephone: firma.telefon,
+  email: firma.email,
+  founder: { "@type": "Person", name: firma.wlascicielka },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: firma.adres.ulica,
+    postalCode: firma.adres.kod,
+    addressLocality: firma.adres.miasto,
+    addressCountry: "PL",
+  },
+  areaServed: firma.miasta.map((m) => ({ "@type": "City", name: m })),
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "09:00",
+      closes: "17:00",
+    },
+  ],
+  sameAs: [firma.instagram, firma.facebook].filter(Boolean),
+};
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tytulStrony}</title>
+    <meta name="description" content={opis} />
+    <link rel="canonical" href={kanoniczny} />
+    <meta name="theme-color" content="#EFE8DE" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:site_name" content={firma.nazwa} />
+    <meta property="og:title" content={tytulStrony} />
+    <meta property="og:description" content={opis} />
+    <meta property="og:url" content={kanoniczny} />
+    <meta property="og:image" content={obrazOg} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Jost:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(daneStrukturalne)}
+    />
+  </head>
+
+  <body>
+    <a class="skip" href="#tresc">Przejdź do treści</a>
+
+    <Header />
+
+    <main id="tresc">
+      <slot />
+    </main>
+
+    <Footer />
+    <Cookies />
+
+    <div class="cta-mobile" id="ctaMobile">
+      <a class="btn" href="/kontakt">Zamów wycenę <span class="grot" aria-hidden="true">→</span></a>
+    </div>
+
+    <script>
+      /* --- header: zwijanie przy scrollu + pokazywanie mobilnego CTA --- */
+      const naglowek = document.getElementById("naglowek");
+      const ctaM = document.getElementById("ctaMobile");
+      const przelacz = () => {
+        const y = window.scrollY;
+        naglowek?.classList.toggle("zwiniety", y > 40);
+        ctaM?.classList.toggle("widoczne", y > 600);
+      };
+      przelacz();
+      window.addEventListener("scroll", przelacz, { passive: true });
+
+      /* --- animacje wejścia --- */
+      const obs = new IntersectionObserver(
+        (wpisy) => {
+          wpisy.forEach((w) => {
+            if (w.isIntersecting) {
+              w.target.classList.add("jest");
+              obs.unobserve(w.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      );
+      document.querySelectorAll(".pojaw").forEach((el) => obs.observe(el));
+    </script>
+  </body>
+</html>
