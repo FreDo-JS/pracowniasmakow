@@ -2,11 +2,28 @@
 import { firma } from "../data/firma";
 import { oferta } from "../data/oferta";
 
-/* Adres wysyłki ustawiasz w pliku .env — patrz README.
-   Bez niego formularz nadal działa: pokazuje dane do kontaktu bezpośredniego. */
-const endpoint = import.meta.env.PUBLIC_ENDPOINT_FORMULARZA ?? "";
-/* Web3Forms wymaga dodatkowo klucza dostępu. Przy innych usługach zostaw puste. */
-const kluczWeb3Forms = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? "";
+/* ============================================================
+   ADRES WYSYŁKI I KLUCZ — WPROST W KODZIE, NIE W .env.
+
+   Obie wartości są z natury jawne. Strona jest statyczna, więc formularz
+   leci z PRZEGLĄDARKI prosto do Web3Forms — jedno i drugie musi znaleźć się
+   w kodzie strony i każdy odczyta je z „pokaż źródło”. Klucz Web3Forms to
+   identyfikator skrzynki, nie hasło.
+
+   Trzymanie ich w zmiennych środowiskowych niczego więc nie ukrywało,
+   a miało realny koszt: build bez tych zmiennych — tak wyszło na produkcji —
+   po cichu gubił pole `access_key`, formularz szedł bez niego, a osoba
+   wysyłająca dostawała komunikat o błędzie. Wartość domyślna kasuje całą
+   tę klasę awarii: strona działa niezależnie od ustawień hostingu.
+
+   Zmienne środowiskowe nadal NADPISUJĄ te wartości, gdyby doszło do zmiany
+   usługi na Formspree albo Getform. Stąd `||`, a nie `??`: pusta zmienna
+   ma cofnąć się do wartości domyślnej, a `??` złapałoby wyłącznie
+   `undefined` i wpuściło pusty ciąg — czyli dokładnie tę awarię. */
+const endpoint =
+  import.meta.env.PUBLIC_ENDPOINT_FORMULARZA || "https://api.web3forms.com/submit";
+const kluczWeb3Forms =
+  import.meta.env.PUBLIC_WEB3FORMS_KEY || "e539e76c-f08f-4bad-b5f5-2dc67a9cb7ae";
 const dzis = new Date().toISOString().slice(0, 10);
 ---
 
@@ -29,7 +46,11 @@ const dzis = new Date().toISOString().slice(0, 10);
   <p class="wymagane-info">Pola oznaczone gwiazdką (*) są wymagane.</p>
 
   <form id="form-wycena" novalidate action="https://api.web3forms.com/submit" method="POST">
-    {kluczWeb3Forms && <input type="hidden" name="access_key" value={'e539e76c-f08f-4bad-b5f5-2dc67a9cb7ae'} />}
+    {/* Wartość MUSI pochodzić z tej samej zmiennej, którą sprawdza warunek.
+        Wcześniej warunek pytał o zmienną środowiskową, a wartość stała obok
+        na sztywno — więc na produkcji, bez tej zmiennej, pole w ogóle się
+        nie renderowało i wysyłka wracała błędem. */}
+    {kluczWeb3Forms && <input type="hidden" name="access_key" value={kluczWeb3Forms} />}
 
     <!-- pułapka na boty: człowiek tego pola nie widzi i nie wypełni -->
     <div class="pulapka" aria-hidden="true">
