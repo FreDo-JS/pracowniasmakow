@@ -11,9 +11,9 @@ import { firma, liczby, okazje } from "../data/firma";
 ---
 
 <Layout
-  tytul={`${firma.nazwa} — ${firma.wlascicielka} | Torty, słodkie i wytrawne stoły`}
+  tytul="Torty i słodkie stoły — Leszno | Pracownia Wielu Smaków"
   tytulPelny={true}
-  opis={firma.opis}
+  opis="Torty weselne, urodzinowe i komunijne oraz słodkie i wytrawne stoły. Pracownia w Lesznie, dojazd do 60 km. Projekt, wycena i ustawienie na miejscu."
 >
   <!-- ===== SLIDER ===== -->
   <section class="hero" aria-label="Prezentacja pracowni">
@@ -32,7 +32,7 @@ import { firma, liczby, okazje } from "../data/firma";
         <NaglowekSekcji
           etykieta="Realizacje"
           tytul="Stoły, które już stanęły"
-          opis="Każde zamówienie powstaje od nowa — poniżej wybór z ostatnich sezonów."
+          opis="Każde zamówienie powstaje od nowa — poniżej wybór z ostatnich sezonów w Lesznie i okolicy."
         />
         <a class="btn btn--linia pojaw o1" href="/realizacje" style="margin-bottom:clamp(28px,4vw,52px)">
           Wszystkie realizacje <span class="grot" aria-hidden="true">→</span>
@@ -54,8 +54,8 @@ import { firma, liczby, okazje } from "../data/firma";
     <div class="strefa">
       <NaglowekSekcji
         etykieta="Oferta"
-        tytul="Wybierz, czego potrzebujesz"
-        opis="Możesz zamówić sam tort albo powierzyć mi całą oprawę kulinarną. Każdą wycenę przygotowuję indywidualnie."
+        tytul="Torty i catering okolicznościowy w Lesznie"
+        opis="Możesz zamówić sam tort albo powierzyć mi całą oprawę kulinarną — słodki stół, wytrawne przekąski i upominki dla gości. Każdą wycenę przygotowuję indywidualnie."
       />
       <KartyOferty />
       <PasekCta />
@@ -117,12 +117,12 @@ import { firma, liczby, okazje } from "../data/firma";
     <div class="strefa">
       <NaglowekSekcji
         etykieta="Kontakt"
-        tytul="Zaplanujmy to razem"
+        tytul={`Pracownia w ${firma.adres.miastoW} — napisz, co planujesz`}
         opis={`Napisz kilka zdań o swojej uroczystości. Odpowiadam w ciągu ${firma.czasOdpowiedzi} — z pomysłem i widełkami cenowymi, nie samym cennikiem.`}
         srodek={true}
       />
       <div class="pod-galeria pojaw" style="gap:12px;flex-wrap:wrap">
-        <a class="btn btn--roz" href="/kontakt#formularz">
+        <a class="btn btn--akcent" href="/kontakt#formularz">
           Zamów wycenę <span class="grot" aria-hidden="true">→</span>
         </a>
         <a class="btn btn--linia" href={firma.telefonHref}>Zadzwoń: {firma.telefon}</a>

@@ -11,6 +11,21 @@ const dzis = new Date().toISOString().slice(0, 10);
 ---
 
 <div class="formularz pojaw o1" id="formularz">
+  {
+    /* Bez skonfigurowanego adresu wysyłki formularz nic nie wyśle. Uprzedzamy
+       o tym NAD formularzem, a nie dopiero po kliknięciu „Wyślij” — inaczej
+       użytkownik opisuje całe przyjęcie i dowiaduje się na końcu, że poszło
+       donikąd. Po uzupełnieniu PUBLIC_ENDPOINT_FORMULARZA blok znika sam. */
+    !endpoint && (
+      <p class="ostrzezenie-formularza" role="status">
+        <b>Wysyłka formularza jest jeszcze w przygotowaniu.</b> Najszybciej
+        odpowiem na maila albo telefon:{" "}
+        <a href={`mailto:${firma.email}`}>{firma.email}</a>,{" "}
+        <a href={firma.telefonHref}>{firma.telefon}</a>.
+      </p>
+    )
+  }
+
   <p class="wymagane-info">Pola oznaczone gwiazdką (*) są wymagane.</p>
 
   <form id="form-wycena" novalidate>
@@ -68,7 +83,7 @@ const dzis = new Date().toISOString().slice(0, 10);
       </div>
 
       <fieldset class="pole pole--full" style="border:0;padding:0;margin:0">
-        <legend style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:#6B554A;padding:0 0 6px">
+        <legend style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tekst-3);padding:0 0 6px">
           Czego potrzebujesz
         </legend>
         <div class="chipy">

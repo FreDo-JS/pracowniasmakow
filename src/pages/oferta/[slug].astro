@@ -17,7 +17,7 @@ export function getStaticPaths() {
 const { pozycja } = Astro.props;
 ---
 
-<Layout tytul={pozycja.tytul} opis={pozycja.opisSeo}>
+<Layout tytul={pozycja.tytulSeo} opis={pozycja.opisSeo}>
   <!-- ===== NAGŁÓWEK PODSTRONY ===== -->
   <section class="hero-strony">
     <div class="strefa">
@@ -25,9 +25,9 @@ const { pozycja } = Astro.props;
         sciezka={[{ tekst: "Oferta", url: "/oferta" }, { tekst: pozycja.tytul }]}
       />
       <p class="etykieta">{pozycja.etykieta}</p>
-      <h1>{pozycja.tytul}</h1>
+      <h1>{pozycja.naglowek}</h1>
       <p class="lead">{pozycja.lead}</p>
-      <a class="btn btn--roz" href="/kontakt#formularz">
+      <a class="btn btn--akcent" href="/kontakt#formularz">
         Zamów wycenę <span class="grot" aria-hidden="true">→</span>
       </a>
     </div>
@@ -69,6 +69,20 @@ const { pozycja } = Astro.props;
           ))
         }
       </div>
+
+      {
+        pozycja.powiazane && (
+          <p class="powiazane pojaw">
+            Zobacz też:{" "}
+            {pozycja.powiazane.map((l, i) => (
+              <>
+                {i > 0 && <span aria-hidden="true"> · </span>}
+                <a href={l.url}>{l.tekst}</a>
+              </>
+            ))}
+          </p>
+        )
+      }
 
       {
         pozycja.smaki && (

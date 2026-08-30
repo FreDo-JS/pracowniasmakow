@@ -10,20 +10,32 @@ export const firma = {
   wlascicielka: "Basia Kot",
   haslo: "Twoje przyjęcie może mieć wiele smaków",
   opis:
-    "Torty weselne i okolicznościowe, słodkie kompozycje oraz wytrawne przekąski. " +
-    "Projekt, wykonanie i aranżacja stołu na miejscu.",
+    "Torty na zamówienie i catering okolicznościowy w Lesznie: torty weselne, " +
+    "urodzinowe i komunijne, słodkie stoły oraz wytrawne przekąski. " +
+    "Projekt, wykonanie i ustawienie stołu na miejscu.",
+
+  /* Krótkie określenie usługi z miastem — używane w nagłówkach i opisach.
+     Trzymane tutaj, żeby brzmiało tak samo w każdym miejscu serwisu. */
+  uslugaZMiastem: "torty i catering okolicznościowy w Lesznie",
 
   /* --- kontakt --- */
   telefon: "+48 000 000 000",
   telefonHref: "tel:+48000000000",
   email: "kontakt@pracowniawielusmakow.pl",
 
-  /* --- adres pracowni --- */
+  /* --- adres pracowni ---
+     Ulica jest jedyną rzeczą, której nie znam — uzupełnij ją przed publikacją.
+     Dopóki zostaje w nawiasach, dane strukturalne pomijają cały adres, żeby
+     nie podawać Google wypełniacza (patrz Layout.astro). */
   adres: {
     ulica: "[ulica i numer]",
-    kod: "[00-000]",
-    miasto: "[miejscowość]",
-    wojewodztwo: "[województwo]",
+    kod: "64-100",
+    miasto: "Leszno",
+    /* Polski wymaga odmiany, a doklejanie końcówek w szablonie dawało
+       „Lesznoie”. Formy trzymamy wprost: „w Lesznie”, „z Leszna”. */
+    miastoW: "Lesznie",
+    miastoZ: "Leszna",
+    wojewodztwo: "wielkopolskie",
   },
 
   /* --- godziny --- */
@@ -31,14 +43,31 @@ export const firma = {
   godzinyOpis: "Sob.–niedz. — realizacje u klientów. Wiadomości odbieram codziennie.",
   czasOdpowiedzi: "2 dni robocze",
 
-  /* --- zasięg --- */
-  miasta: ["[miasto 1]", "[miasto 2]", "[miasto 3]"],
+  /* --- zasięg ---
+     Lista trafia na stronę kontaktu i do danych strukturalnych jako obszar
+     działania. Skreśl te miejscowości, do których faktycznie nie dojeżdżasz. */
+  miasta: [
+    "Leszno",
+    "Rydzyna",
+    "Osieczna",
+    "Święciechowa",
+    "Śmigiel",
+    "Kościan",
+    "Gostyń",
+    "Rawicz",
+    "Bojanowo",
+    "Wschowa",
+    "Góra",
+  ],
   promien: "60 km",
 
   /* --- social --- */
   instagram: "https://www.instagram.com/pracownia_wielu_smakow/",
   instagramNazwa: "@pracownia_wielu_smakow",
-  facebook: "https://www.facebook.com/",
+  /* Pełny adres profilu, nie samo facebook.com — goły adres serwisu jest dla
+     Google fałszywym sygnałem tożsamości. Pusty ciąg ukrywa link i pomija go
+     w danych strukturalnych. */
+  facebook: "",
 
   /* --- formalne --- */
   nip: "[NIP do uzupełnienia]",
@@ -46,6 +75,11 @@ export const firma = {
   /* --- SEO --- */
   domena: "https://pracowniawielusmakow.pl",
 } as const;
+
+/* Pola oznaczone [nawiasami] są nieuzupełnione. Sprawdzamy to w jednym miejscu,
+   żeby nigdzie — a zwłaszcza w danych strukturalnych — nie wyszedł wypełniacz. */
+export const uzupelnione = (wartosc: string) =>
+  wartosc.trim() !== "" && !wartosc.includes("[");
 
 /* Mapa Google — wklej sam adres URL z „Udostępnij → Umieść mapę”.
    Zostaw pusty ciąg, a w tym miejscu wyświetli się placeholder. */
@@ -69,16 +103,16 @@ export const nawLewa: Link[] = [
     url: "/oferta",
     pod: [
       { tekst: "Torty", url: "/oferta/torty" },
-      { tekst: "Słodkie kompozycje", url: "/oferta/slodkie-kompozycje" },
-      { tekst: "Wytrawny stół", url: "/oferta/wytrawny-stol" },
+      { tekst: "Tort na urodziny", url: "/oferta/torty-urodzinowe" },
+      { tekst: "Słodki stół", url: "/oferta/slodkie-kompozycje" },
+      { tekst: "Catering okolicznościowy", url: "/oferta/wytrawny-stol" },
       { tekst: "Upominki dla gości", url: "/oferta/upominki-dla-gosci" },
     ],
   },
 ];
 
 export const nawPrawa: Link[] = [
-  /* TEST — wyłączone „O mnie”. Odkomentuj, żeby przywrócić: */
-  // { tekst: "O mnie", url: "/o-mnie" },
+  { tekst: "O mnie", url: "/o-mnie" },
   { tekst: "Kontakt", url: "/kontakt" },
 ];
 

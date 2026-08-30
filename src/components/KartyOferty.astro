@@ -4,7 +4,8 @@ import { oferta } from "../data/oferta";
 export type Props = { pomin?: string };
 const { pomin } = Astro.props;
 
-const pozycje = oferta.filter((o) => o.slug !== pomin);
+/* wKartach === false → wpis ma podstronę, ale nie zajmuje kafla w siatce */
+const pozycje = oferta.filter((o) => o.slug !== pomin && o.wKartach !== false);
 ---
 
 <div class="k-siatka">
@@ -12,7 +13,20 @@ const pozycje = oferta.filter((o) => o.slug !== pomin);
     pozycje.map((o, i) => (
       <a class={`karta pojaw o${i}`} href={`/oferta/${o.slug}`}>
         <div class="foto">
-          <span>{o.warianty[0].nazwa}</span>
+          {
+            o.zdjecie ? (
+              <img
+                src={o.zdjecie}
+                alt={`${o.tytul} — ${o.warianty[0].nazwa}. Pracownia Wielu Smaków, Leszno.`}
+                width="640"
+                height="480"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <span>{o.warianty[0].nazwa}</span>
+            )
+          }
         </div>
         <div class="karta-tekst">
           <small>{o.etykieta}</small>

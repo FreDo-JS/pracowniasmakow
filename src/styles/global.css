@@ -4,37 +4,51 @@
    ============================================================ */
 
 :root{
-  /* --- baza --- */
-  --atrament:#2A211C;
-  --len:#EFE8DE;
-  --len-jasny:#F6F2EB;
-  --puder:#E3C9BC;
-  --zloto:#B38B4A;
+  /* ============================================================
+     PALETA CZEKOLADOWA — pięć tonów klientki, rozłożonych według
+     reguły 60-30-10: najjaśniejszy niesie 60% powierzchni, brązy
+     około 30%, karmel zostaje na 10% i trafia wyłącznie tam, gdzie
+     ma się kliknąć.
 
-  /* --- brąz: wersja dekoracyjna i wersja do tekstu (kontrast AA) --- */
-  --mokka:#8A6A55;
-  --mokka-tekst:#755440;
+     Karmel ma na kremie kontrast 2,8:1 — za mało na tekst. Dlatego
+     akcentem TEKSTOWYM jest mleczna czekolada, a karmel występuje
+     jako tło przycisku (z ciemnym napisem) i jako element ozdobny.
+     ============================================================ */
+  --tlo:#FFF8EA;          /* Śmietankowy Budyń — tło każdej strony */
+  --panel:#F2E3D0;        /* Ciepła Wanilia — sekcje wyciągnięte */
+  --powierzchnia:#F2E3D0; /* Ciepła Wanilia — karty, formularze, okna */
+  --karmel:#C28A54;       /* Słodki Karmel — przyciski akcji i ozdobniki */
+  --czekolada:#785438;    /* Mleczna Czekolada — stopka, obrysy, akcent tekstowy */
+  --kakao:#362114;        /* Gorzka Czekolada — tekst i nagłówki, zamiast czerni */
 
-  /* --- szałwia: jw. --- */
-  --szalwia:#7C8570;
-  --szalwia-tekst:#5E664F;
+  /* Czysta biel wyłącznie w headerze — na dużych płaszczyznach męczy wzrok,
+     więc reszta serwisu stoi na złamanej bieli #FFF8EA. */
+  --biel:#FFFFFF;
+  /* Ten sam Śmietankowy Budyń, ale w roli tekstu i elementów NA ciemnym tle. */
+  --jasny:#FFF8EA;
 
-  /* --- PURPUROWY RÓŻ: główny akcent serwisu --- */
-  --roz:#A8467A;          /* tekst i obramowania — kontrast AA na jasnym tle */
-  --roz-ciemny:#7C2F58;   /* nagłówki i stany :hover */
-  --roz-jasny:#C9739E;    /* linie i gradienty ozdobne */
-  --roz-mgla:#F5E4EC;     /* delikatne tła sekcji */
-  --roz-mgla-2:#EBD0DE;   /* tła kart i ikon */
+  /* Dwa tony wyprowadzone między gorzką a mleczną czekoladą — hierarchia
+     tekstu potrzebuje stopni pośrednich, których paleta nie zawiera. */
+  --tekst-2:#5B4230;      /* akapity drugoplanowe */
+  --tekst-3:#6B4C36;      /* drobne podpisy, okruszki, etykiety pól */
 
-  --tekst-2:#5B4C43;      /* akapity drugoplanowe */
+  /* Karmel rozcieńczony — tła ikon i plakietek. Przezroczystość sprawia,
+     że tint działa tak samo na kremie, jak na wanilii. */
+  --mgla:#F2E3D0;
+  --mgla-2:rgba(194,138,84,.26);
 
-  --display:"Fraunces",Georgia,serif;
-  --sans:"Jost","Helvetica Neue",Arial,sans-serif;
+  --panel-obrys:rgba(120,84,56,.18);
+
+  /* Fraunces + Inter — obie rodziny mają pełny zestaw polskich znaków
+     (ą ć ę ł ń ó ś ź ż), więc nic nie podmienia się na zapasowy krój. */
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Inter","Segoe UI","Helvetica Neue",Arial,sans-serif;
 
   --r-duzy:28px;
   --r-sredni:18px;
-  --cien:0 18px 50px -22px rgba(42,33,28,.35);
-  --cien-roz:0 18px 46px -24px rgba(124,47,88,.45);
+  --cien:0 18px 50px -22px rgba(54,33,20,.35);
+  --cien-akcent:0 18px 46px -24px rgba(120,84,56,.45);
+  --cien-panel:0 20px 46px -30px rgba(54,33,20,.4);
   --ease:cubic-bezier(.22,1,.36,1);
 
   /* wysokość pływającego headera + odstęp; w widoku komputerowym
@@ -45,27 +59,65 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--wys-naglowka) + 24px)}
 body{
-  margin:0;background:var(--len);color:var(--atrament);
+  margin:0;background:var(--tlo);color:var(--kakao);
   font-family:var(--sans);font-weight:300;line-height:1.7;
+  /* Inter ma wysokie oczko — bez tego drobne kapitaliki robią się ciasne. */
+  letter-spacing:.005em;
   font-size:clamp(15px,1.02vw,16.5px);
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
 img{max-width:100%;display:block}
 a{color:inherit}
-h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.08;letter-spacing:-.015em;margin:0}
+h1,h2,h3{
+  font-family:var(--display);font-weight:400;line-height:1.08;
+  letter-spacing:-.015em;margin:0;
+  /* oś optycznego stopnia pisma Fraunces — rysunek liter dopasowuje się
+     do wielkości, więc nagłówki są miększe, a podtytuły węższe */
+  font-optical-sizing:auto;
+}
 h1{font-size:clamp(2rem,4.8vw,3.6rem)}
 h2{font-size:clamp(1.9rem,4.4vw,3.4rem)}
 h3{font-size:clamp(1.15rem,1.7vw,1.45rem);line-height:1.25}
 p{margin:0 0 1.05em}
 
-/* Obrys fokusu w różu — złoto nie spełniało minimum 3:1 na kremowym tle. */
-:focus-visible{outline:2px solid var(--roz);outline-offset:3px;border-radius:4px}
+/* Obrys fokusu w fiolecie — jasne tony palety nie dają wymaganych 3:1. */
+:focus-visible{outline:2px solid var(--czekolada);outline-offset:3px;border-radius:4px}
 
 .strefa{width:85%;max-width:1400px;margin:0 auto}
 @media(max-width:820px){.strefa{width:92%}}
 section{padding:clamp(56px,8vw,110px) 0}
 
-.skip{position:absolute;left:-9999px;top:0;background:var(--atrament);color:var(--len);padding:12px 20px;z-index:200}
+/* Karty domyślnie stoją na wanilii; wewnątrz panelu (który sam jest wanilią)
+   przechodzą na jaśniejszy krem, żeby nie zlały się z tłem sekcji. */
+.kategorie > .strefa .karta,
+.kategorie > .strefa .smaki li,
+.dodatki   > .strefa .dodatek{background:var(--tlo)}
+
+/* ---------- wyciągnięte sekcje ----------
+   Tło strony jest wszędzie takie samo, więc sekcje, które mają się
+   wyróżnić, nie dostają już paska przez całą szerokość ekranu — dostają
+   zaokrąglone okienko w innym kolorze, wpisane w zwykłą kolumnę treści.
+   Klasy .kategorie / .dodatki / .gdzie zostają w szablonach bez zmian. */
+.kategorie,.dodatki,.gdzie{
+  background:none;border-block:0;
+  padding:clamp(26px,4vw,58px) 0;
+}
+.kategorie > .strefa,
+.dodatki   > .strefa,
+.gdzie     > .strefa{
+  background:var(--panel);
+  border:1px solid var(--panel-obrys);
+  border-radius:var(--r-duzy);
+  padding:clamp(30px,4.4vw,68px) clamp(20px,3.4vw,56px);
+  box-shadow:var(--cien-panel);
+}
+@media(max-width:560px){
+  .kategorie > .strefa,
+  .dodatki   > .strefa,
+  .gdzie     > .strefa{border-radius:var(--r-sredni);padding:26px 18px 30px}
+}
+
+.skip{position:absolute;left:-9999px;top:0;background:var(--kakao);color:var(--tlo);padding:12px 20px;z-index:200}
 .skip:focus{left:12px;top:12px}
 
 .sr-only{
@@ -77,11 +129,11 @@ section{padding:clamp(56px,8vw,110px) 0}
 .etykieta{
   display:flex;align-items:center;gap:.9em;
   font-size:.66rem;letter-spacing:.32em;text-transform:uppercase;
-  color:var(--roz);font-weight:400;margin:0 0 1.4em;
+  color:var(--czekolada);font-weight:400;margin:0 0 1.4em;
 }
 .etykieta::before{
   content:"";width:clamp(18px,3vw,44px);height:1px;
-  background:linear-gradient(90deg,var(--roz-jasny),var(--zloto));
+  background:linear-gradient(90deg,var(--karmel),var(--karmel));
 }
 .naglowek{max-width:46ch;margin-bottom:clamp(28px,4vw,52px)}
 .naglowek p{color:var(--tekst-2);max-width:56ch;margin-top:1em}
@@ -94,18 +146,20 @@ section{padding:clamp(56px,8vw,110px) 0}
   font-family:var(--sans);font-size:.73rem;font-weight:400;
   letter-spacing:.2em;text-transform:uppercase;
   padding:1.05em 2.1em;border-radius:999px;cursor:pointer;
-  text-decoration:none;border:1px solid var(--atrament);
-  background:var(--atrament);color:var(--len-jasny);
+  text-decoration:none;border:1px solid var(--kakao);
+  background:var(--kakao);color:var(--jasny);
   transition:transform .4s var(--ease),box-shadow .4s var(--ease),background .3s,color .3s,border-color .3s;
 }
-.btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(42,33,28,.6)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(54,33,20,.6)}
 .btn .grot{transition:transform .4s var(--ease)}
 .btn:hover .grot{transform:translateX(4px)}
-.btn--linia{background:transparent;color:var(--atrament);border-color:rgba(42,33,28,.3)}
-.btn--linia:hover{border-color:var(--roz);color:var(--roz-ciemny)}
-.btn--jasny{background:var(--len-jasny);color:var(--atrament);border-color:var(--len-jasny)}
-.btn--roz{background:var(--roz);border-color:var(--roz);color:#fff}
-.btn--roz:hover{background:var(--roz-ciemny);border-color:var(--roz-ciemny);box-shadow:var(--cien-roz)}
+.btn--linia{background:transparent;color:var(--kakao);border-color:rgba(54,33,20,.3)}
+.btn--linia:hover{border-color:var(--czekolada);color:var(--kakao)}
+.btn--jasny{background:var(--jasny);color:var(--kakao);border-color:var(--jasny)}
+/* Karmel = kolor akcji (te 10% z reguły 60-30-10). Napis w gorzkiej czekoladzie,
+   bo biały tekst na karmelu daje 2,9:1 — poniżej progu czytelności. */
+.btn--akcent{background:var(--karmel);border-color:var(--karmel);color:var(--kakao)}
+.btn--akcent:hover{background:var(--czekolada);border-color:var(--czekolada);color:var(--jasny);box-shadow:var(--cien-akcent)}
 .btn--maly{padding:.8em 1.4em;font-size:.66rem}
 /* ============================================================
    HEADER
@@ -125,15 +179,19 @@ section{padding:clamp(56px,8vw,110px) 0}
   /* Bez backdrop-filter w wersji mobilnej — on również tworzy kontekst
      pozycjonowania i uwięziłby pełnoekranowe menu wewnątrz headera.
      Blur wraca w widoku komputerowym niżej. */
-  background:rgba(246,242,235,.94);
-  border:1px solid rgba(168,70,122,.18);
-  box-shadow:0 10px 30px -20px rgba(42,33,28,.5);
+  /* Header zostaje biały — bez prześwitu tła, żeby logo miało zawsze
+     ten sam podkład niezależnie od tego, co pod nim przewija. */
+  background:var(--biel);
+  /* Biel na kremie różni się minimalnie, więc to obrys i cień wydzielają
+     header z tła — bez nich pigułka rozpłynęłaby się w stronie. */
+  border:1px solid rgba(120,84,56,.2);
+  box-shadow:0 12px 32px -18px rgba(54,33,20,.55);
   transition:padding .4s var(--ease),box-shadow .4s var(--ease),background .4s;
 }
 .naglowek-strony.zwiniety{
   padding:6px 12px;
-  box-shadow:0 16px 40px -22px rgba(42,33,28,.7);
-  background:rgba(246,242,235,.96);
+  box-shadow:0 16px 40px -22px rgba(54,33,20,.7);
+  background:var(--biel);
 }
 
 /* --- logo --- */
@@ -153,19 +211,19 @@ section{padding:clamp(56px,8vw,110px) 0}
 }
 .naw a:not(.btn)::after{
   content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
-  background:var(--roz);transform:scaleX(0);transform-origin:right;
+  background:var(--czekolada);transform:scaleX(0);transform-origin:right;
   transition:transform .4s var(--ease);
 }
 .naw a:not(.btn):hover::after,
 .naw a[aria-current="page"]:not(.btn)::after{transform:scaleX(1);transform-origin:left}
-.naw a[aria-current="page"]{color:var(--roz-ciemny)}
+.naw a[aria-current="page"]{color:var(--kakao)}
 /* Przycisk wyceny nigdy się nie podkreśla — również gdy jest stroną bieżącą. */
 .naw .btn::after{display:none!important}
 
 /* telefon w nawigacji */
-.naw-tel a{color:var(--mokka-tekst)}
-.naw-tel a:hover{color:var(--atrament)}
-.naw-tel span{color:var(--roz)}
+.naw-tel a{color:var(--tekst-3)}
+.naw-tel a:hover{color:var(--kakao)}
+.naw-tel span{color:var(--czekolada)}
 
 /* --- podmenu „Oferta" --- */
 .ma-pod{position:relative}
@@ -176,7 +234,7 @@ section{padding:clamp(56px,8vw,110px) 0}
   padding:0;line-height:1;font-size:.6rem;
   transition:transform .3s var(--ease),color .3s;
 }
-.pod-przelacz[aria-expanded="true"]{transform:rotate(180deg);color:var(--roz)}
+.pod-przelacz[aria-expanded="true"]{transform:rotate(180deg);color:var(--czekolada)}
 .podmenu{list-style:none;margin:0;padding:0}
 .podmenu a::after{display:none}
 
@@ -184,10 +242,10 @@ section{padding:clamp(56px,8vw,110px) 0}
 .burger{
   grid-area:lewa;justify-self:start;
   display:none;width:44px;height:44px;border-radius:50%;flex:none;
-  border:1px solid rgba(168,70,122,.3);background:transparent;cursor:pointer;
+  border:1px solid rgba(120,84,56,.3);background:transparent;cursor:pointer;
   align-items:center;justify-content:center;flex-direction:column;gap:5px;
 }
-.burger i{display:block;width:16px;height:1.5px;background:var(--atrament);transition:transform .35s var(--ease),opacity .25s}
+.burger i{display:block;width:16px;height:1.5px;background:var(--kakao);transition:transform .35s var(--ease),opacity .25s}
 .burger[aria-expanded="true"] i:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .burger[aria-expanded="true"] i:nth-child(2){opacity:0}
 .burger[aria-expanded="true"] i:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
@@ -214,7 +272,7 @@ section{padding:clamp(56px,8vw,110px) 0}
     display:grid;grid-template-columns:1fr auto 1fr;
     grid-template-areas:"lewa marka prawa";
     gap:var(--odstep-naw);align-items:center;
-    background:rgba(246,242,235,.85);backdrop-filter:blur(14px);
+    background:var(--biel);backdrop-filter:blur(14px);
   }
   .naglowek-strony.zwiniety{padding:6px 34px}
 
@@ -234,7 +292,11 @@ section{padding:clamp(56px,8vw,110px) 0}
   .podmenu{
     position:absolute;top:calc(100% + 14px);left:-18px;z-index:20;
     padding:10px;min-width:250px;
-    background:var(--len-jasny);border:1px solid rgba(168,70,122,.2);
+    /* Pozycja bieżąca i najechana dostają pigułkę tła. Bez odstępu
+       pigułka dotykała sąsiedniej pozycji i obie czytały się jak jeden
+       blok — stąd te 4 px prześwitu między wierszami. */
+    display:flex;flex-direction:column;gap:4px;
+    background:var(--biel);border:1px solid rgba(120,84,56,.2);
     border-radius:18px;box-shadow:var(--cien);
     opacity:0;visibility:hidden;transform:translateY(-8px);
     transition:opacity .28s,transform .28s var(--ease),visibility .28s;
@@ -248,7 +310,7 @@ section{padding:clamp(56px,8vw,110px) 0}
     transition:background .3s,color .3s;white-space:nowrap;
   }
   .podmenu a:hover,
-  .podmenu a[aria-current="page"]{background:var(--roz-mgla);color:var(--roz-ciemny)}
+  .podmenu a[aria-current="page"]{background:var(--mgla);color:var(--kakao)}
 
   .naw .btn{padding:.85em 1.6em}
 }
@@ -268,7 +330,7 @@ section{padding:clamp(56px,8vw,110px) 0}
     position:fixed;left:0;right:0;top:0;
     height:100vh;height:100dvh;z-index:90;
     display:flex;flex-direction:column;
-    background:var(--len-jasny);
+    background:var(--biel);
     padding:calc(var(--wys-naglowka) + 20px) clamp(22px,6vw,40px)
             calc(26px + env(safe-area-inset-bottom,0px));
     overflow-y:auto;overscroll-behavior:contain;
@@ -284,7 +346,7 @@ section{padding:clamp(56px,8vw,110px) 0}
 
   .naw{display:flex;flex-direction:column;align-items:stretch;gap:0;text-align:left}
   .naw-prawa{flex:1}
-  .naw > li{border-bottom:1px solid rgba(168,70,122,.16)}
+  .naw > li{border-bottom:1px solid rgba(120,84,56,.16)}
 
   .naw a:not(.btn){
     display:block;padding:18px 0;width:100%;
@@ -306,12 +368,12 @@ section{padding:clamp(56px,8vw,110px) 0}
   .podmenu a{
     display:block;padding:9px 0;
     font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--mokka-tekst);
+    color:var(--tekst-3);
   }
-  .podmenu a[aria-current="page"]{color:var(--roz-ciemny)}
+  .podmenu a[aria-current="page"]{color:var(--kakao)}
   .podmenu a::before{
     content:"";display:inline-block;width:14px;height:1px;
-    background:var(--roz-jasny);vertical-align:middle;margin-right:.9em;
+    background:var(--karmel);vertical-align:middle;margin-right:.9em;
   }
 
   /* przycisk wyceny — przyklejony do dołu ekranu */
@@ -338,7 +400,7 @@ section{padding:clamp(56px,8vw,110px) 0}
 .hero{padding-top:calc(var(--wys-naglowka) + clamp(10px,2vw,20px));padding-bottom:0}
 .slider{
   position:relative;border-radius:var(--r-duzy);overflow:hidden;
-  aspect-ratio:16/7.4;box-shadow:var(--cien);background:var(--puder);
+  aspect-ratio:16/7.4;box-shadow:var(--cien);background:var(--karmel);
 }
 @media(max-width:900px){.slider{aspect-ratio:4/4.4;border-radius:22px}}
 
@@ -352,15 +414,21 @@ section{padding:clamp(56px,8vw,110px) 0}
 .slajd.aktywny .slajd-tlo{transform:scale(1)}
 .slajd-tlo::after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(42,33,28,.12) 0%,rgba(42,33,28,.74) 100%);
+  /* Karmel jest sporo jaśniejszy niż poprzedni podkład slajdów, więc
+     przyciemnienie musi być mocniejsze — inaczej kremowy tekst traci czytelność. */
+  background:linear-gradient(180deg,rgba(54,33,20,.2) 0%,rgba(54,33,20,.82) 100%);
 }
-.tlo-1{background:repeating-linear-gradient(125deg,rgba(42,33,28,.07) 0 16px,transparent 16px 32px),linear-gradient(140deg,var(--puder),var(--roz))}
-.tlo-2{background:repeating-linear-gradient(125deg,rgba(42,33,28,.07) 0 16px,transparent 16px 32px),linear-gradient(140deg,var(--szalwia),#4E5A45)}
-.tlo-3{background:repeating-linear-gradient(125deg,rgba(42,33,28,.07) 0 16px,transparent 16px 32px),linear-gradient(140deg,var(--roz-jasny),var(--roz-ciemny))}
+/* Zdjęcie slajdu wypełnia kadr pod przyciemniającą nakładką (::after).
+   Bez tego byłoby zwykłym blokiem i rozpychało slajd. */
+.slajd-tlo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 
-.slajd-tresc{position:relative;z-index:2;color:var(--len-jasny);padding:clamp(24px,4vw,58px);max-width:38rem}
-.slajd-tresc .etykieta{color:var(--puder)}
-.slajd-tresc .etykieta::before{background:var(--puder)}
+.tlo-1{background:repeating-linear-gradient(125deg,rgba(54,33,20,.07) 0 16px,transparent 16px 32px),linear-gradient(140deg,var(--karmel),var(--czekolada))}
+.tlo-2{background:repeating-linear-gradient(125deg,rgba(54,33,20,.07) 0 16px,transparent 16px 32px),linear-gradient(140deg,var(--karmel),#4A3222)}
+.tlo-3{background:repeating-linear-gradient(125deg,rgba(54,33,20,.07) 0 16px,transparent 16px 32px),linear-gradient(140deg,var(--karmel),var(--kakao))}
+
+.slajd-tresc{position:relative;z-index:2;color:var(--jasny);padding:clamp(24px,4vw,58px);max-width:38rem}
+.slajd-tresc .etykieta{color:var(--jasny)}
+.slajd-tresc .etykieta::before{background:var(--karmel)}
 .slajd-tytul{
   font-family:var(--display);font-weight:300;line-height:1.08;letter-spacing:-.015em;
   font-size:clamp(1.9rem,4.6vw,3.7rem);margin:0 0 .35em;
@@ -374,7 +442,11 @@ section{padding:clamp(56px,8vw,110px) 0}
 
 .slajd-opis{
   position:absolute;top:clamp(16px,2.4vw,28px);left:clamp(16px,2.4vw,28px);z-index:2;
-  font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(246,242,235,.72);
+  font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
+  /* Ten podpis stoi u góry slajdu, gdzie przyciemnienie jest najsłabsze —
+     na samym karmelu kremowy tekst miałby 2,2:1. Własna plakietka to naprawia. */
+  color:var(--jasny);background:rgba(54,33,20,.72);
+  padding:.45em .9em;border-radius:999px;
 }
 
 /* sterowanie: kropki + pauza (wymóg WCAG dla treści ruchomej) */
@@ -388,16 +460,19 @@ section{padding:clamp(56px,8vw,110px) 0}
 .kropka{
   width:26px;height:26px;border-radius:2px;border:0;cursor:pointer;
   padding:11.5px 0;box-sizing:border-box;background-clip:content-box;
-  background-color:rgba(246,242,235,.45);transition:background-color .3s,width .4s var(--ease);
+  background-color:rgba(255,248,234,.45);transition:background-color .3s,width .4s var(--ease);
 }
-.kropka[aria-current="true"]{background-color:var(--len-jasny);width:44px}
+.kropka[aria-current="true"]{background-color:var(--jasny);width:44px}
 .pauza{
   width:30px;height:30px;border-radius:50%;cursor:pointer;padding:0;
-  border:1px solid rgba(246,242,235,.45);background:rgba(42,33,28,.28);
-  color:var(--len-jasny);font-size:.62rem;display:grid;place-items:center;
+  /* Przycisk pauzy jest wymagany przez WCAG dla treści ruchomej, więc jego
+     ikona musi być czytelna niezależnie od tego, jaki slajd akurat leci —
+     stąd własne, wyraźne tło, a nie sam prześwit. */
+  border:1px solid rgba(255,248,234,.5);background:rgba(54,33,20,.72);
+  color:var(--jasny);font-size:.62rem;display:grid;place-items:center;
   backdrop-filter:blur(6px);transition:background .3s,color .3s;
 }
-.pauza:hover{background:var(--len-jasny);color:var(--atrament)}
+.pauza:hover{background:var(--jasny);color:var(--kakao)}
 @media(max-width:900px){
   .sterowanie{left:clamp(16px,2.4vw,28px);bottom:auto;top:calc(clamp(16px,2.4vw,28px) + 26px)}
 }
@@ -405,23 +480,24 @@ section{padding:clamp(56px,8vw,110px) 0}
 /* pasek zaufania pod sliderem */
 .pasek-zaufania{
   display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(12px,3vw,40px);
-  padding:22px 0 0;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mokka-tekst);
+  padding:22px 0 0;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--tekst-3);
   list-style:none;margin:0;
 }
 .pasek-zaufania li{display:flex;align-items:center;gap:clamp(12px,3vw,40px)}
-.pasek-zaufania li::after{content:"◇";font-size:.55rem;color:var(--roz-jasny)}
+.pasek-zaufania li::after{content:"◇";font-size:.55rem;color:var(--karmel)}
 .pasek-zaufania li:last-child::after{display:none}
 
 /* ---------- sloty na zdjęcia ---------- */
 .foto{
   position:relative;overflow:hidden;border-radius:var(--r-sredni);
-  background:repeating-linear-gradient(135deg,rgba(168,70,122,.06) 0 12px,transparent 12px 24px),var(--puder);
-  border:1px solid rgba(168,70,122,.2);
+  background:repeating-linear-gradient(135deg,rgba(120,84,56,.06) 0 12px,transparent 12px 24px),var(--karmel);
+  border:1px solid rgba(120,84,56,.2);
   display:flex;align-items:flex-end;
 }
 .foto span{
   font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--mokka-tekst);padding:13px 15px;line-height:1.5;
+  /* Podkład kafla to karmel — czytelna jest na nim dopiero gorzka czekolada. */
+  color:var(--kakao);padding:13px 15px;line-height:1.5;
 }
 .foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 
@@ -431,8 +507,9 @@ section{padding:clamp(56px,8vw,110px) 0}
 .hero-strony{
   padding-top:calc(var(--wys-naglowka) + clamp(28px,5vw,64px));
   padding-bottom:clamp(36px,5vw,68px);
-  background:linear-gradient(180deg,var(--roz-mgla) 0%,var(--len) 100%);
-  border-bottom:1px solid rgba(168,70,122,.14);
+  /* jednolite tło — bez gradientu i bez linii, żeby strona zaczynała się
+     tym samym kolorem, którym się kończy */
+  background:none;
 }
 .hero-strony h1{max-width:20ch}
 .hero-strony .lead{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--tekst-2);max-width:54ch;margin-top:1.1em}
@@ -440,13 +517,15 @@ section{padding:clamp(56px,8vw,110px) 0}
 
 .okruszki{
   display:flex;flex-wrap:wrap;gap:.55em;align-items:center;list-style:none;margin:0 0 1.6em;padding:0;
-  font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mokka-tekst);
+  font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tekst-3);
 }
-.okruszki a{text-decoration:none}
-.okruszki a:hover{color:var(--roz-ciemny)}
-.okruszki li::after{content:"·";margin-left:.55em;color:var(--roz-jasny)}
+/* Cel dotykowy: sam tekst miał 12 px wysokości, minimum to 24 px (WCAG 2.5.8).
+   Padding rekompensujemy ujemnym marginesem, więc odstępy zostają bez zmian. */
+.okruszki a{text-decoration:none;display:inline-block;padding:6px 0;margin:-6px 0}
+.okruszki a:hover{color:var(--kakao)}
+.okruszki li::after{content:"·";margin-left:.55em;color:var(--karmel)}
 .okruszki li:last-child::after{display:none}
-.okruszki [aria-current="page"]{color:var(--roz-ciemny)}
+.okruszki [aria-current="page"]{color:var(--kakao)}
 
 /* ============================================================
    GALERIA REALIZACJI
@@ -456,11 +535,11 @@ section{padding:clamp(56px,8vw,110px) 0}
 .filtr{
   font-family:var(--sans);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
   padding:.8em 1.5em;border-radius:999px;cursor:pointer;
-  background:transparent;border:1px solid rgba(168,70,122,.28);color:var(--mokka-tekst);
+  background:transparent;border:1px solid rgba(120,84,56,.28);color:var(--tekst-3);
   transition:background .3s,color .3s,border-color .3s,transform .3s var(--ease);
 }
-.filtr:hover{border-color:var(--roz);color:var(--roz-ciemny);transform:translateY(-2px)}
-.filtr[aria-pressed="true"]{background:var(--roz);border-color:var(--roz);color:#fff}
+.filtr:hover{border-color:var(--czekolada);color:var(--kakao);transform:translateY(-2px)}
+.filtr[aria-pressed="true"]{background:var(--czekolada);border-color:var(--czekolada);color:var(--jasny)}
 .kafle{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.4vw,18px)}
 /* Kafle nie są linkami, więc nie unoszą się przy najechaniu —
    podnoszenie sugerowałoby klikalność, której tu nie ma. */
@@ -470,17 +549,17 @@ section{padding:clamp(56px,8vw,110px) 0}
   transition:box-shadow .5s var(--ease),border-color .4s,
              opacity .85s var(--ease),transform .85s var(--ease);
 }
-.kafel:hover{box-shadow:var(--cien-roz);border-color:var(--roz)}
+.kafel:hover{box-shadow:var(--cien-akcent);border-color:var(--czekolada)}
 .kafel.ukryty{display:none}
 .kafel figcaption{width:100%}
-.kafel b{display:block;font-weight:400;font-size:.78rem;letter-spacing:.06em;text-transform:none;color:var(--atrament);margin-bottom:.25em}
+.kafel b{display:block;font-weight:400;font-size:.78rem;letter-spacing:.06em;text-transform:none;color:var(--kakao);margin-bottom:.25em}
 .kafel span{
   display:block;width:100%;
-  background:linear-gradient(0deg,rgba(246,242,235,.96),rgba(246,242,235,.55) 70%,rgba(246,242,235,0));
+  background:linear-gradient(0deg,rgba(255,248,234,.96),rgba(255,248,234,.55) 70%,rgba(255,248,234,0));
 }
 @media(max-width:900px){.kafle{grid-template-columns:repeat(2,1fr)}}
 .pusto{
-  grid-column:1/-1;text-align:center;color:var(--mokka-tekst);
+  grid-column:1/-1;text-align:center;color:var(--tekst-3);
   padding:clamp(30px,5vw,60px) 0;font-size:.9rem;
 }
 .pod-galeria{display:flex;justify-content:center;margin-top:clamp(28px,3.5vw,46px)}
@@ -488,24 +567,23 @@ section{padding:clamp(56px,8vw,110px) 0}
 /* ============================================================
    KARTY OFERTY
    ============================================================ */
-.kategorie{background:var(--len-jasny);border-block:1px solid rgba(168,70,122,.16)}
 .k-siatka{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,26px)}
 .karta{
-  background:var(--len);border:1px solid rgba(168,70,122,.2);border-radius:var(--r-sredni);
+  background:var(--powierzchnia);border:1px solid rgba(120,84,56,.2);border-radius:var(--r-sredni);
   padding:14px 14px 22px;text-decoration:none;display:flex;flex-direction:column;gap:16px;
   transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .4s;
 }
-.karta:hover{transform:translateY(-8px);box-shadow:var(--cien-roz);border-color:var(--roz)}
+.karta:hover{transform:translateY(-8px);box-shadow:var(--cien-akcent);border-color:var(--czekolada)}
 .karta .foto{aspect-ratio:4/3;border-radius:12px}
 .karta-tekst{padding:0 6px}
-.karta small{display:block;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--roz);margin-bottom:.7em}
+.karta small{display:block;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--czekolada);margin-bottom:.7em}
 .karta h3{margin-bottom:.4em}
 .karta p{font-size:.87rem;color:var(--tekst-2);margin:0}
 .karta .wiecej{
-  margin-top:1.1em;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--roz);
+  margin-top:1.1em;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--czekolada);
   display:inline-flex;gap:.5em;align-items:center;
 }
-.karta:hover .wiecej{color:var(--roz-ciemny)}
+.karta:hover .wiecej{color:var(--kakao)}
 .karta:hover .grot{transform:translateX(4px)}
 .karta .grot{transition:transform .4s var(--ease)}
 @media(max-width:1000px){.k-siatka{grid-template-columns:repeat(2,1fr)}}
@@ -513,8 +591,8 @@ section{padding:clamp(56px,8vw,110px) 0}
 
 /* pasek CTA */
 .pasek-cta{
-  background:linear-gradient(120deg,var(--atrament) 0%,#4A2338 62%,var(--roz-ciemny) 100%);
-  color:var(--len-jasny);border-radius:var(--r-duzy);
+  background:linear-gradient(120deg,var(--kakao) 0%,#4A3020 55%,var(--czekolada) 100%);
+  color:var(--jasny);border-radius:var(--r-duzy);
   padding:clamp(30px,4vw,58px);margin-top:clamp(34px,4vw,58px);
   display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap;
 }
@@ -526,49 +604,62 @@ section{padding:clamp(56px,8vw,110px) 0}
    ============================================================ */
 .warianty{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(16px,2vw,28px)}
 .wariant{
-  border-top:1px solid rgba(168,70,122,.28);padding-top:20px;
+  border-top:1px solid rgba(120,84,56,.28);padding-top:20px;
 }
 .wariant h3{margin-bottom:.45em}
 .wariant p{font-size:.9rem;color:var(--tekst-2);margin:0}
 
-.dodatki{background:var(--roz-mgla);border-block:1px solid rgba(168,70,122,.18)}
 .lista-dodatkow{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
   gap:clamp(12px,1.6vw,20px);list-style:none;margin:0;padding:0;
 }
 .dodatek{
-  background:var(--len-jasny);border:1px solid rgba(168,70,122,.22);
+  background:var(--powierzchnia);border:1px solid rgba(120,84,56,.22);
   border-radius:var(--r-sredni);padding:22px 22px 24px;
   transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .3s;
 }
-.dodatek:hover{transform:translateY(-4px);box-shadow:var(--cien-roz);border-color:var(--roz)}
+.dodatek:hover{transform:translateY(-4px);box-shadow:var(--cien-akcent);border-color:var(--czekolada)}
 .dodatek h3{font-family:var(--sans);font-weight:400;font-size:1rem;letter-spacing:.01em;margin-bottom:.5em;display:flex;gap:.6em;align-items:baseline}
-.dodatek h3::before{content:"+";color:var(--roz);font-size:1.05rem;line-height:1}
+.dodatek h3::before{content:"+";color:var(--czekolada);font-size:1.05rem;line-height:1}
 .dodatek p{font-size:.87rem;color:var(--tekst-2);margin:0}
 
 .wskazowka{
-  background:var(--len-jasny);border:1px solid rgba(168,70,122,.22);
-  border-left:3px solid var(--roz);
+  /* wskazówka to wtrącenie w toku strony — bierze różowy ton palety,
+     żeby odróżnić ją od zwykłych, białych kart */
+  background:var(--mgla);border:1px solid rgba(120,84,56,.18);
+  border-left:3px solid var(--czekolada);
   border-radius:var(--r-sredni);padding:clamp(22px,3vw,34px);
 }
 .wskazowka h3{margin-bottom:.5em}
 .wskazowka > p{font-size:.9rem;color:var(--tekst-2)}
 .wskazowka ul{margin:1.2em 0 0;padding:0;list-style:none;display:grid;gap:.8em}
 .wskazowka li{display:flex;gap:.8em;font-size:.92rem;align-items:flex-start}
-.wskazowka li::before{content:"◇";color:var(--roz-jasny);font-size:.6rem;line-height:1.9;flex:none}
+.wskazowka li::before{content:"◇";color:var(--karmel);font-size:.6rem;line-height:1.9;flex:none}
+
+/* odnośniki „Zobacz też" — anchor niesie frazę, więc traktujemy je jak treść,
+   a nie jak nawigację: normalny tekst z podkreśleniem, nie przycisk */
+.powiazane{
+  margin:clamp(26px,3vw,40px) 0 0;font-size:.92rem;color:var(--tekst-2);
+}
+.powiazane a{
+  color:var(--kakao);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-thickness:1px;transition:color .3s;
+}
+.powiazane a:hover{color:var(--czekolada)}
+.powiazane span{color:var(--czekolada);margin:0 .2em}
 
 .smaki{display:flex;flex-wrap:wrap;gap:9px;list-style:none;margin:0;padding:0}
 .smaki li{
-  font-size:.76rem;letter-spacing:.06em;color:var(--mokka-tekst);
-  border:1px solid rgba(168,70,122,.28);border-radius:999px;padding:.6em 1.2em;
-  background:var(--len-jasny);
+  font-size:.76rem;letter-spacing:.06em;color:var(--tekst-3);
+  border:1px solid rgba(120,84,56,.28);border-radius:999px;padding:.6em 1.2em;
+  background:var(--powierzchnia);
 }
 
 .proces{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2.4vw,34px);counter-reset:krok}
-.krok{border-top:1px solid rgba(168,70,122,.28);padding-top:20px}
+.krok{border-top:1px solid rgba(120,84,56,.28);padding-top:20px}
 .krok b{
-  display:block;font-family:var(--display);font-size:1.6rem;font-weight:300;
-  color:var(--roz);line-height:1;margin-bottom:.5em;
+  display:block;font-family:var(--display);font-size:1.6rem;font-weight:400;
+  color:var(--czekolada);line-height:1;margin-bottom:.5em;
 }
 .krok h3{font-size:1.05rem;margin-bottom:.4em}
 .krok p{font-size:.87rem;color:var(--tekst-2);margin:0}
@@ -576,7 +667,7 @@ section{padding:clamp(56px,8vw,110px) 0}
 @media(max-width:560px){.proces{grid-template-columns:1fr}}
 
 .faq{max-width:66ch}
-.faq details{border-bottom:1px solid rgba(168,70,122,.24)}
+.faq details{border-bottom:1px solid rgba(120,84,56,.24)}
 .faq summary{
   cursor:pointer;padding:20px 40px 20px 0;position:relative;list-style:none;
   font-family:var(--display);font-size:1.12rem;line-height:1.35;
@@ -585,29 +676,29 @@ section{padding:clamp(56px,8vw,110px) 0}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{
   content:"+";position:absolute;right:6px;top:50%;transform:translateY(-50%);
-  color:var(--roz);font-family:var(--sans);font-size:1.2rem;transition:transform .35s var(--ease);
+  color:var(--czekolada);font-family:var(--sans);font-size:1.2rem;transition:transform .35s var(--ease);
 }
 .faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
-.faq summary:hover{color:var(--roz-ciemny)}
+.faq summary:hover{color:var(--kakao)}
 .faq details p{font-size:.92rem;color:var(--tekst-2);margin:0 0 20px;max-width:60ch}
 
 .cennik-nota{
   display:inline-flex;align-items:center;gap:.8em;margin-top:1.4em;
-  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--roz-ciemny);
-  background:var(--roz-mgla-2);border-radius:999px;padding:.75em 1.4em;
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--kakao);
+  background:var(--mgla-2);border-radius:999px;padding:.75em 1.4em;
 }
 
 /* opinie */
 .opinie{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,26px)}
 .opinia{
-  background:var(--len-jasny);border:1px solid rgba(168,70,122,.2);
+  background:var(--powierzchnia);border:1px solid rgba(120,84,56,.2);
   border-radius:var(--r-sredni);padding:clamp(22px,2.6vw,32px);
   display:flex;flex-direction:column;gap:1em;
 }
-.opinia p{font-family:var(--display);font-size:1.08rem;line-height:1.5;margin:0;color:var(--atrament)}
-.opinia p::before{content:"„";color:var(--roz-jasny);font-size:1.6em;line-height:0;vertical-align:-.25em;margin-right:.06em}
-.opinia footer{margin-top:auto;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--roz)}
-.opinia footer span{display:block;color:var(--szalwia-tekst);margin-top:.35em}
+.opinia p{font-family:var(--display);font-size:1.08rem;line-height:1.5;margin:0;color:var(--kakao)}
+.opinia p::before{content:"„";color:var(--karmel);font-size:1.6em;line-height:0;vertical-align:-.25em;margin-right:.06em}
+.opinia footer{margin-top:auto;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--czekolada)}
+.opinia footer span{display:block;color:var(--tekst-3);margin-top:.35em}
 @media(max-width:900px){.opinie{grid-template-columns:1fr}}
 
 /* ============================================================
@@ -615,15 +706,21 @@ section{padding:clamp(56px,8vw,110px) 0}
    ============================================================ */
 .o-nas-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:center}
 .o-nas .foto{aspect-ratio:4/5;border-radius:var(--r-duzy)}
-.o-nas p{color:#4A3D35;max-width:52ch}
+.o-nas p{color:var(--tekst-2);max-width:52ch}
 .liczby{display:flex;gap:clamp(20px,4vw,50px);flex-wrap:wrap;margin:1.8em 0}
-.liczba b{display:block;font-family:var(--display);font-weight:300;font-size:clamp(1.8rem,3.4vw,2.6rem);color:var(--roz);line-height:1}
-.liczba span{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--szalwia-tekst)}
-.podpis{font-family:var(--display);font-style:italic;font-size:1.35rem;color:var(--roz-ciemny);margin:.4em 0 1.6em}
+.liczba b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(1.8rem,3.4vw,2.6rem);color:var(--czekolada);line-height:1}
+.liczba span{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--tekst-3)}
+/* Podpis autorki. Był kursywą, ale kursywa Fraunces to osobny plik ważący
+   150 KB — pobierany dla tej jednej linijki. Odmiana zwykła z rozstrzeloną
+   spacją czyta się jako podpis równie dobrze i nic nie kosztuje. */
+.podpis{
+  font-family:var(--display);font-size:1.35rem;color:var(--kakao);
+  letter-spacing:.04em;margin:.4em 0 1.6em;
+}
 @media(max-width:900px){.o-nas-grid{grid-template-columns:1fr}}
 
 .wartosci{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,34px)}
-.wartosc{border-top:1px solid rgba(168,70,122,.28);padding-top:20px}
+.wartosc{border-top:1px solid rgba(120,84,56,.28);padding-top:20px}
 .wartosc h3{font-size:1.1rem;margin-bottom:.5em}
 .wartosc p{font-size:.9rem;color:var(--tekst-2);margin:0}
 @media(max-width:820px){.wartosci{grid-template-columns:1fr}}
@@ -631,36 +728,38 @@ section{padding:clamp(56px,8vw,110px) 0}
 /* ============================================================
    GDZIE / KONTAKT
    ============================================================ */
-.gdzie{background:var(--len-jasny);border-block:1px solid rgba(168,70,122,.16)}
 .mapa{
   position:relative;height:clamp(280px,42vh,440px);border-radius:var(--r-duzy);overflow:hidden;
-  border:1px solid rgba(168,70,122,.24);
+  border:1px solid rgba(120,84,56,.24);
   background:
-    repeating-linear-gradient(0deg,rgba(168,70,122,.1) 0 1px,transparent 1px 46px),
-    repeating-linear-gradient(90deg,rgba(168,70,122,.1) 0 1px,transparent 1px 46px),
-    var(--puder);
+    repeating-linear-gradient(0deg,rgba(120,84,56,.1) 0 1px,transparent 1px 46px),
+    repeating-linear-gradient(90deg,rgba(120,84,56,.1) 0 1px,transparent 1px 46px),
+    var(--karmel);
   display:grid;place-items:center;text-align:center;
 }
 .mapa iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .mapa-pin{
-  width:64px;height:64px;border-radius:50%;background:var(--roz);color:#fff;
+  width:64px;height:64px;border-radius:50%;background:var(--czekolada);color:var(--jasny);
   display:grid;place-items:center;font-size:1.4rem;margin:0 auto 14px;
-  box-shadow:0 0 0 0 rgba(168,70,122,.4);animation:puls 2.6s infinite;
+  box-shadow:0 0 0 0 rgba(120,84,56,.4);animation:puls 2.6s infinite;
 }
 @keyframes puls{
-  0%{box-shadow:0 0 0 0 rgba(168,70,122,.34)}
-  70%{box-shadow:0 0 0 26px rgba(168,70,122,0)}
-  100%{box-shadow:0 0 0 0 rgba(168,70,122,0)}
+  0%{box-shadow:0 0 0 0 rgba(120,84,56,.34)}
+  70%{box-shadow:0 0 0 26px rgba(120,84,56,0)}
+  100%{box-shadow:0 0 0 0 rgba(120,84,56,0)}
 }
-.mapa small{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mokka-tekst)}
+/* podkład mapy to karmel — czytelna jest na nim dopiero gorzka czekolada */
+.mapa small{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--kakao)}
 .info-siatka{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,34px);margin-top:clamp(24px,3vw,42px)}
-.info{padding-top:20px;border-top:1px solid rgba(168,70,122,.3)}
+.info{padding-top:20px;border-top:1px solid rgba(120,84,56,.3)}
 .info h3{font-size:1.1rem;margin-bottom:.5em}
 .info p{font-size:.9rem;color:var(--tekst-2);margin:0}
 .miasta{display:flex;flex-wrap:wrap;gap:8px;margin-top:1em;list-style:none;padding:0}
 .miasta li{
-  font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--roz-ciemny);
-  border:1px solid rgba(168,70,122,.3);border-radius:999px;padding:.5em 1.1em;background:var(--roz-mgla);
+  font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--kakao);
+  border:1px solid rgba(120,84,56,.3);border-radius:999px;padding:.5em 1.1em;
+  /* jaśniejszy krem — na wanilii panelu „Gdzie" plakietki muszą odstawać */
+  background:var(--tlo);
 }
 
 .kontakt-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
@@ -668,93 +767,109 @@ section{padding:clamp(56px,8vw,110px) 0}
 .dane-lista{margin:1.4em 0 0;display:flex;flex-direction:column;gap:2px}
 .dane-poz{
   display:flex;gap:16px;align-items:flex-start;padding:16px 0;
-  border-bottom:1px solid rgba(168,70,122,.2);text-decoration:none;
+  border-bottom:1px solid rgba(120,84,56,.2);text-decoration:none;
   transition:padding-left .35s var(--ease);
 }
 a.dane-poz:hover{padding-left:8px}
 .ikona{
   width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;
-  background:var(--roz-mgla-2);color:var(--roz-ciemny);font-size:.95rem;
+  background:var(--mgla-2);color:var(--kakao);font-size:.95rem;
 }
-.dane-poz small{display:block;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--szalwia-tekst)}
+.dane-poz small{display:block;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--tekst-3)}
 .dane-poz b{font-weight:400;font-size:1.02rem}
 .social{display:flex;gap:10px;margin-top:1.8em}
 .social a{
   width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
-  border:1px solid rgba(168,70,122,.3);text-decoration:none;font-size:.72rem;letter-spacing:.06em;
+  border:1px solid rgba(120,84,56,.3);text-decoration:none;font-size:.72rem;letter-spacing:.06em;
   transition:background .3s,color .3s,transform .3s var(--ease),border-color .3s;
 }
-.social a:hover{background:var(--roz);border-color:var(--roz);color:#fff;transform:translateY(-3px)}
+.social a:hover{background:var(--czekolada);border-color:var(--czekolada);color:var(--jasny);transform:translateY(-3px)}
 
 /* ============================================================
    FORMULARZ
    ============================================================ */
 .formularz{
-  background:var(--len-jasny);border:1px solid rgba(168,70,122,.22);
+  background:var(--powierzchnia);border:1px solid rgba(120,84,56,.22);
   border-radius:var(--r-duzy);padding:clamp(22px,3vw,40px);
 }
 .pola{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
 .pole{display:flex;flex-direction:column;gap:6px}
 .pole--full{grid-column:1/-1}
-label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:#6B554A}
+label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:#5F5170}
 input,select,textarea{
-  font-family:var(--sans);font-size:.95rem;font-weight:300;color:var(--atrament);
-  background:transparent;border:0;border-bottom:1px solid rgba(42,33,28,.28);
+  font-family:var(--sans);font-size:.95rem;font-weight:300;color:var(--kakao);
+  background:transparent;border:0;border-bottom:1px solid rgba(54,33,20,.28);
   padding:.6em 0;border-radius:0;transition:border-color .3s;width:100%;
 }
-input:focus,select:focus,textarea:focus{outline:none;border-bottom-color:var(--roz);border-bottom-width:2px;padding-bottom:calc(.6em - 1px)}
+input:focus,select:focus,textarea:focus{outline:none;border-bottom-color:var(--czekolada);border-bottom-width:2px;padding-bottom:calc(.6em - 1px)}
 input[aria-invalid="true"],textarea[aria-invalid="true"],select[aria-invalid="true"]{border-bottom-color:#A33B3B}
 textarea{resize:vertical;min-height:84px}
 .blad-pola{font-size:.75rem;letter-spacing:0;text-transform:none;color:#8E2F2F;margin:0}
 .chipy{display:flex;flex-wrap:wrap;gap:8px}
 .chipy label{
-  display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--atrament);
-  border:1px solid rgba(42,33,28,.24);border-radius:999px;padding:.6em 1.1em;letter-spacing:.12em;
+  display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--kakao);
+  border:1px solid rgba(54,33,20,.24);border-radius:999px;padding:.6em 1.1em;letter-spacing:.12em;
   transition:border-color .3s,background .3s;
 }
-.chipy label:hover{border-color:var(--roz)}
-.chipy label:has(input:checked){background:var(--roz-mgla);border-color:var(--roz)}
-.chipy input{width:12px;height:12px;accent-color:var(--roz)}
-.rodo{font-size:.72rem;letter-spacing:0;text-transform:none;color:#6B554A;display:flex;gap:9px;align-items:flex-start;line-height:1.55}
-.rodo input{margin-top:4px;flex:none;width:14px;height:14px;accent-color:var(--roz)}
-.rodo a{color:var(--roz-ciemny)}
+.chipy label:hover{border-color:var(--czekolada)}
+.chipy label:has(input:checked){background:var(--mgla);border-color:var(--czekolada)}
+.chipy input{width:12px;height:12px;accent-color:var(--czekolada)}
+.rodo{font-size:.72rem;letter-spacing:0;text-transform:none;color:#5F5170;display:flex;gap:9px;align-items:flex-start;line-height:1.55}
+.rodo input{margin-top:4px;flex:none;width:14px;height:14px;accent-color:var(--czekolada)}
+.rodo a{color:var(--kakao)}
 .status{margin:1em 0 0;font-size:.86rem;min-height:1.2em;color:var(--tekst-2)}
 .status--blad{color:#8E2F2F}
 .status--ok{
-  color:var(--roz-ciemny);background:var(--roz-mgla);border-radius:14px;
+  color:var(--kakao);background:var(--mgla);border-radius:14px;
   padding:14px 16px;line-height:1.55;
 }
 .pulapka{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 button[disabled]{opacity:.55;cursor:progress}
+/* Ostrzeżenie nad formularzem — widoczne tylko, dopóki wysyłka nie jest
+   podpięta. Ton informacyjny, nie błąd: to nie użytkownik zrobił coś źle. */
+.ostrzezenie-formularza{
+  background:var(--mgla);border:1px solid rgba(120,84,56,.28);
+  border-left:3px solid var(--karmel);border-radius:var(--r-sredni);
+  padding:14px 18px;margin:0 0 1.6em;font-size:.88rem;color:var(--kakao);
+}
+.ostrzezenie-formularza b{font-weight:700;display:block;margin-bottom:.2em}
+.ostrzezenie-formularza a{color:var(--czekolada);text-decoration:underline;text-underline-offset:3px}
+.ostrzezenie-formularza a:hover{color:var(--kakao)}
+
 .wymagane-info{font-size:.72rem;color:var(--tekst-2);margin:0 0 1.4em}
 @media(max-width:900px){.kontakt-grid,.pola{grid-template-columns:1fr}}
 
 /* ============================================================
    STOPKA
    ============================================================ */
-footer{background:var(--atrament);color:rgba(246,242,235,.75);padding:clamp(48px,6vw,80px) 0 30px;font-size:.86rem}
+/* Klasa, a nie sam element: goły selektor `footer` łapał również <footer>
+   wewnątrz każdej opinii (blockquote > footer z podpisem), przez co podpis
+   dostawał ciemne tło stopki i tekst w kolorze własnego tła — był niewidoczny. */
+.stopka-strony{background:var(--czekolada);color:rgba(255,248,234,.86);padding:clamp(48px,6vw,80px) 0 30px;font-size:.86rem}
 .f-siatka{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:clamp(24px,4vw,60px)}
-footer h2{font-family:var(--sans);font-weight:400;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--roz-jasny);margin:0 0 1.2em}
-footer nav a,footer .f-kontakt a{text-decoration:none;display:block;padding:.26em 0;transition:color .3s,transform .3s var(--ease)}
-footer nav a:hover,footer .f-kontakt a:hover{color:var(--roz-jasny);transform:translateX(3px)}
-.f-haslo{font-family:var(--display);font-size:1.5rem;color:var(--len-jasny);line-height:1.25;margin-bottom:.6em}
+/* Karmel na mlecznej czekoladzie ma 2,3:1 — za mało nawet na etykiety.
+   Nagłówki kolumn idą w rozjaśnionym kremie. */
+.stopka-strony h2{font-family:var(--sans);font-weight:400;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,248,234,.82);margin:0 0 1.2em}
+.stopka-strony nav a,.stopka-strony .f-kontakt a{text-decoration:none;display:block;padding:.26em 0;transition:color .3s,transform .3s var(--ease)}
+.stopka-strony nav a:hover,.stopka-strony .f-kontakt a:hover{color:var(--jasny);transform:translateX(3px)}
+.f-haslo{font-family:var(--display);font-weight:400;font-size:1.5rem;color:var(--jasny);line-height:1.25;margin-bottom:.6em}
 .f-logo{height:70px;width:auto;margin-bottom:1.4em;filter:brightness(0) invert(1);opacity:.9}
 .f-dol{
-  margin-top:clamp(34px,4vw,56px);padding-top:22px;border-top:1px solid rgba(201,115,158,.28);
+  margin-top:clamp(34px,4vw,56px);padding-top:22px;border-top:1px solid rgba(194,138,84,.34);
   display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;
-  font-size:.7rem;letter-spacing:.06em;color:rgba(246,242,235,.55);
+  font-size:.7rem;letter-spacing:.06em;color:rgba(255,248,234,.84);
 }
 .f-dol a{
   display:inline-flex;align-items:center;min-height:24px;
   text-decoration:underline;text-underline-offset:3px;transform:none;
 }
-.f-dol a:hover{color:var(--roz-jasny);transform:none}
+.f-dol a:hover{color:var(--jasny);transform:none}
 .f-dol button{
   background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;
   display:inline-flex;align-items:center;min-height:24px;
   text-decoration:underline;text-underline-offset:3px;
 }
-.f-dol button:hover{color:var(--roz-jasny)}
+.f-dol button:hover{color:var(--jasny)}
 @media(max-width:820px){.f-siatka{grid-template-columns:1fr}}
 
 /* ---------- CTA mobilne ---------- */
@@ -763,74 +878,78 @@ footer nav a:hover,footer .f-kontakt a:hover{color:var(--roz-jasny);transform:tr
   justify-content:center;transform:translateY(120%);transition:transform .5s var(--ease);
 }
 .cta-mobile.widoczne{transform:none}
-.cta-mobile .btn{width:100%;justify-content:center;box-shadow:0 14px 34px -14px rgba(42,33,28,.8)}
+.cta-mobile .btn{width:100%;justify-content:center;box-shadow:0 14px 34px -14px rgba(54,33,20,.8)}
 @media(max-width:760px){.cta-mobile{display:flex}}
 /* nie nakłada się na baner cookies */
 body.baner-widoczny .cta-mobile{transform:translateY(120%)}
 
 /* ---------- animacje wejścia ---------- */
-.pojaw{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease)}
-.pojaw.jest{opacity:1;transform:none}
+/* Ukrywamy dopiero pod .js na <html> — patrz skrypt na początku <body>.
+   Wcześniej stan początkowy był bezwarunkowy, więc gdy skrypt się nie wykonał,
+   od 12 do 35 bloków na stronie zostawało niewidocznych na stałe. */
+.js .pojaw{opacity:0;transform:translateY(24px)}
+.pojaw{transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.js .pojaw.jest{opacity:1;transform:none}
 .pojaw.o1{transition-delay:.08s}.pojaw.o2{transition-delay:.16s}
 .pojaw.o3{transition-delay:.24s}.pojaw.o4{transition-delay:.32s}
 
 /* ---------- COOKIES ---------- */
 .ciasteczka{
   position:fixed;left:16px;bottom:16px;z-index:150;width:min(440px,calc(100vw - 32px));
-  background:var(--len-jasny);border:1px solid rgba(168,70,122,.28);
+  background:var(--powierzchnia);border:1px solid rgba(120,84,56,.28);
   border-radius:var(--r-duzy);padding:clamp(20px,2.4vw,28px);
-  box-shadow:0 24px 60px -24px rgba(42,33,28,.6);
+  box-shadow:0 24px 60px -24px rgba(54,33,20,.6);
   transform:translateY(140%);transition:transform .6s var(--ease);
 }
 .ciasteczka.widoczny{transform:none}
-.ciasteczka h2{font-family:var(--display);font-weight:300;font-size:1.15rem;margin:0 0 .5em}
+.ciasteczka h2{font-family:var(--display);font-weight:400;font-size:1.15rem;margin:0 0 .5em}
 .ciasteczka p{font-size:.85rem;color:var(--tekst-2);margin-bottom:1.2em}
-.ciasteczka p a{color:var(--roz-ciemny)}
+.ciasteczka p a{color:var(--kakao)}
 .c-akcje{display:flex;flex-wrap:wrap;gap:8px}
 .c-akcje .btn{padding:.85em 1.5em;font-size:.68rem;flex:1 1 auto;justify-content:center}
 .c-link{
   background:none;border:0;cursor:pointer;font-family:var(--sans);
-  font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--roz-ciemny);
+  font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--kakao);
   padding:.85em .6em;text-decoration:underline;text-underline-offset:4px;
 }
-.c-link:hover{color:var(--atrament)}
+.c-link:hover{color:var(--kakao)}
 @media(max-width:760px){
   .ciasteczka{left:10px;right:10px;bottom:10px;width:auto;border-radius:22px}
   .c-akcje .btn{flex:1 1 100%}
 }
 
 .zaslona{
-  position:fixed;inset:0;z-index:160;background:rgba(42,33,28,.55);
+  position:fixed;inset:0;z-index:160;background:rgba(54,33,20,.55);
   backdrop-filter:blur(4px);display:grid;place-items:center;padding:16px;
   opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s;
 }
 .zaslona.widoczny{opacity:1;visibility:visible}
 .okno{
-  background:var(--len-jasny);border-radius:var(--r-duzy);
+  background:var(--powierzchnia);border-radius:var(--r-duzy);
   width:min(560px,100%);max-height:88vh;overflow:auto;
-  padding:clamp(22px,3vw,36px);border:1px solid rgba(168,70,122,.24);
+  padding:clamp(22px,3vw,36px);border:1px solid rgba(120,84,56,.24);
   transform:translateY(16px);transition:transform .4s var(--ease);
 }
 .zaslona.widoczny .okno{transform:none}
-.okno h2{font-family:var(--display);font-weight:300;font-size:1.4rem;margin:0 0 .4em}
+.okno h2{font-family:var(--display);font-weight:400;font-size:1.4rem;margin:0 0 .4em}
 .okno>p{font-size:.86rem;color:var(--tekst-2);margin-bottom:1.4em}
 .zgoda-poz{
   display:flex;gap:16px;align-items:flex-start;justify-content:space-between;
-  padding:18px 0;border-top:1px solid rgba(168,70,122,.2);
+  padding:18px 0;border-top:1px solid rgba(120,84,56,.2);
 }
 .zgoda-poz h3{margin:0 0 .3em;font-family:var(--sans);font-weight:500;font-size:.98rem}
 .zgoda-poz p{margin:0;font-size:.82rem;color:var(--tekst-2);max-width:42ch}
-.zgoda-poz small{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--szalwia-tekst);flex:none;padding-top:4px}
+.zgoda-poz small{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tekst-3);flex:none;padding-top:4px}
 .przelacznik{position:relative;flex:none;width:46px;height:26px}
 .przelacznik input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
-.przelacznik i{position:absolute;inset:0;border-radius:999px;background:rgba(138,106,85,.3);transition:background .3s;pointer-events:none}
+.przelacznik i{position:absolute;inset:0;border-radius:999px;background:rgba(120,84,56,.28);transition:background .3s;pointer-events:none}
 .przelacznik i::after{
   content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
-  background:var(--len-jasny);transition:transform .3s var(--ease);
+  background:var(--jasny);transition:transform .3s var(--ease);
 }
-.przelacznik input:checked + i{background:var(--roz)}
+.przelacznik input:checked + i{background:var(--karmel)}
 .przelacznik input:checked + i::after{transform:translateX(20px)}
-.przelacznik input:focus-visible + i{outline:2px solid var(--roz);outline-offset:3px}
+.przelacznik input:focus-visible + i{outline:2px solid var(--czekolada);outline-offset:3px}
 .okno-akcje{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
 .okno-akcje .btn{flex:1 1 auto;justify-content:center;padding:.9em 1.5em;font-size:.68rem}
 
@@ -849,5 +968,7 @@ body.baner-widoczny .cta-mobile{transform:translateY(120%)}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   html{scroll-behavior:auto}
-  .pojaw{opacity:1;transform:none}
+  /* Musi wygrać z `.js .pojaw` (wyższa specyficzność), inaczej przy wyłączonych
+     animacjach treść i tak startowałaby ukryta i wskakiwała skokowo. */
+  .js .pojaw{opacity:1;transform:none}
 }

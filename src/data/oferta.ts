@@ -4,14 +4,25 @@
    Ceny celowo zostawione jako [widełki] — uzupełnij własnymi.
    ============================================================ */
 
+import { zdjeciaOferty } from "./zdjecia";
+
 export type Dodatek = { nazwa: string; opis: string };
 export type Wariant = { nazwa: string; opis: string };
 export type Pytanie = { pytanie: string; odpowiedz: string };
 
 export type Oferta = {
   slug: string;
+  /** Zdjęcie na kaflu w siatce oferty. Teraz poglądowe — patrz zdjecia.ts. */
+  zdjecie?: string;
+  /** Krótka nazwa: okruszki, karty oferty, nawigacja, stopka. */
   tytul: string;
+  /** Jeszcze krótsza — lista rozwijana w formularzu. */
   tytulKrotki: string;
+  /** Nagłówek H1 podstrony. Zawiera frazę wyszukiwania razem z miastem. */
+  naglowek: string;
+  /** Tytuł w wynikach Google. Layout dokleja „ | nazwa firmy”, więc długość
+   *  liczymy razem z tym doklejeniem — całość ma się zmieścić w 60 znakach. */
+  tytulSeo: string;
   etykieta: string;
   lead: string;
   opisSeo: string;
@@ -22,19 +33,28 @@ export type Oferta = {
   smaki?: string[];
   faq: Pytanie[];
   cena: string;
+  /** Domyślnie true. False = wpis ma własną podstronę, ale nie zajmuje
+   *  miejsca w siatce czterech kart (jest w menu, stopce i odnośnikach). */
+  wKartach?: boolean;
+  /** Odnośniki do pokrewnych podstron. Anchor niesie frazę, więc mówi
+   *  wyszukiwarce, o czym jest strona docelowa — inaczej niż „zobacz więcej”. */
+  powiazane?: { tekst: string; url: string }[];
 };
 
 export const oferta: Oferta[] = [
   {
     slug: "torty",
+    zdjecie: zdjeciaOferty["torty"],
     tytul: "Torty",
     tytulKrotki: "Torty",
+    naglowek: "Torty na zamówienie w Lesznie",
+    tytulSeo: "Torty na zamówienie — Leszno",
     etykieta: "Na słodko",
-    lead: "Tort projektowany pod jedną datę — pod dekorację sali, kolory i smaki, które naprawdę lubicie.",
+    lead: "Tort projektowany pod jedną datę — pod dekorację sali, kolory i smaki, które naprawdę lubicie. Leszno i okolice do 60 km.",
     opisSeo:
-      "Torty weselne, urodzinowe, komunijne i tematyczne. Projekt, wykonanie i dowóz z ustawieniem na miejscu.",
+      "Torty weselne, urodzinowe, komunijne i firmowe z Leszna. Projekt przed wykonaniem, widełki cenowe z góry, dowóz i ustawienie na sali.",
     wstep: [
-      "Każdy tort powstaje od zera i tylko na jedną datę — nie mam gotowych wzorów do wyboru z katalogu. Zaczynamy od rozmowy o tym, jak wygląda sala, jakie są kolory dekoracji i co lubicie jeść, a nie od tego, ile pięter „wypada” mieć.",
+      "Każdy tort w mojej pracowni w Lesznie powstaje od zera i tylko na jedną datę — nie mam gotowych wzorów do wyboru z katalogu. Zaczynamy od rozmowy o tym, jak wygląda sala, jakie są kolory dekoracji i co lubicie jeść, a nie od tego, ile pięter „wypada” mieć.",
       "Projekt dostajesz przed rozpoczęciem prac, razem z widełkami cenowymi. Dopóki go nie zaakceptujesz, nic nie jest przesądzone — poprawki na etapie rysunku są darmowe i normalne.",
     ],
     warianty: [
@@ -148,16 +168,165 @@ export const oferta: Oferta[] = [
       },
     ],
     cena: "[wycena od … zł za porcję]",
+    powiazane: [
+      { tekst: "tort na urodziny i osiemnastkę", url: "/oferta/torty-urodzinowe" },
+      { tekst: "słodki stół na to samo przyjęcie", url: "/oferta/slodkie-kompozycje" },
+    ],
+  },
+
+  /* ------------------------------------------------------------
+     Osobna podstrona pod frazę „tort na urodziny”. Wydzielona z „Tortów”,
+     bo urodziny to inna intencja zakupowa niż wesele: inny budżet, krótszy
+     termin, inne pytania. Nie wchodzi do siatki czterech kart — prowadzą
+     do niej menu, stopka i odnośnik ze strony „Torty”.
+     ------------------------------------------------------------ */
+  {
+    slug: "torty-urodzinowe",
+    zdjecie: zdjeciaOferty["torty-urodzinowe"],
+    tytul: "Tort na urodziny",
+    tytulKrotki: "Urodzinowe",
+    naglowek: "Tort na urodziny — Leszno i okolice",
+    tytulSeo: "Tort na urodziny — Leszno",
+    etykieta: "Na słodko",
+    lead: "Tort urodzinowy projektowany pod solenizanta — od tortów dla dzieci po osiemnastki i okrągłe jubileusze. Leszno i okolice.",
+    opisSeo:
+      "Tort na urodziny w Lesznie: osiemnastki, urodziny dziecka i okrągłe jubileusze. Projekt pod solenizanta, dowóz na godzinę, wycena w 2 dni.",
+    wKartach: false,
+    wstep: [
+      "Tort urodzinowy rządzi się innymi prawami niż weselny. Rzadko chodzi o wielopiętrową konstrukcję — częściej o to, żeby jedna rzecz na stole opowiadała o konkretnej osobie: o tym, co ogląda, w co gra, co zbiera albo z czego się śmieje.",
+      "Dlatego zaczynam od pytania o solenizanta, a nie o liczbę pięter. Projekt dostajesz przed rozpoczęciem prac, razem z widełkami cenowymi — poprawki na etapie rysunku są darmowe.",
+      "Odbiór osobisty w Lesznie albo dowóz na wskazaną godzinę, w promieniu 60 km. Przy urodzinach to często ważniejsze niż sam tort: przywożę wtedy, kiedy trzeba, a nie „gdzieś przed południem”.",
+    ],
+    warianty: [
+      {
+        nazwa: "Osiemnastki",
+        opis:
+          "Najwięcej miejsca na szalone pomysły: mocne kolory, neony, złocenia, motywy z pasji albo z prywatnych żartów. Zwykle jedno duże piętro plus monoporcje dla reszty gości.",
+      },
+      {
+        nazwa: "Urodziny dziecka",
+        opis:
+          "Bajki, zwierzęta, ulubiona gra. Delikatniejsze smaki i mniejsze porcje, bo połowa gości ma sześć lat. Barwniki dobieram tak, żeby nie farbowały buzi.",
+      },
+      {
+        nazwa: "Okrągłe jubileusze",
+        opis:
+          "Czterdziestka, pięćdziesiątka, siedemdziesiątka. Spokojniejsza estetyka, klasyczne smaki, często cyfra albo krótki napis zamiast dekoracji figuralnej.",
+      },
+      {
+        nazwa: "Tort ze zdjęciem lub logo",
+        opis:
+          "Wydruk cukrowy albo ręcznie malowany element. Przy zdjęciach potrzebuję pliku w dobrej jakości na kilka dni przed odbiorem.",
+      },
+      {
+        nazwa: "Tort z niespodzianką",
+        opis:
+          "Cukierki albo kolorowe nadzienie w środku, wysypujące się przy pierwszym cięciu. Dobrze wypada na zdjęciach, więc warto uprzedzić fotografa.",
+      },
+      {
+        nazwa: "Tort w kształcie cyfry",
+        opis:
+          "Numer wieku zamiast klasycznego okręgu — z biszkoptu albo na bazie bezowej. Liczy się inaczej na porcje, więc wielkość ustalamy przy wycenie.",
+      },
+    ],
+    smaki: [
+      "Wanilia — malina",
+      "Czekolada — słony karmel",
+      "Snickers",
+      "Kinder — orzech laskowy",
+      "Cytryna — mak",
+      "Truskawka — biała czekolada",
+      "Oreo",
+      "Bezowy z owocami sezonowymi",
+    ],
+    wskazowka: {
+      tytul: "Jaki tort na ile osób",
+      wstep:
+        "Porcja urodzinowa jest zwykle większa niż weselna — na urodzinach tort bywa jedynym deserem. Poniżej punkt wyjścia, dokładną wielkość policzę przy wycenie.",
+      punkty: [
+        "10–15 osób — jedno piętro o średnicy około 20 cm",
+        "20–30 osób — jedno piętro 26 cm albo dwa niższe piętra",
+        "40–60 osób — dwa piętra, przy osiemnastkach zwykle z monoporcjami",
+        "powyżej 60 osób — tort główny do zdjęć plus prostszy tort do krojenia na zapleczu",
+      ],
+    },
+    dodatki: [
+      {
+        nazwa: "Monoporcje w kolorach tortu",
+        opis:
+          "Najprostszy sposób, żeby starczyło dla wszystkich, a tort został cały do zdjęć i do przecięcia.",
+      },
+      {
+        nazwa: "Topper z imieniem i wiekiem",
+        opis:
+          "Wycinany na zamówienie, w kolorze dekoracji. Zostaje po przyjęciu jako pamiątka.",
+      },
+      {
+        nazwa: "Świeczki i zimne ognie",
+        opis:
+          "Dobieram do wielkości tortu, żeby nie przypaliły dekoracji. Zimne ognie tylko tam, gdzie sala na to pozwala.",
+      },
+      {
+        nazwa: "Mini tort dla najmłodszego solenizanta",
+        opis:
+          "Osobny, mały tort na pierwsze urodziny — do rozgniecenia rączkami, bez barwników i z mniejszą ilością cukru.",
+      },
+      {
+        nazwa: "Dowóz na konkretną godzinę",
+        opis:
+          "Leszno i okolice do 60 km. Przy urodzinach w restauracji ustawiam tort na miejscu i zabieram opakowania.",
+      },
+      {
+        nazwa: "Pudełko transportowe",
+        opis:
+          "Sztywne, z uchwytem, dopasowane do wysokości tortu. Do odbioru osobistego w pracowni.",
+      },
+    ],
+    faq: [
+      {
+        pytanie: "Z jakim wyprzedzeniem zamówić tort na urodziny?",
+        odpowiedz:
+          "Zwykle wystarczą dwa–trzy tygodnie. W maju i czerwcu, kiedy nakładają się komunie i wesela, oraz w grudniu terminy schodzą szybciej — wtedy warto napisać z miesięcznym wyprzedzeniem. Zdarza mi się przyjąć zamówienie z tygodnia na tydzień, ale wyboru dekoracji jest wtedy mniej.",
+      },
+      {
+        pytanie: "Czy dowozisz tort urodzinowy pod wskazany adres?",
+        odpowiedz:
+          "Tak. Po Lesznie i w promieniu około 60 km — do domu, do sali albo do restauracji, na umówioną godzinę. Przy piętrowych tortach dowóz jest bezpieczniejszy niż odbiór własnym autem i zwykle go doradzam.",
+      },
+      {
+        pytanie: "Ile kosztuje tort na urodziny?",
+        odpowiedz:
+          "Cena zależy od liczby porcji i od tego, ile pracy ręcznej jest w dekoracji — figurki i malowanie kosztują więcej niż gładkie wykończenie. Po krótkim opisie pomysłu odsyłam widełki w dwa dni robocze, zanim cokolwiek zaczniemy ustalać szczegółowo.",
+      },
+      {
+        pytanie: "Czy zrobisz tort bez glutenu albo bez laktozy?",
+        odpowiedz:
+          "Tak, przy zamówieniu zgłoszonym z wyprzedzeniem. Pracownia nie jest wolna od alergenów, więc przy poważnej alergii uprzedzam o ryzyku śladowych ilości i wspólnie decydujemy, czy to bezpieczne.",
+      },
+      {
+        pytanie: "Czy tort musi być piętrowy?",
+        odpowiedz:
+          "Nie. Przy urodzinach częściej lepiej wypada jedno dobrze zaprojektowane piętro plus monoporcje niż dwa piętra na siłę — wychodzi taniej, a na stole wygląda pełniej.",
+      },
+    ],
+    cena: "[wycena od … zł za porcję]",
+    powiazane: [
+      { tekst: "torty weselne i komunijne", url: "/oferta/torty" },
+      { tekst: "słodki stół na osiemnastkę", url: "/oferta/slodkie-kompozycje" },
+    ],
   },
 
   {
     slug: "slodkie-kompozycje",
-    tytul: "Słodkie kompozycje",
+    zdjecie: zdjeciaOferty["slodkie-kompozycje"],
+    tytul: "Słodki stół",
     tytulKrotki: "Słodkie stoły",
+    naglowek: "Słodki stół na przyjęcie — Leszno",
+    tytulSeo: "Słodki stół na przyjęcie — Leszno",
     etykieta: "Na słodko",
     lead: "Monoporcje, bezy, tartaletki i wieże z croissantów — razem z aranżacją stołu, nie tylko w pudełkach.",
     opisSeo:
-      "Słodki stół na wesele i przyjęcia: monoporcje, bezy, tartaletki, wieże z croissantów oraz aranżacja stołu.",
+      "Słodki stół na wesele i przyjęcia w Lesznie: monoporcje, bezy, tartaletki, wieże z croissantów oraz aranżacja stołu na miejscu.",
     wstep: [
       "Słodki stół to nie tylko to, co na paterach — to również sam stół. Przywożę obrus, patery, świeczniki i tabliczki z nazwami, a potem układam wszystko na miejscu, żeby całość wyglądała jak jedna kompozycja, a nie jak kilka osobno kupionych rzeczy.",
       "Wybieramy 4–6 rodzajów słodkości, żeby stół był różnorodny, ale nie chaotyczny. Resztę — kolory, wysokości, rozstawienie — dobieram do sali.",
@@ -267,15 +436,18 @@ export const oferta: Oferta[] = [
 
   {
     slug: "wytrawny-stol",
-    tytul: "Wytrawny stół",
-    tytulKrotki: "Wytrawne",
+    zdjecie: zdjeciaOferty["wytrawny-stol"],
+    tytul: "Catering okolicznościowy",
+    tytulKrotki: "Catering",
+    naglowek: "Catering okolicznościowy w Lesznie — wytrawny stół",
+    tytulSeo: "Catering okolicznościowy — Leszno",
     etykieta: "Na słono",
-    lead: "Tarty, koreczki, deski serów i przekąski na powitanie — w tej samej estetyce co reszta stołu.",
+    lead: "Tarty, koreczki, deski serów i przekąski na powitanie gości. Catering na wesela, komunie i przyjęcia firmowe w Lesznie i okolicy.",
     opisSeo:
-      "Wytrawny stół na przyjęcia: tarty, koreczki, krokiety, deski serów i wędlin, przekąski powitalne.",
+      "Catering na wesela, komunie i przyjęcia firmowe w Lesznie: wytrawny stół, finger food, ustawienie na miejscu. Jedna wycena zamiast trzech firm.",
     wstep: [
-      "To rzadkość u cukierników i najczęstszy powód, dla którego ktoś do mnie wraca. Zamiast dogadywać się z dwiema firmami — jedna rozmowa, jeden styl podania i jeden termin dostawy.",
-      "Wytrawny stół sprawdza się szczególnie na powitanie gości, w przerwie między daniami i późną nocą, kiedy obiad jest już dawno zjedzony, a impreza trwa.",
+      "Catering okolicznościowy prowadzę w tej samej pracowni co torty i słodki stół — i to jest najczęstszy powód, dla którego ktoś do mnie wraca. Zamiast dogadywać się z dwiema firmami: jedna rozmowa, jeden styl podania i jeden termin dostawy.",
+      "Wytrawny stół sprawdza się szczególnie na powitanie gości, w przerwie między daniami i późną nocą, kiedy obiad jest już dawno zjedzony, a impreza trwa. Dojeżdżam po całym Lesznie i w promieniu 60 km.",
     ],
     warianty: [
       {
@@ -371,13 +543,25 @@ export const oferta: Oferta[] = [
         odpowiedz:
           "Tak. Wtedy patrzę na stół inaczej — musi się bronić sam, więc dokładam więcej rodzajów i coś na ciepło.",
       },
+      {
+        pytanie: "Na jakim obszarze robisz catering?",
+        odpowiedz:
+          "Pracownia jest w Lesznie, a dojeżdżam w promieniu około 60 km — najczęściej do Rydzyny, Osiecznej, Święciechowy, Śmigla, Kościana, Gostynia, Rawicza, Bojanowa, Wschowy i Góry. Dalsze wyjazdy też są możliwe, wtedy doliczam dojazd do wyceny. (Catering bywa zapisywany też jako „katering” — chodzi o to samo.)",
+      },
     ],
     cena: "[wycena od … zł za osobę]",
+    powiazane: [
+      { tekst: "słodki stół w komplecie", url: "/oferta/slodkie-kompozycje" },
+      { tekst: "tort na to samo przyjęcie", url: "/oferta/torty" },
+    ],
   },
 
   {
     slug: "upominki-dla-gosci",
+    zdjecie: zdjeciaOferty["upominki-dla-gosci"],
     tytul: "Upominki dla gości",
+    naglowek: "Upominki dla gości weselnych — Leszno",
+    tytulSeo: "Upominki dla gości — Leszno",
     tytulKrotki: "Upominki",
     etykieta: "Drobne formy",
     lead: "Ręcznie malowane tabliczki, boxy słodkości i podziękowania — drobiazg, który goście naprawdę zabierają do domu.",

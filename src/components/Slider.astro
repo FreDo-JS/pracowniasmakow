@@ -3,27 +3,34 @@
    Zostają kropki (skok do konkretnego slajdu) oraz przycisk pauzy,
    którego wymaga WCAG 2.2.2 dla treści zmieniającej się samoczynnie. */
 
+import { zdjeciaSlidera } from "../data/zdjecia";
+
 const slajdy = [
   {
     tlo: "tlo-1",
+    zdjecie: zdjeciaSlidera[0],
     opisFoto: "Zdjęcie 1 — stół weselny w stodole",
     etykieta: "Wesela i przyjęcia",
-    tytul: "Twoje przyjęcie może mieć wiele smaków",
+    /* H1 całej strony głównej — jedyny nagłówek pierwszego poziomu w serwisie,
+       który widzi Google przy wejściu na domenę. Musi nieść usługę i miasto. */
+    tytul: "Torty i catering okolicznościowy w Lesznie",
     tresc:
-      "Tort, słodki stół i wytrawne przekąski z jednej pracowni. Projektuję, wykonuję i ustawiam wszystko na miejscu.",
+      "Tort, słodki stół i wytrawne przekąski z jednej pracowni w Lesznie. Projektuję, wykonuję i ustawiam wszystko na miejscu.",
     cta: { tekst: "Zamów wycenę", url: "/kontakt#formularz" },
   },
   {
     tlo: "tlo-2",
+    zdjecie: zdjeciaSlidera[1],
     opisFoto: "Zdjęcie 2 — wytrawny stół, tarty i koreczki",
     etykieta: "Wytrawny stół",
-    tytul: "Nie tylko na słodko",
+    tytul: "Catering na wesela i przyjęcia",
     tresc:
       "Tarty, koreczki, deski serów i przekąski na powitanie gości — w tej samej estetyce co reszta stołu.",
     cta: { tekst: "Zobacz ofertę", url: "/oferta" },
   },
   {
     tlo: "tlo-3",
+    zdjecie: zdjeciaSlidera[2],
     opisFoto: "Zdjęcie 3 — tort weselny na drewnianym wozie",
     etykieta: "Torty",
     tytul: "Tort projektowany pod jedną datę",
@@ -48,8 +55,21 @@ const slajdy = [
         aria-roledescription="slajd"
         aria-label={`${i + 1} z ${slajdy.length}`}
       >
-        <div class={`slajd-tlo ${s.tlo}`} />
-        <span class="slajd-opis">{s.opisFoto}</span>
+        <div class={`slajd-tlo ${s.tlo}`}>
+          {
+            s.zdjecie && (
+              <img
+                src={s.zdjecie}
+                alt={s.opisFoto}
+                width="1600"
+                height="740"
+                loading={i === 0 ? "eager" : "lazy"}
+                decoding="async"
+              />
+            )
+          }
+        </div>
+        {!s.zdjecie && <span class="slajd-opis">{s.opisFoto}</span>}
         <div class="slajd-tresc">
           <p class="etykieta anim">{s.etykieta}</p>
           {i === 0 ? (

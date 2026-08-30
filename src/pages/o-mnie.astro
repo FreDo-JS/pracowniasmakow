@@ -7,6 +7,7 @@ import Proces from "../components/Proces.astro";
 import PasekCta from "../components/PasekCta.astro";
 import Faq from "../components/Faq.astro";
 import { firma, liczby } from "../data/firma";
+import { zdjeciePortretu } from "../data/zdjecia";
 
 const wartosci = [
   {
@@ -55,17 +56,18 @@ const pytania = [
 ---
 
 <Layout
-  tytul="O mnie"
-  opis={`${firma.wlascicielka} — jednoosobowa pracownia cukiernicza. Torty, słodkie kompozycje i wytrawny stół, od projektu po ustawienie na miejscu.`}
+  tytul="O mnie — pracownia z Leszna"
+  opis={`${firma.wlascicielka} — jednoosobowa pracownia cukiernicza w Lesznie. Torty, słodkie stoły i catering okolicznościowy, od projektu po ustawienie na miejscu.`}
 >
   <section class="hero-strony">
     <div class="strefa">
       <Okruszki sciezka={[{ tekst: "O mnie" }]} />
       <p class="etykieta">O mnie</p>
-      <h1>Jedna pracownia, jedna osoba, jeden pomysł</h1>
+      <h1>Pracownia cukiernicza w Lesznie — jedna osoba, jeden pomysł</h1>
       <p class="lead">
-        Nazywam się {firma.wlascicielka}. Odbieram telefon, projektuję, piekę i
-        przywożę. Wszystko, co zobaczysz na swoim stole, przeszło przez moje ręce.
+        Nazywam się {firma.wlascicielka} i prowadzę jednoosobową pracownię
+        cukierniczą w {firma.adres.miastoW}. Odbieram telefon, projektuję, piekę
+        i przywożę. Wszystko, co zobaczysz na swoim stole, przeszło przez moje ręce.
       </p>
     </div>
   </section>
@@ -73,7 +75,14 @@ const pytania = [
   <section>
     <div class="strefa o-nas-grid">
       <div class="foto pojaw" style="aspect-ratio:4/5">
-        <span>Portret Basi — zdjęcie pionowe 4:5</span>
+        <img
+          src={zdjeciePortretu}
+          alt={`${firma.wlascicielka} w pracowni cukierniczej w ${firma.adres.miastoW}`}
+          width="640"
+          height="800"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <div>
         <p class="podpis pojaw">{firma.wlascicielka}</p>

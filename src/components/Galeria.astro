@@ -26,6 +26,21 @@ const pozycje = limit ? realizacje.slice(0, limit) : realizacje;
   {
     pozycje.map((r, i) => (
       <figure class={`foto kafel pojaw o${i % 3}`} data-kat={r.kategoria}>
+        {
+          r.zdjecie && (
+            <img
+              src={r.zdjecie}
+              /* Opis dla czytników ekranu i dla Google — mówi, co jest na
+                 zdjęciu, a nie „zdjęcie 1”. Buduje się z danych realizacji,
+                 więc zostaje poprawny po podmianie plików. */
+              alt={`${r.tytul} — ${r.opis ?? ""} Pracownia Wielu Smaków, Leszno.`}
+              width="640"
+              height="800"
+              loading={i < 3 ? "eager" : "lazy"}
+              decoding="async"
+            />
+          )
+        }
         <figcaption>
           <span>
             <b>{r.tytul}</b>

@@ -1,12 +1,12 @@
 ---
-import { firma, nawLewa, nawPrawa } from "../data/firma";
+import { firma, nawLewa, nawPrawa, uzupelnione } from "../data/firma";
 import { oferta } from "../data/oferta";
 
 const rok = new Date().getFullYear();
 const linkiStrony = [...nawLewa, ...nawPrawa];
 ---
 
-<footer>
+<footer class="stopka-strony">
   <div class="strefa">
     <div class="f-siatka">
       <div>
@@ -14,14 +14,15 @@ const linkiStrony = [...nawLewa, ...nawPrawa];
           class="f-logo"
           src="/logo-pws.png"
           alt=""
-          width="760"
-          height="760"
+          width="168"
+          height="168"
           loading="lazy"
         />
         <p class="f-haslo">Twoje przyjęcie<br />może mieć wiele smaków</p>
         <p style="max-width:36ch">
-          {firma.nazwa} — {firma.wlascicielka}. Torty, słodkie kompozycje i
-          wytrawny stół. {firma.adres.miasto} i okolice.
+          {firma.nazwa} — {firma.wlascicielka}. Torty na zamówienie, słodkie
+          stoły i catering okolicznościowy. {firma.adres.miasto} i okolice do
+          {" "}{firma.promien}.
         </p>
         <a class="btn btn--jasny" href="/kontakt#formularz" style="margin-top:1em">
           Zamów wycenę <span class="grot" aria-hidden="true">→</span>
@@ -41,9 +42,15 @@ const linkiStrony = [...nawLewa, ...nawPrawa];
         <a href={firma.instagram} target="_blank" rel="noopener">
           Instagram {firma.instagramNazwa}
         </a>
-        <a href={firma.facebook} target="_blank" rel="noopener">
-          Facebook — {firma.wlascicielka}
-        </a>
+        {
+          /* Dopóki nie ma pełnego adresu profilu, nie linkujemy —
+             goły facebook.com jest gorszy niż brak odnośnika. */
+          uzupelnione(firma.facebook) && (
+            <a href={firma.facebook} target="_blank" rel="noopener">
+              Facebook — {firma.wlascicielka}
+            </a>
+          )
+        }
         <p style="margin-top:1.2em;opacity:.7">
           {firma.godziny}
         </p>

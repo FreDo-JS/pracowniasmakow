@@ -3,7 +3,7 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Cookies from "../components/Cookies.astro";
-import { firma } from "../data/firma";
+import { firma, uzupelnione } from "../data/firma";
 
 export type Props = {
   tytul: string;
@@ -20,26 +20,53 @@ const kanoniczny = new URL(Astro.url.pathname, Astro.site ?? firma.domena).href;
 const obrazOg = new URL(obraz, Astro.site ?? firma.domena).href;
 
 /* Dane strukturalne dla Google — dzięki nim firma może pokazać się
-   w wynikach lokalnych z adresem, telefonem i godzinami. */
+   w wynikach lokalnych z adresem, telefonem i godzinami.
+
+   Pola nieuzupełnione (te w [nawiasach]) są POMIJANE, a nie wysyłane
+   z wypełniaczem. Lepiej nie podać Google numeru telefonu, niż podać
+   „+48 000 000 000” — niespójne dane potrafią unieważnić całą wizytówkę. */
+const maUlice = uzupelnione(firma.adres.ulica);
+/* Wypełniacz „+48 000 000 000” nie ma nawiasów, więc uzupelnione() go nie złapie —
+   sprawdzamy dodatkowo, czy w numerze jest jakakolwiek cyfra poza zerem. */
+const maTelefon =
+  uzupelnione(firma.telefon) && /[1-9]/.test(firma.telefon.replace("+48", ""));
+
 const daneStrukturalne = {
   "@context": "https://schema.org",
   "@type": "Bakery",
+  "@id": `${firma.domena}/#firma`,
   name: firma.nazwa,
   description: firma.opis,
   image: obrazOg,
   logo: new URL("/logo-pws.png", Astro.site ?? firma.domena).href,
   url: firma.domena,
-  telephone: firma.telefon,
   email: firma.email,
+  priceRange: "$$",
+  currenciesAccepted: "PLN",
   founder: { "@type": "Person", name: firma.wlascicielka },
+  ...(maTelefon ? { telephone: firma.telefon } : {}),
   address: {
     "@type": "PostalAddress",
-    streetAddress: firma.adres.ulica,
+    ...(maUlice ? { streetAddress: firma.adres.ulica } : {}),
     postalCode: firma.adres.kod,
     addressLocality: firma.adres.miasto,
+    addressRegion: firma.adres.wojewodztwo,
     addressCountry: "PL",
   },
   areaServed: firma.miasta.map((m) => ({ "@type": "City", name: m })),
+  /* Co firma faktycznie robi — bez tego Google zna tylko kategorię „piekarnia”. */
+  makesOffer: [
+    "Torty na zamówienie",
+    "Torty weselne",
+    "Tort na urodziny",
+    "Torty komunijne",
+    "Słodki stół",
+    "Catering okolicznościowy",
+    "Wytrawny stół i finger food",
+  ].map((n) => ({
+    "@type": "Offer",
+    itemOffered: { "@type": "Service", name: n, areaServed: firma.adres.miasto },
+  })),
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
@@ -48,7 +75,7 @@ const daneStrukturalne = {
       closes: "17:00",
     },
   ],
-  sameAs: [firma.instagram, firma.facebook].filter(Boolean),
+  sameAs: [firma.instagram, firma.facebook].filter(uzupelnione),
 };
 ---
 
@@ -60,9 +87,10 @@ const daneStrukturalne = {
     <title>{tytulStrony}</title>
     <meta name="description" content={opis} />
     <link rel="canonical" href={kanoniczny} />
-    <meta name="theme-color" content="#EFE8DE" />
-    <link rel="icon" href="/favicon.png" type="image/png" />
-    <link rel="apple-touch-icon" href="/favicon.png" />
+    <meta name="theme-color" content="#FFF8EA" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="48x48" />
+    <!-- iOS skaluje ikonę do 180 px, więc 48-pikselowy favicon byłby tam rozmyty. -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <meta property="og:type" content="website" />
@@ -76,8 +104,17 @@ const daneStrukturalne = {
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fraunces (nagłówki) + Inter (tekst). Obie rodziny mają komplet polskich
+         znaków, więc ą/ć/ę/ł/ń/ó/ś/ź/ż nie wypadają na zapasowy krój.
+
+         Prosimy WYŁĄCZNIE o to, czego arkusz faktycznie używa. Wcześniej były tu
+         zakresy grubości (300..600 i 300..700) oraz oś kursywy — plik zmienny niesie
+         wtedy każdą grubość pośrednią i obie odmiany, co kosztowało 273 KB na samej
+         rodzinie Fraunces. Arkusz używa grubości 300, 400 i 500, a kursywy nie używa
+         wcale. Oś opsz zostaje: to ona dobiera rysunek liter do stopnia pisma
+         i odpowiada za „pękate" nagłówki. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Jost:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400&family=Inter:wght@300..500&display=swap"
       rel="stylesheet"
     />
 
@@ -88,6 +125,12 @@ const daneStrukturalne = {
   </head>
 
   <body>
+    <script is:inline>
+      /* Stan początkowy animacji wejścia (.pojaw → opacity:0) obowiązuje tylko,
+         gdy JavaScript działa. Bez tej klasy CSS nie ukrywa niczego, więc
+         wyłączony lub przerwany skrypt zostawia stronę czytelną, a nie pustą. */
+      document.documentElement.classList.add("js");
+    </script>
     <a class="skip" href="#tresc">Przejdź do treści</a>
 
     <Header />

@@ -30,14 +30,14 @@ const pytania = [
 ---
 
 <Layout
-  tytul="Kontakt"
-  opis={`Napisz lub zadzwoń: ${firma.telefon}. Zapytanie o wycenę tortu, słodkiego lub wytrawnego stołu — odpowiedź w ciągu ${firma.czasOdpowiedzi}.`}
+  tytul="Kontakt — pracownia w Lesznie"
+  opis={`Zapytanie o wycenę tortu, słodkiego stołu lub cateringu. Pracownia w ${firma.adres.miastoW}, odpowiedź w ciągu ${firma.czasOdpowiedzi}.`}
 >
   <section class="hero-strony">
     <div class="strefa">
       <Okruszki sciezka={[{ tekst: "Kontakt" }]} />
       <p class="etykieta">Kontakt</p>
-      <h1>Zaplanujmy to razem</h1>
+      <h1>Pracownia tortów w Lesznie — zaplanujmy to razem</h1>
       <p class="lead">
         Napisz kilka zdań o swojej uroczystości. Odpowiadam w ciągu {firma.czasOdpowiedzi}
         — z pomysłem i widełkami cenowymi, nie samym cennikiem.
@@ -93,8 +93,8 @@ const pytania = [
     <div class="strefa">
       <NaglowekSekcji
         etykieta="Gdzie mnie znajdziesz"
-        tytul="Pracownia i zasięg dojazdu"
-        opis="Odbiór osobisty po wcześniejszym umówieniu. Na większe przyjęcia dojeżdżam i ustawiam stół na miejscu."
+        tytul={`Pracownia w ${firma.adres.miastoW} i zasięg dojazdu`}
+        opis={`Odbiór osobisty w ${firma.adres.miastoW} po wcześniejszym umówieniu. Na większe przyjęcia dojeżdżam i ustawiam stół na miejscu — w promieniu ${firma.promien}.`}
       />
 
       <div class="mapa pojaw">

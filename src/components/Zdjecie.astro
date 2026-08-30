@@ -1,0 +1,80 @@
+---
+/* ============================================================
+   ZDJĘCIE — jeden komponent na wszystkie obrazy w serwisie.
+
+   Dwa tryby, wybierane automatycznie po tym, co wpiszesz w `zrodlo`:
+
+   1. NAZWA PLIKU  (np. "tort-weselny-stodola.jpg")
+      Plik musi leżeć w `src/assets/zdjecia/`. Astro przy budowaniu
+      przepuszcza go przez sharp: przycina do podanych szerokości,
+      zapisuje w AVIF i WebP (z JPEG-iem jako zapasem) i buduje
+      `srcset`, więc telefon pobiera mały kadr, a nie ten sam plik
+      co ekran 27-calowy.
+
+   2. PEŁNY ADRES  (np. "https://…/foto.jpg")
+      Idzie prosto do <img>. Astro nie optymalizuje obcych serwerów.
+      Tak działają obecne zdjęcia poglądowe — patrz src/data/zdjecia.ts.
+
+   Podmiana zdjęć poglądowych na własne = wrzucenie plików do
+   `src/assets/zdjecia/` i wpisanie w danych samych nazw zamiast adresów.
+   Nic więcej nie trzeba ruszać.
+   ============================================================ */
+import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+export type Props = {
+  zrodlo: string;
+  alt: string;
+  /** Szerokości do wygenerowania. Dobierz do największego kadru na stronie. */
+  szerokosci: number[];
+  /** Ile miejsca obraz zajmuje w układzie — stąd przeglądarka wie, co pobrać. */
+  sizes: string;
+  /** Wymiary zastępcze dla trybu adresu zewnętrznego (zapobiegają przeskokom). */
+  szerokosc: number;
+  wysokosc: number;
+  ladowanie?: "eager" | "lazy";
+  klasa?: string;
+};
+
+const {
+  zrodlo, alt, szerokosci, sizes, szerokosc, wysokosc,
+  ladowanie = "lazy", klasa,
+} = Astro.props;
+
+/* Wszystkie pliki z src/assets/zdjecia wczytane na etapie budowania.
+   Pusty katalog = pusty obiekt, więc nic się nie psuje przed dodaniem zdjęć. */
+const lokalne = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/zdjecia/*.{avif,webp,jpg,jpeg,png}",
+  { eager: true }
+);
+
+const zewnetrzne = /^https?:\/\//.test(zrodlo);
+const wpis = zewnetrzne ? undefined : lokalne[`/src/assets/zdjecia/${zrodlo}`];
+---
+
+{
+  wpis ? (
+    <Picture
+      src={wpis.default}
+      alt={alt}
+      widths={szerokosci}
+      sizes={sizes}
+      formats={["avif", "webp"]}
+      fallbackFormat="jpeg"
+      quality={52}
+      loading={ladowanie}
+      decoding="async"
+      class={klasa}
+    />
+  ) : (
+    <img
+      src={zrodlo}
+      alt={alt}
+      width={szerokosc}
+      height={wysokosc}
+      loading={ladowanie}
+      decoding="async"
+      class={klasa}
+    />
+  )
+}

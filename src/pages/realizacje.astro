@@ -8,14 +8,14 @@ import { realizacje } from "../data/realizacje";
 ---
 
 <Layout
-  tytul="Realizacje"
-  opis="Torty, słodkie stoły i wytrawne przekąski z ostatnich sezonów. Wesela, osiemnastki, komunie i przyjęcia firmowe."
+  tytul="Realizacje — torty i stoły z Leszna"
+  opis="Torty, słodkie stoły i wytrawne przekąski z ostatnich sezonów. Wesela, osiemnastki, komunie i przyjęcia firmowe w Lesznie i okolicy."
 >
   <section class="hero-strony">
     <div class="strefa">
       <Okruszki sciezka={[{ tekst: "Realizacje" }]} />
       <p class="etykieta">Portfolio</p>
-      <h1>Stoły, które już stanęły</h1>
+      <h1>Realizacje — torty i stoły z Leszna i okolic</h1>
       <p class="lead">
         {realizacje.length} wybranych realizacji z ostatnich sezonów. Filtruj
         według rodzaju uroczystości — a jeśli szukasz czegoś, czego tu nie ma,
@@ -45,7 +45,7 @@ import { realizacje } from "../data/realizacje";
         srodek={true}
       />
       <div class="pod-galeria pojaw">
-        <a class="btn btn--roz" href="/oferta">
+        <a class="btn btn--akcent" href="/oferta">
           Zobacz pełną ofertę <span class="grot" aria-hidden="true">→</span>
         </a>
       </div>
