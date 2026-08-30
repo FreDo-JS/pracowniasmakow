@@ -7,7 +7,12 @@
 
 export const firma = {
   nazwa: "Pracownia Wielu Smaków",
-  wlascicielka: "Basia Kot",
+  /* Imię i nazwisko właścicielki. Puste = serwis mówi o „pracowni”, a nie
+     o osobie: znika podpis pod portretem, „Nazywam się…” w leadzie, pole
+     `founder` w danych strukturalnych i wzmianka w polityce prywatności.
+     Wpisz imię, a wszystkie te miejsca wrócą same — nie trzeba nic szukać
+     po szablonach. */
+  wlascicielka: "",
   haslo: "Twoje przyjęcie może mieć wiele smaków",
   opis:
     "Torty na zamówienie i catering okolicznościowy w Lesznie: torty weselne, " +

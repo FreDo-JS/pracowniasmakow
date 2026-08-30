@@ -1,9 +1,16 @@
 ---
-/* Slider automatyczny — bez strzałek.
-   Zostają kropki (skok do konkretnego slajdu) oraz przycisk pauzy,
-   którego wymaga WCAG 2.2.2 dla treści zmieniającej się samoczynnie. */
+/* Slider automatyczny — bez strzałek i bez przycisku pauzy.
+
+   UWAGA: WCAG 2.2.2 wymaga kontrolki zatrzymującej treść, która rusza sama
+   i trwa dłużej niż 5 sekund. Przycisk pauzy został usunięty na życzenie,
+   więc zostają tylko częściowe zamienniki: przewijanie staje przy najechaniu
+   myszą, przy fokusie klawiatury, przy dotknięciu palcem i gdy karta jest
+   w tle, a przy prefers-reduced-motion nie rusza wcale.
+   Pełną zgodność przywraca albo przycisk z historii gita, albo wyłączenie
+   samego autoplayu (usunięcie setInterval) — kropki i palec zostają. */
 
 import { zdjeciaSlidera } from "../data/zdjecia";
+import Zdjecie from "./Zdjecie.astro";
 
 const slajdy = [
   {
@@ -58,13 +65,17 @@ const slajdy = [
         <div class={`slajd-tlo ${s.tlo}`}>
           {
             s.zdjecie && (
-              <img
-                src={s.zdjecie}
+              <Zdjecie
+                zrodlo={s.zdjecie}
                 alt={s.opisFoto}
-                width="1600"
-                height="740"
-                loading={i === 0 ? "eager" : "lazy"}
-                decoding="async"
+                /* Slider zajmuje całą szerokość strefy (85% okna, max 1400 px). */
+                szerokosci={[700, 1000, 1400, 1900]}
+                sizes="(max-width:820px) 92vw, 85vw"
+                szerokosc={1600}
+                wysokosc={740}
+                ladowanie={i === 0 ? "eager" : "lazy"}
+                /* Pierwszy slajd to obraz LCP — reszta może poczekać. */
+                priorytet={i === 0}
               />
             )
           }
@@ -101,9 +112,6 @@ const slajdy = [
         ))
       }
     </div>
-    <button class="pauza" id="pauza" aria-label="Zatrzymaj automatyczne przewijanie">
-      <span aria-hidden="true">❚❚</span>
-    </button>
   </div>
 </div>
 
@@ -114,11 +122,11 @@ const slajdy = [
   if (slider) {
     const slajdy = [...slider.querySelectorAll<HTMLElement>(".slajd")];
     const kropki = [...slider.querySelectorAll<HTMLButtonElement>(".kropka")];
-    const przyciskPauzy = document.getElementById("pauza") as HTMLButtonElement;
-
     let idx = 0;
     let timer: number | null = null;
-    let zatrzymanyRecznie = wolniej;
+    /* Jedyny powód, dla którego autoplay może nie ruszyć w ogóle. Reszta
+       zatrzymań (najechanie, fokus, dotyk, karta w tle) jest chwilowa. */
+    const bezAutoplayu = wolniej;
 
     const pokaz = (n: number) => {
       idx = (n + slajdy.length) % slajdy.length;
@@ -127,7 +135,7 @@ const slajdy = [
     };
 
     const start = () => {
-      if (zatrzymanyRecznie) return;
+      if (bezAutoplayu) return;
       stop();
       timer = window.setInterval(() => pokaz(idx + 1), 6500);
     };
@@ -142,19 +150,6 @@ const slajdy = [
         start();
       })
     );
-
-    przyciskPauzy.addEventListener("click", () => {
-      zatrzymanyRecznie = !zatrzymanyRecznie;
-      if (zatrzymanyRecznie) {
-        stop();
-        przyciskPauzy.innerHTML = '<span aria-hidden="true">▶</span>';
-        przyciskPauzy.setAttribute("aria-label", "Wznów automatyczne przewijanie");
-      } else {
-        start();
-        przyciskPauzy.innerHTML = '<span aria-hidden="true">❚❚</span>';
-        przyciskPauzy.setAttribute("aria-label", "Zatrzymaj automatyczne przewijanie");
-      }
-    });
 
     /* zatrzymanie na czas czytania / interakcji */
     slider.addEventListener("mouseenter", stop);
@@ -187,10 +182,6 @@ const slajdy = [
       { passive: true }
     );
 
-    if (wolniej) {
-      przyciskPauzy.innerHTML = '<span aria-hidden="true">▶</span>';
-      przyciskPauzy.setAttribute("aria-label", "Wznów automatyczne przewijanie");
-    }
     start();
   }
 </script>

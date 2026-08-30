@@ -4,7 +4,7 @@ import Okruszki from "../components/Okruszki.astro";
 import Formularz from "../components/Formularz.astro";
 import NaglowekSekcji from "../components/NaglowekSekcji.astro";
 import Faq from "../components/Faq.astro";
-import { firma, mapaEmbed } from "../data/firma";
+import { firma, mapaEmbed, uzupelnione } from "../data/firma";
 
 const pytania = [
   {
@@ -79,8 +79,23 @@ const pytania = [
         </p>
 
         <div class="social pojaw">
-          <a href={firma.instagram} target="_blank" rel="noopener" aria-label="Instagram">IG</a>
-          <a href={firma.facebook} target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+          {
+            uzupelnione(firma.instagram) && (
+              <a href={firma.instagram} target="_blank" rel="noopener" aria-label="Instagram">
+                IG
+              </a>
+            )
+          }
+          {
+            /* Pusty adres dawał <a href="">, czyli odnośnik otwierający tę samą
+               stronę w nowej karcie. Ta sama zasada co w stopce: nie ma profilu,
+               nie ma linku. */
+            uzupelnione(firma.facebook) && (
+              <a href={firma.facebook} target="_blank" rel="noopener" aria-label="Facebook">
+                FB
+              </a>
+            )
+          }
         </div>
       </div>
 

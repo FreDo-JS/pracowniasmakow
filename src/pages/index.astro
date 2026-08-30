@@ -52,9 +52,13 @@ import { firma, liczby, okazje } from "../data/firma";
   <!-- ===== OFERTA ===== -->
   <section class="kategorie">
     <div class="strefa">
+      {/* Tytuł tej sekcji brzmiał dokładnie tak samo jak H1 ze slajdu —
+          dwa identyczne nagłówki na jednej stronie to zmarnowany sygnał.
+          Fraza „torty i catering w Lesznie” zostaje w H1, tutaj to samo
+          mówimy innymi słowami. */}
       <NaglowekSekcji
         etykieta="Oferta"
-        tytul="Torty i catering okolicznościowy w Lesznie"
+        tytul="Od jednego tortu po całą oprawę stołu"
         opis="Możesz zamówić sam tort albo powierzyć mi całą oprawę kulinarną — słodki stół, wytrawne przekąski i upominki dla gości. Każdą wycenę przygotowuję indywidualnie."
       />
       <KartyOferty />
@@ -109,8 +113,9 @@ import { firma, liczby, okazje } from "../data/firma";
   <!-- ===== PROCES ===== -->
   <Proces tlo={true} />
 
-  <!-- ===== OPINIE ===== -->
-  <Opinie />
+  {/* ===== OPINIE — WYŁĄCZONE, dopóki cytaty są przykładowe.
+         Żeby przywrócić: zmień `false` poniżej na `true`. */}
+  {false && <Opinie />}
 
   <!-- ===== KONTAKT (skrót) ===== -->
   <section class="kategorie">

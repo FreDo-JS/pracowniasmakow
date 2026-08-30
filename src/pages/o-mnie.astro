@@ -6,8 +6,20 @@ import Opinie from "../components/Opinie.astro";
 import Proces from "../components/Proces.astro";
 import PasekCta from "../components/PasekCta.astro";
 import Faq from "../components/Faq.astro";
-import { firma, liczby } from "../data/firma";
+import Zdjecie from "../components/Zdjecie.astro";
+import { firma, liczby, uzupelnione } from "../data/firma";
 import { zdjeciePortretu } from "../data/zdjecia";
+
+/* Meta-opis, lead, podpis pod portretem i opis alternatywny zdjęcia mówią
+   o osobie tylko wtedy, gdy nazwisko jest uzupełnione w firma.ts. Bez niego
+   te same zdania mówią o pracowni — zamiast pokazywać pusty myślnik. */
+const maWlascicielke = uzupelnione(firma.wlascicielka);
+const opisStrony = `${
+  maWlascicielke ? `${firma.wlascicielka} — jednoosobowa` : "Jednoosobowa"
+} pracownia cukiernicza w ${firma.adres.miastoW}. Torty, słodkie stoły i catering okolicznościowy, od projektu po ustawienie na miejscu.`;
+const altPortretu = maWlascicielke
+  ? `${firma.wlascicielka} w pracowni cukierniczej w ${firma.adres.miastoW}`
+  : `Przy pracy w pracowni cukierniczej w ${firma.adres.miastoW}`;
 
 const wartosci = [
   {
@@ -55,19 +67,19 @@ const pytania = [
 ];
 ---
 
-<Layout
-  tytul="O mnie — pracownia z Leszna"
-  opis={`${firma.wlascicielka} — jednoosobowa pracownia cukiernicza w Lesznie. Torty, słodkie stoły i catering okolicznościowy, od projektu po ustawienie na miejscu.`}
->
+<Layout tytul="O mnie — pracownia z Leszna" opis={opisStrony}>
   <section class="hero-strony">
     <div class="strefa">
       <Okruszki sciezka={[{ tekst: "O mnie" }]} />
       <p class="etykieta">O mnie</p>
       <h1>Pracownia cukiernicza w Lesznie — jedna osoba, jeden pomysł</h1>
       <p class="lead">
-        Nazywam się {firma.wlascicielka} i prowadzę jednoosobową pracownię
-        cukierniczą w {firma.adres.miastoW}. Odbieram telefon, projektuję, piekę
-        i przywożę. Wszystko, co zobaczysz na swoim stole, przeszło przez moje ręce.
+        {maWlascicielke
+          ? `Nazywam się ${firma.wlascicielka} i prowadzę jednoosobową`
+          : "Prowadzę jednoosobową"}{" "}
+        pracownię cukierniczą w {firma.adres.miastoW}. Odbieram
+        telefon, projektuję, piekę i przywożę. Wszystko, co zobaczysz na swoim
+        stole, przeszło przez moje ręce.
       </p>
     </div>
   </section>
@@ -75,17 +87,17 @@ const pytania = [
   <section>
     <div class="strefa o-nas-grid">
       <div class="foto pojaw" style="aspect-ratio:4/5">
-        <img
-          src={zdjeciePortretu}
-          alt={`${firma.wlascicielka} w pracowni cukierniczej w ${firma.adres.miastoW}`}
-          width="640"
-          height="800"
-          loading="lazy"
-          decoding="async"
+        <Zdjecie
+          zrodlo={zdjeciePortretu}
+          alt={altPortretu}
+          szerokosci={[450, 640, 900]}
+          sizes="(max-width:900px) 92vw, 42vw"
+          szerokosc={640}
+          wysokosc={800}
         />
       </div>
       <div>
-        <p class="podpis pojaw">{firma.wlascicielka}</p>
+        {maWlascicielke && <p class="podpis pojaw">{firma.wlascicielka}</p>}
         <p class="pojaw">
           Zaczęłam od tortów dla rodziny i znajomych, w kuchni, w której nie
           mieściła się nawet porządna miksarka. Dziś mam własną pracownię, ale
@@ -144,7 +156,9 @@ const pytania = [
 
   <Proces />
 
-  <Opinie />
+  {/* ===== OPINIE — WYŁĄCZONE, dopóki cytaty są przykładowe.
+         Żeby przywrócić: zmień `false` poniżej na `true`. */}
+  {false && <Opinie />}
 
   <Faq pytania={pytania} tytul="Pytania o współpracę" />
 

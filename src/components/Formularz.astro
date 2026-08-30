@@ -28,8 +28,8 @@ const dzis = new Date().toISOString().slice(0, 10);
 
   <p class="wymagane-info">Pola oznaczone gwiazdką (*) są wymagane.</p>
 
-  <form id="form-wycena" novalidate>
-    {kluczWeb3Forms && <input type="hidden" name="access_key" value={kluczWeb3Forms} />}
+  <form id="form-wycena" novalidate action="https://api.web3forms.com/submit" method="POST">
+    {kluczWeb3Forms && <input type="hidden" name="access_key" value={'e539e76c-f08f-4bad-b5f5-2dc67a9cb7ae'} />}
 
     <!-- pułapka na boty: człowiek tego pola nie widzi i nie wypełni -->
     <div class="pulapka" aria-hidden="true">

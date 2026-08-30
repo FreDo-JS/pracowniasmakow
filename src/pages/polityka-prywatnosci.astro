@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Okruszki from "../components/Okruszki.astro";
-import { firma } from "../data/firma";
+import { firma, uzupelnione } from "../data/firma";
 
 /* UWAGA: to jest wzór, nie porada prawna.
    Uzupełnij dane administratora i sprawdź treść przed publikacją. */
@@ -25,7 +25,9 @@ import { firma } from "../data/firma";
     <div class="strefa tresc-prawna">
       <h2>Kto jest administratorem danych</h2>
       <p>
-        Administratorem danych osobowych jest {firma.nazwa} — {firma.wlascicielka},
+        Administratorem danych osobowych jest {firma.nazwa}{
+          uzupelnione(firma.wlascicielka) && ` — ${firma.wlascicielka}`
+        },
         {firma.adres.ulica}, {firma.adres.kod} {firma.adres.miasto},
         NIP {firma.nip}. Kontakt: <a href={`mailto:${firma.email}`}>{firma.email}</a>,
         tel. {firma.telefon}.

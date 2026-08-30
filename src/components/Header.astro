@@ -1,5 +1,5 @@
 ---
-import { firma, nawLewa, nawPrawa, type Link } from "../data/firma";
+import { firma, nawLewa, nawPrawa, uzupelnione, type Link } from "../data/firma";
 
 const sciezka = Astro.url.pathname.replace(/\/$/, "") || "/";
 const aktywna = (url: string) =>
@@ -9,6 +9,12 @@ const grupy: { klasa: string; linki: Link[] }[] = [
   { klasa: "naw-lewa", linki: nawLewa },
   { klasa: "naw-prawa", linki: nawPrawa },
 ];
+
+/* Bez uzupełnionego nazwiska logo opisuje samą pracownię — myślnik wiszący
+   po nazwie firmy byłby dla czytnika ekranu czystym szumem. */
+const altLogo = uzupelnione(firma.wlascicielka)
+  ? `${firma.nazwa} — ${firma.wlascicielka}, strona główna`
+  : `${firma.nazwa} — strona główna`;
 ---
 
 <header class="naglowek-strony" id="naglowek">
@@ -95,14 +101,17 @@ const grupy: { klasa: string; linki: Link[] }[] = [
   <a class="marka" href="/">
     <img
       src="/logo-pws.png"
-      alt={`${firma.nazwa} — ${firma.wlascicielka}, strona główna`}
+      alt={altLogo}
       width="168"
       height="168"
       fetchpriority="high"
     />
   </a>
 
-  <a class="btn btn--maly cta-naglowka" href="/kontakt#formularz">Wycena</a>
+  {/* Widoczny tylko poniżej 1180 px (patrz .cta-naglowka w global.css).
+      Na wąskim ekranie mieści się jedno słowo, więc niesie czasownik:
+      „Zamów” mówi, co się stanie po kliknięciu, „Wycena” było rzeczownikiem. */}
+  <a class="btn btn--maly cta-naglowka" href="/kontakt#formularz">Zamów</a>
 </header>
 
 <script>

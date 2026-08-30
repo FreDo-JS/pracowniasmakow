@@ -1,5 +1,6 @@
 ---
 import { oferta } from "../data/oferta";
+import Zdjecie from "./Zdjecie.astro";
 
 export type Props = { pomin?: string };
 const { pomin } = Astro.props;
@@ -15,13 +16,14 @@ const pozycje = oferta.filter((o) => o.slug !== pomin && o.wKartach !== false);
         <div class="foto">
           {
             o.zdjecie ? (
-              <img
-                src={o.zdjecie}
+              <Zdjecie
+                zrodlo={o.zdjecie}
                 alt={`${o.tytul} — ${o.warianty[0].nazwa}. Pracownia Wielu Smaków, Leszno.`}
-                width="640"
-                height="480"
-                loading="lazy"
-                decoding="async"
+                /* Cztery kolumny, poniżej 1000 px dwie, poniżej 560 px jedna. */
+                szerokosci={[320, 460, 700, 900]}
+                sizes="(max-width:560px) 92vw, (max-width:1000px) 44vw, 22vw"
+                szerokosc={640}
+                wysokosc={480}
               />
             ) : (
               <span>{o.warianty[0].nazwa}</span>

@@ -1,5 +1,6 @@
 ---
 import { realizacje, kategorie } from "../data/realizacje";
+import Zdjecie from "./Zdjecie.astro";
 
 export type Props = {
   limit?: number;
@@ -28,16 +29,19 @@ const pozycje = limit ? realizacje.slice(0, limit) : realizacje;
       <figure class={`foto kafel pojaw o${i % 3}`} data-kat={r.kategoria}>
         {
           r.zdjecie && (
-            <img
-              src={r.zdjecie}
+            <Zdjecie
+              zrodlo={r.zdjecie}
               /* Opis dla czytników ekranu i dla Google — mówi, co jest na
                  zdjęciu, a nie „zdjęcie 1”. Buduje się z danych realizacji,
                  więc zostaje poprawny po podmianie plików. */
               alt={`${r.tytul} — ${r.opis ?? ""} Pracownia Wielu Smaków, Leszno.`}
-              width="640"
-              height="800"
-              loading={i < 3 ? "eager" : "lazy"}
-              decoding="async"
+              /* Trzy kolumny na dużym ekranie, dwie poniżej 900 px — telefon
+                 pobiera kadr około 400-pikselowy, nie ten sam co monitor. */
+              szerokosci={[360, 480, 700, 900]}
+              sizes="(max-width:900px) 44vw, 30vw"
+              szerokosc={640}
+              wysokosc={800}
+              ladowanie={i < 3 ? "eager" : "lazy"}
             />
           )
         }

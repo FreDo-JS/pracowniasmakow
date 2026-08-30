@@ -33,12 +33,14 @@ export type Props = {
   szerokosc: number;
   wysokosc: number;
   ladowanie?: "eager" | "lazy";
+  /** Obraz LCP (pierwszy slajd). Każe przeglądarce pobrać go przed resztą. */
+  priorytet?: boolean;
   klasa?: string;
 };
 
 const {
   zrodlo, alt, szerokosci, sizes, szerokosc, wysokosc,
-  ladowanie = "lazy", klasa,
+  ladowanie = "lazy", priorytet = false, klasa,
 } = Astro.props;
 
 /* Wszystkie pliki z src/assets/zdjecia wczytane na etapie budowania.
@@ -64,6 +66,7 @@ const wpis = zewnetrzne ? undefined : lokalne[`/src/assets/zdjecia/${zrodlo}`];
       quality={52}
       loading={ladowanie}
       decoding="async"
+      fetchpriority={priorytet ? "high" : undefined}
       class={klasa}
     />
   ) : (
@@ -74,6 +77,7 @@ const wpis = zewnetrzne ? undefined : lokalne[`/src/assets/zdjecia/${zrodlo}`];
       height={wysokosc}
       loading={ladowanie}
       decoding="async"
+      fetchpriority={priorytet ? "high" : undefined}
       class={klasa}
     />
   )

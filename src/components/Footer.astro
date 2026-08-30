@@ -4,6 +4,7 @@ import { oferta } from "../data/oferta";
 
 const rok = new Date().getFullYear();
 const linkiStrony = [...nawLewa, ...nawPrawa];
+const maWlascicielke = uzupelnione(firma.wlascicielka);
 ---
 
 <footer class="stopka-strony">
@@ -20,9 +21,9 @@ const linkiStrony = [...nawLewa, ...nawPrawa];
         />
         <p class="f-haslo">Twoje przyjęcie<br />może mieć wiele smaków</p>
         <p style="max-width:36ch">
-          {firma.nazwa} — {firma.wlascicielka}. Torty na zamówienie, słodkie
-          stoły i catering okolicznościowy. {firma.adres.miasto} i okolice do
-          {" "}{firma.promien}.
+          {firma.nazwa}{maWlascicielke && ` — ${firma.wlascicielka}`}. Torty na
+          zamówienie, słodkie stoły i catering okolicznościowy.
+          {" "}{firma.adres.miasto} i okolice do {firma.promien}.
         </p>
         <a class="btn btn--jasny" href="/kontakt#formularz" style="margin-top:1em">
           Zamów wycenę <span class="grot" aria-hidden="true">→</span>
@@ -47,7 +48,7 @@ const linkiStrony = [...nawLewa, ...nawPrawa];
              goły facebook.com jest gorszy niż brak odnośnika. */
           uzupelnione(firma.facebook) && (
             <a href={firma.facebook} target="_blank" rel="noopener">
-              Facebook — {firma.wlascicielka}
+              Facebook
             </a>
           )
         }
